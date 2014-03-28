@@ -4,11 +4,66 @@ body {
 	/*background-image:url('http://ipipet.teamerlich.org/static/gray.jpg');*/
 }
 
+/*this is for the live splash screen*/
+div.splash-center {
+  	position: fixed;
+	top: 50%;
+	left: 50%;
+	width:672px;
+	height:900px;
+	margin-top: -450px;
+	margin-left: -336px;
+}
+
+div.splash-title {
+	position:absolute;
+	top:20px;
+	left:30px;
+}
+
+div.title-text {
+	font-size:76px;
+	text-shadow: 4px 4px #653A71;
+	color:#FFFFFF;
+	/*purple over white
+	text-shadow: 4px 4px #FFFFFF;
+	color:#653A71;*/
+}
+
+div.description-font {
+	width:300px;
+	position:absolute;
+	top:15px;
+	left:260px;
+	font-size:32px;
+	text-shadow: 2px 2px #FFFFFF;
+	color:#000000;
+}
+
+
+/*this is for splash2.html; found at http://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/*/
+div.col-center-block {
+  	position: fixed;
+	top: 50%;
+	left: 50%;
+	width:900px;
+	height:520px;
+	margin-top: -260px;
+	margin-left: -450px;
+}
+
 a.btn-splash{
-	width:250px;
-	height:90px;
-	padding-top: 24px;
-	font-size:30px;
+	width:180px;
+	height:60px;
+	padding-top:16px;
+	font-size:22px;
+	
+}
+
+a.btn-splash-learn{
+	position:absolute;
+	top:130px;
+	left:160px;
 }
 
 span#twitter_text {

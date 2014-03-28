@@ -161,6 +161,10 @@ def load_plating_csv(filename):
 def splash():
     return render_template("splash.html")
 
+@app.route("/splash2")
+def splash2():
+    return render_template("splash2.html")
+    
 @app.route("/home")
 def home():
     return render_template("home.html")
