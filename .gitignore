@@ -1,4 +1,5 @@
 *.log
 *.pyc
-./uploads/*.csv
-./uploads/*.json
+*.pid
+uploads/*.csv
+uploads/*.json
