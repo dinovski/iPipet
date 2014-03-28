@@ -1,0 +1,11 @@
+sourceplate,sourcewell,destplate,destwell,vol
+SourcePlate1,1,DestPlate1,1,8
+SourcePlate1,5,DestPlate1,2,10
+SourcePlate1,15,DestPlate1,3,8.2
+SourcePlate1,2,DestPlate1,4,6.7
+SourcePlate1,10,DestPlate1,5,6
+SourcePlate2,1,DestPlate1,6,8
+SourcePlate2,10,DestPlate1,7,10
+SourcePlate2,19,DestPlate1,8,8.4
+SourcePlate2,28,DestPlate1,9,8
+SourcePlate2,37,DestPlate1,10,6

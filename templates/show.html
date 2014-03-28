@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+
+<!-- HEADER + BANNER -->
+<div class="row">
+  <div class="col-xs-8">
+    <h1 class="page-header">
+      <font style="font-size:40px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px"></font>
+      </h1>
+   </div>
+   <div class="col-xs-4">
+	<br/>
+	<br/>
+	<a href="http://erlichlab.wi.mit.edu"><img src="{{ url_for("static", filename="logo_wibr.png") }}" /></a>
+   </div>
+</div>
+
+<!-- Information About the Plate -->
+<div class="row">
+  <div class="col-xs-6">
+      <p style="font-size:24px">Plate Design: {{ info.description }}</p>
+
+      <table class="table table-condensed" style="font-size:16px">
+        <tr> 
+	    <td> Here's your unique project link:</td>
+	    <td> <a href="{{ url_for("show", id=info.id, _external=True) }} ">
+	    {% if info.description %}
+	    {{ info.description }}
+	    {% else %}
+	    {{ info.id }}
+	    {% endif %}
+	    </a></td>
+	</tr>
+	<tr>
+	    {% if info.email %}
+	    <td>A link was also sent to:</td>
+            <td>{{ info.email }}</td>
+	    {% else %}
+	    <!-- <td colspan="2"><strong>(Be sure to save this link for future use)</strong></td> -->
+	    {% endif %}
+        </tr>
+        <tr>
+	    <td>Total number of steps:</td>
+	    <td> {{ ((info.numsteps)-1) }}</td>
+	</tr>
+	<tr>
+            <td>Source plates:</td>
+            <td>{{ info.srcplates | join(', ') }}</td>
+        </tr>
+	<tr>
+	  <td>Destination plates:</td>
+	  <td> {{ info.destplates | join(', ') }} </td>
+	</tr>
+      </table>
+  </div>
+</div>
+
+<!-- Scaling Plate Display -->
+<div class="row">
+  <div class="col-xs-12">
+      <h3 class="page-header">Plate Display Scaling</h3>
+      Make sure the plate diagram below matches the plates you are
+      planning to use by aligning them over the diagram.
+      <br/>
+      If the alignment is incorrect, adjust the display resolution based
+      on the tablet device you are using.
+      <br/>
+      <br/>
+<form class="form-inline" role="form">
+
+ <div class="form-group">
+   <label for="dpi_select">Select Device:</label>
+   <select class="form-control" id="dpi_device" onblur="select_device();" onchange="select_device();">
+      <option value="96">Desktop monitors</option>
+      <option value="132" selected>iPad 1/2</option>
+	<!-- NOTE about iPhone4 : while it has higher resolution, it reports "devicewidtH" of 320px -->
+      <option value="163">iPhone 3/3GS/4</option>
+      <option value="264">iPad Retina/Air</option>
+      <option value="326">iPhone 4S/5/5S</option>
+      <option value="135">MacBook Air 11</option>
+      <option value="128">MacBook Air 13</option>
+      <option value="113">MacBook Pro 13</option>
+      <option value="227">MacBook Pro Retina 13</option>
+   </select>
+   
+ </div><!-- form-group-->
+
+ <div class="form-group">
+  <label for="dpi_custom">OR Enter custom DPI:</label>
+  <input type="text" id="dpi_custom" value="132" placeholder="e.g. 96 DPI" />
+ </div>
+
+ <button type="button" class="btn btn-default" style="color:#653A71" onclick="update_resolution();">Update Diagram</button>
+
+</form>
+<br/>
+      <div id="scaling_plate"></div>
+
+  </div>
+</div>
+<br/>
+
+
+<!-- Start Button -->
+<div class="row">
+  <div class="col-xs-6">
+     <a id="start" type="button" class="btn btn-primary btn-lg btn-block" style="background-color:#653A71" href="{{ url_for("run", id=info.id) }}?dpi=132">START PIPETTING!</a>
+  </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+</div><!-- container -->
+
+<script>
+
+/* This function is called when the user wants to change resolution */
+function update_resolution()
+{
+   var new_resolution = $("#dpi_custom").val() ;
+   new_resolution=Math.floor(new_resolution);
+
+   d3_plate_change_resolution_dpi("scaling_plate",new_resolution);
+
+   // Update the "start" link, to include the resolution
+   // as CGI parameter
+   var start_url = "{{ url_for("run",id=info.id) }}";
+   start_url = start_url + "?dpi=" + new_resolution;
+   $("#start").attr("href",start_url);
+}
+
+/* This function is called when a new device is selected from the list box */
+function select_device()
+{
+   var new_resolution = $("#dpi_device").val() ;
+   $("#dpi_custom").val(new_resolution);
+   update_resolution();
+}
+
+$(function(){
+	d3_generate_plate_data("scaling_plate",52);
+    set_plate_alignment_mode("scaling_plate");
+});
+</script>
+
+{% endblock %}

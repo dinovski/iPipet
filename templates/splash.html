@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+
+<div class="row">
+	<br/>
+	<div class="col-sm-6">
+		<a class="pull-right" href="http://ipipet.teamerlich.org/home"><img src="{{ url_for("static", filename="fade.jpg") }}" /></a>
+			
+	</div>
+	<div class="col-sm-1" >
+	</div>
+	<div class="col-sm-5" >
+	<br/>
+	<br/>
+	<font style="font-size:74px; color:#653A71"><strong>iPipet:</strong></font>
+		<p style="font-size:32px">
+			a light tracking tool <p style="font-size:32px">for 96 well plates</p>
+		</p>
+		<br/>
+		<br/>
+		<a type="button" class="btn btn-primary active btn-splash" style="color:white; background-color:#653A71" href="{{ url_for("home") }}">LEARN MORE</a>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<a type="button" class="btn btn-primary active btn-splash" style="color:white; background-color:#653A71" href="{{ url_for("show", id="demolink") }}">DEMO</a>
+				
+	</div>
+</div>
+
+
+</div><!-- container -->
+
+{% endblock %}

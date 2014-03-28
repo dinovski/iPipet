@@ -1,0 +1,99 @@
+body {
+    -webkit-user-select:  none;
+    -moz-user-select: none;
+	/*background-image:url('http://ipipet.teamerlich.org/static/gray.jpg');*/
+}
+
+a.btn-splash{
+	width:250px;
+	height:90px;
+	padding-top: 24px;
+	font-size:30px;
+}
+
+span#twitter_text {
+	position: relative;
+	top: -5px;
+	left: -20px;
+	font-size: 16px;
+}
+
+body#runbody {
+	background-color: black;
+}
+
+div#run_prev_next_buttons {
+    display: none;
+    
+}
+
+div#run_start_button {
+    display: none;
+}
+
+div#run_replace_src_plate {
+    display: none;
+    color:red;
+}
+
+div#run_replace_dest_plate {
+    display: none;
+    color:red;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+}
+
+div#last_step_warning {
+    display: none;
+	font-size:300%;
+	color:#944DFF;
+	position:absolute;
+	top:400px;
+	left:150px;
+}
+
+div#volume_info {
+    display: none;
+	position: absolute;
+	top: 200px;
+	left: 20px;	
+}
+
+div#buttons_bar {
+	font-size:150%;
+	color:#944DFF;
+	margin-left: 2px;
+	margin-top: 10px;
+	float: left;
+}
+
+div#plates_bar {
+	float: left;
+}
+
+#run_prev_button {
+	position: absolute;
+	background-color:orange;
+	top: 10px;
+	left: 10px;
+	
+}
+
+
+#run_jump_div {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	
+}
+
+
+#run_next_button {
+	position: absolute;
+	background-color:green;
+	height: 100px;
+	width: 100px;
+	top: 400px;
+	left: 10px;
+}

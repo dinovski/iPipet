@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+
+<!-- HEADER + BANNER -->
+<div class="row page-header">
+	<div class="col-xs-9">
+		<font style="font-size:40px; color:#653A71">
+			<strong>iPipet:</strong>
+		</font>
+		<font style="font-size:26px">
+			&nbsp;a light tracking tool for 96 well plates
+		</font>
+	</div>
+	<div class="col-xs-3">
+		<div class="pull-right">
+			<a href="http://erlichlab.wi.mit.edu/"><img src="{{ url_for("static", filename="logo_wibr.png") }}" /></a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-7">
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="{{ url_for("usage") }}">ABOUT</a>
+			</div>
+			<div class="btn-group">
+				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="{{ url_for("show", id="demolink") }}">DEMO</a>
+			</div>
+			<div class="btn-group">
+				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71">VIDEO</a>
+			</div>
+			
+			<div class="btn-group">
+				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="http://erlichlab.wi.mit.edu">ERLICH LAB</a>
+			</div>
+		</div>
+		<br/>&nbsp;&nbsp;
+		<p style="font-size:22px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 well plates on a tablet computer.</strong></p>
+	<div>
+	     <br/>
+	     <span id="twitter_button">
+	     <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+	     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	     </span>
+	     <span id="twitter_text">if you like what you see!</span>
+	</div>
+	<br/>
+	</div>
+	
+	
+	<div class="col-xs-5">
+		<img class="pull-right" src="./static/IMG_2511_resize.jpg" height="200" width="300">
+	</div>
+	
+		
+</div> <!-- container -->
+
+<br/>
+
+<div class="panel panel-default">
+	
+		<div class="panel-heading">
+		<h2 class="panel-title" style="color:#653A71; font-size:20px">&nbsp;<strong>Upload a new design:&nbsp;a CSV file with pipetting instructions</strong></h2>
+		</div>
+	
+
+ <div class="panel-body">
+ 
+<!-- Form -->
+<div class="row">
+<div class="col-xs-12">
+
+<form class="form-horizontal" role="form" method="post" action="{{ url_for("create") }}" enctype="multipart/form-data" >
+<!-- description -->
+  <div class="form-group">
+    <label for="input_description" class="col-sm-3 control-label">Description:</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="input_description" name="description" placeholder="description">
+       <p class="help-block">Provide a short description of your project.</p>
+    </div>
+  </div>
+<!-- file upload -->
+  <div class="form-group">
+    <label for="input_pooling_file" class="col-sm-3 control-label">CSV&nbsp;File:</label>
+    <div class="col-sm-9">
+       <input type="file" name="csv_file" id="input_pooling_file">
+       <p class="help-block">
+File MUST be in CSV format with the following columns &nbsp;(brackets represent optional fields):<br/>
+source_plate, source_well, destination_plate, destination_well, [volume], [info]
+      </p>
+    </div>
+  </div>
+<!-- put email button here -->
+<h4 class="page-header">Optional: you may provide an email address to which your unique link will be sent </h4>
+<div class="form-group">
+    <label for="input_email" class="col-sm-3 control-label">Email:</label>
+    <div class="col-sm-6">
+      <input type="email" class="form-control" id="input_email" name="email" placeholder="email">
+      <p class="help-block">An email with your link and instructions will be sent to this address. We will NOT share or use your email for any other purposes.</p>
+    </div>
+  </div>
+
+<!-- submit button -->
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-5">
+      <button type="submit" class="btn btn-primary btn-lg btn-block" style="background-color:#653A71">SUBMIT CSV</button>
+    </div>
+  </div>
+  
+</form>
+
+
+</div> 
+</div>
+</div> <!-- panel body close -->
+</div> <!-- panel container close -->
+
+<div class="col-sm-12">This site is maintained by Dina Zielinski. Questions? Email dina at wi dot mit dot edu or Tweet <a href="https://twitter.com/dinazielinski">@dinazielinski</a></div>
+<br/>
+<br/>
+</div><!-- container -->
+
+{% endblock %}
