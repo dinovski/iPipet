@@ -1,4 +1,9 @@
-{% extends "layout_run.html" %}
+{% extends "layout.html" %}
+{# The 'runbody' tag will be applied to the <body> tag in the layout above. 
+   In pooling.css, it has a black-background. #}
+{% set body_tag_id = 'runbody' %}
+{# The 'viewport_disable_zoom' adds a <meta> tag that prevents zooming on tablets #}
+{% set viewport_disable_zoom = 1 %}
 {% block body %}
 
 <!-- Buttons (on the side - go here -->

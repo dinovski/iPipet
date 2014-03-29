@@ -2,7 +2,17 @@
 <html>
   <head>
     <title>iPipet</title>
+    {# if 'viewport_disable_zoom' is defined, use the following meta-tag
+       to disable zooming on tablets - to ensure the DPI settings draw the D3 plate
+       exactly at the correct physical size.
+       This should be enabled ONLY for the 'show' and 'run' pages.
+
+       See 'run.html' and 'show.html' where this variable is set.  
+    #}
+    {% if viewport_disable_zoom %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    {% endif %}
+
 <!--
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -15,7 +25,7 @@
     <script src="{{ url_for("static", filename="d3.v3.min.js") }}"></script>
     <script src="{{ url_for("static", filename="d3_plate96.js") }}"></script>
 </head>
-<body>
+<body {% if body_tag_id %}id="{{ body_tag_id}}"{% endif %} >
 {% block body %}{% endblock %}
 </body>
-</html>
+</html><F2>
