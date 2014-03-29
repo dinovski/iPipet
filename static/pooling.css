@@ -6,13 +6,26 @@ body {
 
 /*this is for the live splash screen*/
 div.splash-center {
-  	position: fixed;
-	top: 50%;
+	/* Default settings (for all screen sizes):
+	 * Center horizontally, but not verticall (top of the splash, with
+	 * the title and "learn more" button - always visible) */
+	position: fixed;
+	top: 0;
 	left: 50%;
 	width:672px;
 	height:900px;
-	margin-top: -450px;
+	margin-top: 0px;
 	margin-left: -336px;
+}
+
+/* Additional options for tall screens (heigher than 870 pixels) -
+ * Center the splash image vertically, as well */
+@media all and (min-height: 870px) {
+div.splash-center {
+	position: fixed;
+	top: 50%;
+	margin-top: -450px;
+}
 }
 
 div.splash-title {
