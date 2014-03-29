@@ -164,6 +164,10 @@ def splash():
 @app.route("/splash2")
 def splash2():
     return render_template("splash2.html")
+
+@app.route("/splash3")
+def splash3():
+    return render_template("splash3.html")
     
 @app.route("/home")
 def home():

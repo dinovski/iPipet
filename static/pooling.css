@@ -171,3 +171,12 @@ div#plates_bar {
 	top: 400px;
 	left: 10px;
 }
+
+
+a.btn-old-splash3 {
+	display: block;
+	width:250px;
+	height:90px;
+	padding-top: 24px;
+	font-size:30px;
+}
