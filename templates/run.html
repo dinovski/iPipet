@@ -131,7 +131,12 @@ function start()
 
 function move_step(direction)
 {
-    var new_step = current_step + direction;
+    var new_step = current_step + 
+    {% if info.pipet_type == "single" %}
+    			direction ;
+    {% else %}
+			direction * 8 ;
+    {% endif %}
     set_step(new_step);
 }
 
@@ -144,15 +149,14 @@ function jump_step()
 function set_step(step)
 {
     if (!isNaN(parseInt(step))) {
-        current_step = parseInt(step);
-        if (current_step < 1) {
-            current_step = 1 ;
-        }
-        if (current_step > plating_steps.length) {
-            current_step = plating_steps.length;
-	    $("#last_step_warning").show();
+        step = parseInt(step);
+        if (step >= 1 && step < plating_steps.length) {
+	    current_step = step ;
+    	    $("#last_step_warning").hide();
         } else {
-	    $("#last_step_warning").hide();
+	    if (step >= plating_steps.length) {
+		$("#last_step_warning").show();
+	    }
 	}
     }
 
@@ -257,16 +261,30 @@ function show_step_wells()
     // Show the next/prev buttons,
     // The user can pipette to his/hers heart's content
     $("div#run_prev_next_buttons").show();
+    
 
-    var step_details = plating_steps[current_step-1];
-    var src_well_name  = step_details[3];
-    var dst_well_name  = step_details[6];
+{% if info.pipet_type =="single" %}
+	    var step_details = plating_steps[current_step-1];
+	    var src_well_name  = step_details[3];
+	    var dst_well_name  = step_details[6];
 
-    reset_plate_wells("src_plate");
-    set_well_color("src_plate",src_well_name,"red");
+	    reset_plate_wells("src_plate");
+	    set_well_color("src_plate",src_well_name,"red");
 
-    reset_plate_wells("dst_plate");
-    set_well_color("dst_plate",dst_well_name,"red");
+	    reset_plate_wells("dst_plate");
+	    set_well_color("dst_plate",dst_well_name,"red");
+{% else %}
+	    reset_plate_wells("src_plate");
+	    reset_plate_wells("dst_plate");
+	    
+	    for (var i = 0; i < 8; i++) {
+		var step_details = plating_steps[current_step-1+i];
+		var src_well_name  = step_details[3];
+		var dst_well_name  = step_details[6];
+		set_well_color("src_plate",src_well_name,"red");
+		set_well_color("dst_plate",dst_well_name,"red");
+	     }
+{% endif %}
     
     /* Show the volume, if needed */
     if (step_details.length >= 8) {

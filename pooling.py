@@ -193,6 +193,12 @@ def create():
     if not file:
         return "Error: no CSV file uploaded"
 
+    if not 'pipet_type' in request.form:
+        return "Error: missing 'pipet_type' parameter"
+    pipet_type = request.form['pipet_type'].strip()
+
+    if not (pipet_type=='single' or pipet_type=='multi8'):
+        return "Error: invalid pipet type %s" % (pipet_type)
 
     ## Save the uploaded file, and the request parameters
     id = get_random_id()
@@ -209,13 +215,13 @@ def create():
     destplates = []
 
     for row in reader:
-	numsteps += 1
-    #skip header: continue skips rest of loop and returns to beginning
-	if numsteps == 1:
-		continue
-	srcplates.append(row[0])
-	destplates.append(row[2])
-		
+        numsteps += 1
+        #skip header: continue skips rest of loop and returns to beginning
+        if numsteps == 1:
+            continue
+        srcplates.append(row[0])
+        destplates.append(row[2])
+
     #set module allows manipulation of unordered collections of unique elements
     srcplates = list(set(srcplates))
     destplates = list(set(destplates))
@@ -229,7 +235,8 @@ def create():
              "time": str(datetime.datetime.now()),
              "numsteps": numsteps-1,
              "srcplates": srcplates,
-             "destplates": destplates
+             "destplates": destplates,
+             "pipet_type": pipet_type
              }
     json.dump(info,open(json_path,'w'))
 
@@ -292,9 +299,10 @@ def run(id):
     # We dont really need this info,
     # but the function will validate that the ID exists.
     json_path,csv_path = files_from_id(id)
+    info = json.load(file(json_path))
 
     data_url = url_for("data",id=id)
-    return render_template("run.html",data_url=data_url,id=id,dpi=dpi)
+    return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info)
 
 @app.route('/data/<id>')
 def data(id):

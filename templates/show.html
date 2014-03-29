@@ -52,6 +52,15 @@
 	  <td>Destination plates:</td>
 	  <td> {{ info.destplates | join(', ') }} </td>
 	</tr>
+	<tr>
+		<td>Pipet type:</td>
+		<td> 
+		{% if info.pipet_type=='single' %}
+		single-channel 
+		 {% else %}
+		 multi-channel
+		 {% endif %}
+		 </td>
       </table>
   </div>
 </div>
