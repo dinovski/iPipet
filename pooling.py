@@ -185,24 +185,24 @@ def create():
     email = request.form['email'].strip()
     if len(email)>0:
         if not valid_email(email):
-            return "Error: invalid email address '%s'" % ( email )
+            return "Error: invalid email address '%s'" % ( email ), 400
 
     if not 'description' in request.form:
-        return "Error: missing 'description' parameter"
+        return "Error: missing 'description' parameter", 400
     description = request.form['description'].strip()
 
     if not 'csv_file' in request.files:
-        return "Error: missing CSV file"
+        return "Error: missing CSV file", 400
     file = request.files['csv_file']
     if not file:
-        return "Error: no CSV file uploaded"
+        return "Error: no CSV file uploaded", 400
 
     if not 'pipet_type' in request.form:
-        return "Error: missing 'pipet_type' parameter"
+        return "Error: missing 'pipet_type' parameter", 400
     pipet_type = request.form['pipet_type'].strip()
 
     if not (pipet_type=='single' or pipet_type=='multi8'):
-        return "Error: invalid pipet type %s" % (pipet_type)
+        return "Error: invalid pipet type %s" % (pipet_type), 400
 
     ## Save the uploaded file, and the request parameters
     id = get_random_id()
