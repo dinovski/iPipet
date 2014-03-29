@@ -5,13 +5,17 @@
 	<a href="http://ipipet.teamerlich.org/home"><img src="{{ url_for("static", filename="splash_screen_scaled_900.png") }}" /></a>
 	
 	<div class="splash-title">
-		<div class="title-text"><strong>iPipet:</strong></div>
-		<div class="description-font">
-		a light tracking tool for 96 well plates
-		</div>
-		<a type="button" class="btn btn-primary active btn-splash btn-splash-learn" style="color:white; background-color:#653A71" href="{{ url_for("home") }}">LEARN MORE</a>
+		<div class="splash-title-text">
+			<div class="splash-title-text-main">
+				iPipet:
+			</div>
+			<div class="splash-title-text-sub">
+				a plate tracking tool
+			</div>
 		</div>
 	
+		<a class="btn-splash" href="{{ url_for("home") }}">&nbsp;</a>
+	</div>
 </div>
 
 

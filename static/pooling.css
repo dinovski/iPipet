@@ -18,52 +18,72 @@ div.splash-center {
 div.splash-title {
 	position:absolute;
 	top:20px;
-	left:30px;
+	left:40px;
 }
 
-div.title-text {
+div.splash-title-text {
+	background-color:rgba(255,255,255,0.5); 
+	padding: 0px 10px;
+	-webkit-border-radius: 5px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topright: 10px;
+    border-radius: 5px;
+    border-top-right-radius: 10px;
+
+}
+
+div.splash-title-text-main {
+	font-weight: bold;
 	font-size:76px;
-	text-shadow: 4px 4px #653A71;
-	color:#FFFFFF;
-	/*purple over white
-	text-shadow: 4px 4px #FFFFFF;
-	color:#653A71;*/
+	text-shadow: 3px 3px #000000;
+	color:#653A71;
+	display: inline;
 }
 
-div.description-font {
-	width:300px;
-	position:absolute;
-	top:15px;
-	left:260px;
-	font-size:32px;
-	text-shadow: 2px 2px #FFFFFF;
+div.splash-title-text-sub {
+	font-size:34px;
+	/*text-shadow: 2px 2px #653A71;*/
 	color:#000000;
+	display: inline;
 }
 
+div.splash-title-button {
+    width: 200px;
+}
+
+a.btn-splash{
+/*	padding: 15px 30px;*/
+/*	font-size:22px;*/
+    margin: 30px auto;
+	width: 167px;
+	height: 39px;
+	display: block;
+	background-image: url('/static/learn_more_button_up.png');
+}
+
+a.btn-splash:hover {
+	/* Stuff in here, applies when the mouse cursor is over the button */
+	background-image: url('/static/learn_more_button_down.png');
+
+}
 
 /*this is for splash2.html; found at http://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/*/
 div.col-center-block {
   	position: fixed;
 	top: 50%;
-	left: 50%;
+	left: 50%; 
 	width:900px;
 	height:520px;
 	margin-top: -260px;
 	margin-left: -450px;
 }
 
-a.btn-splash{
-	width:180px;
-	height:60px;
-	padding-top:16px;
-	font-size:22px;
-	
-}
-
-a.btn-splash-learn{
-	position:absolute;
-	top:130px;
-	left:160px;
+div.header-text {
+	text-shadow: 2px 2px gray;
+	font-size:48px;
+	color:#653A71;
+	display:inline;
 }
 
 span#twitter_text {
@@ -79,7 +99,6 @@ body#runbody {
 
 div#run_prev_next_buttons {
     display: none;
-    
 }
 
 div#run_start_button {
