@@ -50,7 +50,7 @@ TESTURL=$(curl -o /dev/null --silent --location \
       -F pipet_type=single \
       -F email=agordon@wi.mit.edu \
       -F description=AutoUnitTest \
-      -F"csv_file=@uploads/demolink.csv" \
+      -F"csv_file=@uploads/demolnk1.csv" \
       "$URL/create") || die "Form submission failed"
 
 ID=$(echo "$TESTURL" | perl -ne 'm;/show/(\w{8})$; && print $1')
