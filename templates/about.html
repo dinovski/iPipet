@@ -23,32 +23,49 @@
 	<div class="col-xs-6">
 		<p>Optimizing protocols for liquid-handling robots can be tedious for even simple tasks.</p>
 		<p><strong>iPipet</strong> was originally developed for combinatorial pooling of hundreds of samples as an alternative to costly robots.</p>
-		<p>We decided to make the program available to others who might have similar struggles.</p>
+		<p>We decided to make the program available to others who might have similar struggles. We hope you find it useful!</p>
 		<br/>
 		<p><strong>iPipet can be used to transfer samples between plates.</strong> 
 		<p><em>One example may be cherry picking samples from multiple "source" plates to a common "destination" plate.</em></p>
 		<p><strong>It can also be used to illuminate wells of a single plate, ie. to dispense reagents or normalize samples.</strong></p>
 	</div>
-	<!-- link the image to the video -->
-	<div class="col-xs-6"><img src="{{ url_for("static", filename="demo_img.png") }}" /> </div>
+	
+	<div class="col-xs-6"><br/><img src="{{ url_for("static", filename="demo_img.png") }}" /> </div>
 	</div>
+	
 
 <h3 class="page-header" style="color:#653A71">GETTING STARTED:</h3>
-	<div class="row">1. If you haven't already, check out our <a href="{{ url_for("show",id="demolink") }}">demo</a> using a sample CSV file.</div>
-	<br/>
-	<div class="row">2. Otherwise, the first thing you need to do is create your own CSV file. This file <strong>must</strong> be correctly formatted.</div>
+	<div class="row">
+		<div class="col-sm-6">
+		1. If you haven't already, check out our <a href="{{ url_for("show",id="demolnk1") }}">demo</a> using a sample CSV file.
+		<br/>
+		<br/>
+		<br/>
+		<p>&nbsp;<em>You may also want to watch the video:</em></p>
+		</div>
+		<div class="col-sm-6"><iframe width="340" height="190" src="//www.youtube.com/embed/bmzMmkAekWo" frameborder="0" allowfullscreen>VIDEO</iframe>
+		</div>
+	</div>
 	<br/>
 	<div class="row">
-		<div class="col-xs-6"><em><p>The top plate on the screen (see above image) is the "source" plate and the bottinom plate is the "destination" plate.</p>
-		<p>The well-numbering is incredibly important: wells must be numbered 1-96. Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8.</p>
-		<p>If your wells are not in this order, an easy solution is to sort the well columns in Excel so that they are in the correct order and then assign the appropriate number.</p> 
-		<p>(Note that the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.)</p></em></div>
+	2. Otherwise, the first thing you need to do is create your own CSV file. This file <strong>must</strong> be correctly formatted.</div>
+	<br/>
+	<div class="row">
+		<div class="col-xs-6"><em>
+		<p>The first 4 columns must be in the following order: source plate, source well, destination plate, destination well. Column 5 is optional and may include volume.</p>
+		<p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.</p>
+		<p>The well-numbering is highly important: wells must be numbered 1-96. Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
+		</em>
+		</div>
 		</p>
+		<br/>
 		<br/>
 		<div class="col-xs-6">
 		<img src="{{ url_for("static", filename="csv_screenshot.png") }}" /></div>
 	</div>
+	
 	<br/>
+	
 	<div class="row">To light up destination plate wells only, simply enter place holders in the source plate and source well columns (or vice versa if you prefer) in the CSV file:</div>
 	<br/>
 	<div class="row">
@@ -56,14 +73,33 @@
 		<div class="col-xs-6"><img src="{{ url_for("static", filename="single_plate_screenshot.png") }}" /></div>
 	</div>
 	<br/>
+	<div class="row">Multi-channel pipetting:</div>
+		<br/>
+		<div class="row">
+		<div class="col-xs-6"><em><p>If you select the multi-channel pipet option on the home screen, your CSV file must be formatted accordingly.</p>
+		<p>Source and destination wells must be in groups of 8 adjacent wells.</p>
+		<p>For the example CSV on the right, columns 3 and 8 in the source plate and columns 1 and 2 in the destination plate will be illuminated.</p>
+		<p>See the <a href="{{ url_for("show",id="demolnk8") }}">multichannel demo</a> to get an idea of how the run screen looks.</p>
+		</em>
+		</div>
+		<div class="col-xs-6"><img src="{{ url_for("static", filename="multichannel_screenshot.png") }}" /></div>
+	</div>
+	<br/>
 	<div class="row">3. Once your CSV file is ready, go ahead and give your project a name and upload it on the <a href="{{ url_for("home",id="") }}">homepage.</a></div>
-				<br/>
+	<br/>
 	<div class="row">4. You can provide an email if you'd like <strong>iPipet</strong> to send you the project link. Otherwise, feel free to leave this field blank. Just be sure to save your unique link. (It's easier to upload the file on a computer and open the link on your tablet.)</div>
 	<br/>
-	<div class="row">5. Click "SUBMIT CSV" at the bottom of the homepage. Then just make sure the wells of each plate line up with the plate diagram.</div>
-	<p>(<em>A layer of plastic wrap over the tablet screen works well to prevent the plates from moving too much and still works with gloves.</em>)</p> 
+	<div class="row">5. Click "SUBMIT CSV" at the bottom of the homepage. Then just make sure the wells of each plate line up with the plate diagram.
+	</div>
 	<br/>
-	<div class="row">6. It is highly recommended to test the program before handling actual samples to be sure the design is correct.</div>
+	<div class="row"><em>Note: The top plate on the run screen is the "source" plate and the bottom plate is the "destination" plate.</em>
+	</div>
+	<br/>
+	<div class="row">6. It is highly recommended to test the program before handling actual samples to be sure the design is correct.
+	</div>
+	<br/>
+	<div class="row"><em>A layer of plastic wrap over the tablet screen works well to prevent the plates from moving too much and still works with gloves. You can also tape the corners of the plates to the plastic wrap if you find that they are moving too much.</em>
+	</div>
 	<br/>
 	<div class="row">7. Make sure you have all your plates and you're ready to go!</div>
 <h3 class="page-header" style="color:#653A71"><em>Happy pipetting!<em></h3>
