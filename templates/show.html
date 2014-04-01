@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-xs-8">
     <h1 class="page-header">
-      <font style="font-size:40px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px"></font>
+      <a href="{{ url_for("home",id="") }}"<font style="font-size:40px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px"></font></a>
       </h1>
    </div>
    <div class="col-xs-4">
@@ -17,6 +17,7 @@
 	<a href="http://www.teamerlich.org/"><img src="{{ url_for("static", filename="logo_wibr.png") }}" /></a>
    </div>
 </div>
+
 
 <!-- Information About the Plate -->
 <div class="row">
@@ -44,7 +45,13 @@
         </tr>
         <tr>
 	    <td>Total number of steps:</td>
-	    <td> {{ ((info.numsteps)-1) }}</td>
+	    <td>
+	    {% if info.pipet_type=='single' %}
+	    {{ info.numsteps-1 }}
+	    {% else %}
+	    {{ (info.numsteps / 8) | round | int }}
+	    {% endif %}
+	     </td>
 	</tr>
 	<tr>
             <td>Source plates:</td>
@@ -83,17 +90,10 @@
  <div class="form-group">
    <label for="dpi_select">Select Device:</label>
    <select class="form-control" id="dpi_device" onblur="select_device();" onchange="select_device();">
-      <option value="96">Desktop monitors</option>
-      <option value="132" selected>iPad 1/2</option>
-	<!-- NOTE about iPhone4 : while it has higher resolution, it reports "devicewidtH" of 320px -->
-      <option value="163">iPhone 3/3GS/4</option>
-      <option value="264">iPad Retina/Air</option>
-      <option value="326">iPhone 4S/5/5S</option>
-      <option value="135">MacBook Air 11</option>
-      <option value="128">MacBook Air 13</option>
-      <option value="113">MacBook Pro 13</option>
-      <option value="227">MacBook Pro Retina 13</option>
-   </select>
+         <option value="132" selected>iPad 1/2</option>
+         <option value="264">iPad Retina/Air</option>
+	 <option value="96">Desktop monitor</option>
+ </select>
    
  </div><!-- form-group-->
 
@@ -139,7 +139,7 @@ function update_resolution()
 
    // Update the "start" link, to include the resolution
    // as CGI parameter
-   var start_url = "{{ url_for("run",id=info.id) }}";
+   var start_url = "{{ url_for("run", id=info.id) }}";
    start_url = start_url + "?dpi=" + new_resolution;
    $("#start").attr("href",start_url);
 }
