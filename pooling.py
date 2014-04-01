@@ -237,7 +237,7 @@ def create():
              "useragent": str(request.user_agent),
              "remote_addr": request.remote_addr,
              "time": str(datetime.datetime.now()),
-             "numsteps": numsteps-1,
+             "numsteps": numsteps,
              "srcplates": srcplates,
              "destplates": destplates,
              "pipet_type": pipet_type
