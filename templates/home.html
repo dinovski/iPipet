@@ -7,7 +7,7 @@
 	<div class="col-xs-9">
 		<div class="col-xs-9">
 		<div class="header-text">
-			<strong>iPipet:</strong>
+			<strong>iPipet</strong>
 		</div>
 		<font style="font-size:26px">
 			&nbsp;a light tracking tool for 96 well plates
@@ -22,42 +22,50 @@
 </div>
 
 <div class="row">
-	<div class="col-xs-7">
-		<div class="btn-group btn-group-justified">
+	<div class="col-sm-12">
+			<div class="btn-group btn-group-justified">
+				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="{{ url_for("usage") }}">ABOUT</a>
+						
 			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="{{ url_for("usage") }}">ABOUT</a>
-			</div>
-			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="{{ url_for("show", id="demolink") }}">DEMO</a>
-			</div>
-			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71">VIDEO</a>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="font-size:18px; color:white; background-color:#653A71">DEMO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk1") }}">single-channel</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk8") }}">multi-channel</a></li>
+				</ul>
 			</div>
 			
 			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="color:white; background-color:#653A71" href="http://www.teamerlich.org/">ERLICH LAB</a>
+				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="https://www.youtube.com/watch?v=bmzMmkAekWo"> VIDEO</a>
 			</div>
-		</div>
-		<br/>&nbsp;&nbsp;
-		<p style="font-size:22px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 well plates on a tablet computer.</strong></p>
+			
+			<div class="btn-group">
+				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="http://www.teamerlich.org/">ERLICH LAB</a>
+			</div>
+			
+	</div>
+	<div><br/></div>
+<div class="row">
+	<div class="col-sm-7">
 		
-	<div>
-	     <br/>
-	     <span id="twitter_button">
-	     <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
-	     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	     </span>
-	     <span id="twitter_text">if you like what you see!</span>
-	</div>
-	<br/>
+		<p style="font-size:24px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 well plates on a tablet computer.</strong>
+			<br/>
+			<br/>
+			<span id="twitter_button">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			</span>
+			<span id="twitter_text">if you like what you see!</span>
+		</p>
+			
 	</div>
 	
-	
-	<div class="col-xs-5">
+		<div class="col-sm-5">
 		<img class="pull-right" src="./static/IMG_2511_resize.jpg" height="200" width="300">
+		</div>
 	</div>
+</div>
 	
-		
+	
 </div> <!-- container -->
 
 <br/>
