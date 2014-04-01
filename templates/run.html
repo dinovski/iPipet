@@ -56,10 +56,6 @@
 		<span class="label label-info" id="replace_src_plate_label_name">XXXXX</span>
 		<br/>
 		<br/>
-		Align the new plate,
-		<br/>
-		then click "CONTINUE".
-		<br/>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="source_plate_ok();">CONTINUE</button>
 	</div>
@@ -72,10 +68,6 @@
 		<br/>
 		<span class="label label-info" id="replace_dest_plate_label_name">XXXXX</span>
 		<br/>
-		<br/>
-		Align the new plate,
-		<br/>
-		then click "CONTINUE".
 		<br/>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="destination_plate_ok();">CONTINUE</button>
@@ -122,7 +114,7 @@ function flash_window()
 
 function flash_window_off()
 {
-    //Restore normalicy
+    //Restore normalcy
     $("body").css("background","black");
 }
 
@@ -148,6 +140,10 @@ function move_step(direction)
 function jump_step()
 {
     var new_step = $("#current_step").val();
+    {% if info.pipet_type == "single" %}
+    {% else %}
+	new_step=(new_step-1)*8+1;			
+    {% endif %}
     set_step(new_step);
 }
 
@@ -155,7 +151,7 @@ function set_step(step)
 {
     if (!isNaN(parseInt(step))) {
         step = parseInt(step);
-        if (step >= 1 && step < plating_steps.length) {
+        if (step >= 1 && step <= plating_steps.length) {
 	    current_step = step ;
     	    $("#last_step_warning").hide();
         } else {
@@ -164,8 +160,11 @@ function set_step(step)
 	    }
 	}
     }
-
+{% if info.pipet_type == "single" %}
     $("#current_step").val(current_step);
+ {% else %}
+     $("#current_step").val(Math.floor(current_step/8)+1);
+{% endif %}
 
     /* NOTE:
        The order&content of the fields is tightly-coupled
@@ -281,7 +280,6 @@ function show_step_wells()
 {% else %}
 	    reset_plate_wells("src_plate");
 	    reset_plate_wells("dst_plate");
-	    
 	    for (var i = 0; i < 8; i++) {
 		var step_details = plating_steps[current_step-1+i];
 		var src_well_name  = step_details[3];
@@ -293,7 +291,7 @@ function show_step_wells()
     
     /* Show the volume, if needed */
     if (step_details.length >= 8) {
-	/* We have "volumne" information, show the volume 'div' */
+	/* We have "volume" information, show the volume 'div' */
 	$("#volume_info").show();
         $("#volume_value").text(step_details[7]);
     } else {
