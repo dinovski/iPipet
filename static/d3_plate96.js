@@ -6,10 +6,11 @@
 	<div id="from_plate"></div>
 	<script>
 	d3_generate_plate_data("from_plate",52);
-	set_well_color("from_plate","A01","red");
-	set_well_color("from_plate","A12","red");
-	set_well_color("from_plate","H01","red");
-	set_well_color("from_plate","H12","red");
+	var well_color = "red";
+	set_well_color("from_plate","A01",well_color);
+	set_well_color("from_plate","A12",well_color);
+	set_well_color("from_plate","H01",well_color);
+	set_well_color("from_plate","H12",well_color);
 	</script>
 
 */
@@ -238,21 +239,20 @@ function reset_plate_wells(plate_id)
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
    and a valid HTML color (e.g. "red" or "#543FFA"),
    Sets the well to this color */
-function set_well_color(plate_id,well_id,color)
+function set_well_color(plate_id,well_id,well_color)
 {
 	d3.select("#" + svg_plate_well_id(plate_id,well_id))
-		.attr("fill",color);
+		.attr("fill",well_color);
 }
 
 /* Given a Plate ID of a <DIV>,
-   resets all wells to White, and the four wells in the corners to red.
+   resets all wells to White, and the four wells in the corners to well_color.
    */
-function set_plate_alignment_mode(plate_id)
+function set_plate_alignment_mode(plate_id,well_color)
 {
     reset_plate_wells(plate_id)
-    var color="red";
-	set_well_color(plate_id,"A01",color);
-	set_well_color(plate_id,"A12",color);
-	set_well_color(plate_id,"H01",color);
-	set_well_color(plate_id,"H12",color);
+    	set_well_color(plate_id,"A01",well_color);
+	set_well_color(plate_id,"A12",well_color);
+	set_well_color(plate_id,"H01",well_color);
+	set_well_color(plate_id,"H12",well_color);
 }

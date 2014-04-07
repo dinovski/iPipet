@@ -300,13 +300,22 @@ def run(id):
     except:
         dpi = 96
 
+    well_color = "red" # default color if none specified
+    try:
+        if 'well_color' in request.args:
+            new_well_color = request.args.get('well_color')
+            if new_well_color == "red" or new_well_color == "green":
+                well_color = new_well_color
+    except:
+        well_color = "red"
+
     # We dont really need this info,
     # but the function will validate that the ID exists.
     json_path,csv_path = files_from_id(id)
     info = json.load(file(json_path))
 
     data_url = url_for("data",id=id)
-    return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info)
+    return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info,well_color=well_color)
 
 @app.route('/data/<id>')
 def data(id):

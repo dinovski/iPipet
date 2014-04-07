@@ -200,7 +200,7 @@ function check_replace_source_plate()
         source_plate_ok();
     } else {
         //User need to replace source plate
-        set_plate_alignment_mode("src_plate");
+        set_plate_alignment_mode("src_plate","{{ well_color }}");
         $("div#run_replace_src_plate").show();
         $("#replace_src_plate_label_name").text(src_plate_name);
 
@@ -235,7 +235,7 @@ function check_replace_destination_plate()
         $("div#run_replace_dest_plate").hide();
         destination_plate_ok();
     } else {
-        set_plate_alignment_mode("dst_plate");
+        set_plate_alignment_mode("dst_plate","{{ well_color }}");
         $("div#run_replace_dest_plate").show();
         $("#replace_dest_plate_label_name").text(dst_plate_name);
         if (current_step>1) {
@@ -273,10 +273,10 @@ function show_step_wells()
 	    var dst_well_name  = step_details[6];
 
 	    reset_plate_wells("src_plate");
-	    set_well_color("src_plate",src_well_name,"red");
+	    set_well_color("src_plate",src_well_name,"{{ well_color }}");
 
 	    reset_plate_wells("dst_plate");
-	    set_well_color("dst_plate",dst_well_name,"red");
+	    set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
 {% else %}
 	    reset_plate_wells("src_plate");
 	    reset_plate_wells("dst_plate");
@@ -284,8 +284,8 @@ function show_step_wells()
 		var step_details = plating_steps[current_step-1+i];
 		var src_well_name  = step_details[3];
 		var dst_well_name  = step_details[6];
-		set_well_color("src_plate",src_well_name,"red");
-		set_well_color("dst_plate",dst_well_name,"red");
+		set_well_color("src_plate",src_well_name,"{{ well_color }}");
+		set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
 	     }
 {% endif %}
     

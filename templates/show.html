@@ -85,32 +85,68 @@
       on the tablet device you are using.
       <br/>
       <br/>
-<form class="form-inline" role="form">
-
- <div class="form-group">
-   <label for="dpi_select">Select Device:</label>
-   <select class="form-control" id="dpi_device" onblur="select_device();" onchange="select_device();">
-         <option value="132" selected>iPad 1/2</option>
-         <option value="264">iPad Retina/Air</option>
-	 <option value="96">Desktop monitor</option>
- </select>
-   
- </div><!-- form-group-->
-
- <div class="form-group">
-  <label for="dpi_custom">OR Enter custom DPI:</label>
-  <input type="text" id="dpi_custom" value="132" placeholder="e.g. 96 DPI" />
- </div>
-
- <button type="button" class="btn btn-default" style="color:#653A71" onclick="update_resolution();">Update Diagram</button>
-
-</form>
-<br/>
-      <div id="scaling_plate"></div>
-
-  </div>
+   </div>
 </div>
-<br/>
+
+
+<!-- Form -->
+<div class="row">
+<div class="col-xs-12">
+   <form class="form-horizontal" role="form">
+
+   <div class="form-group">
+      <label for="dpi_select" class="col-sm-2 control-label" >Device:</label>
+      <div class="col-sm-3">
+        <select class="form-control" id="dpi_device" onblur="select_device();" onchange="select_device();">
+          <option value="132" selected>iPad 1/2</option>
+          <option value="264">iPad Retina/Air</option>
+   	  <option value="96">Desktop monitor</option>
+        </select>
+       </div>
+    </div><!-- form-group: DPI Selection -->
+       
+   <div class="form-group">
+       <label for="dpi_custom" class="col-sm-2 control-label">OR enter custom DPI:</label>
+       <div class="col-sm-3">
+           <input type="text" id="dpi_custom" value="132" placeholder="e.g. 96 DPI" />
+	</div>   
+    </div><!-- form-group: DPI Selection -->
+    
+<!--well color option -->
+    <div class="form-group">
+         <label for="input_description" class="col-sm-2 control-label">Well color:</label>
+         <div class="col-sm-6">
+             <div class="radio">
+                <label>
+                  <input type="radio" name="well_color" id="well_color_red" value="red" checked onchange="update_resolution();">
+	           RED
+                </label>
+             </div>  
+
+	      <div class="radio">
+                <label>
+                   <input type="radio" name="well_color" id="well_color_green" value="green" onchange="update_resolution();">
+                  GREEN
+                </label>
+              </div>
+         </div> <!-- col-sm-6-->
+      </div> <!-- formgroup: well colors -->
+
+
+   <div class="form-group">
+      <label for="" class="col-sm-2 control-label">&nbsp;</label>
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-default" style="color:#653A71" onclick="update_resolution();">Update Diagram</button>
+      </div>
+   </div> <!-- form-group: button -->
+ 
+
+
+   </form>
+</div> <!-- col-cx-12 -->
+</div> <!-- row -->
+
+<div id="scaling_plate"></div>
 
 
 <!-- Start Button -->
@@ -129,18 +165,22 @@
 
 <script>
 
-/* This function is called when the user wants to change resolution */
+/* This function is called when the user wants to change resolution and well color */
 function update_resolution()
 {
    var new_resolution = $("#dpi_custom").val() ;
    new_resolution=Math.floor(new_resolution);
+   
+   var well_color = $("input[name=well_color]:checked").val();
 
    d3_plate_change_resolution_dpi("scaling_plate",new_resolution);
+/*call set_plate_alignment_mode function to change the display of the plate corners*/
+   set_plate_alignment_mode("scaling_plate",well_color);
 
    // Update the "start" link, to include the resolution
    // as CGI parameter
    var start_url = "{{ url_for("run", id=info.id) }}";
-   start_url = start_url + "?dpi=" + new_resolution;
+   start_url = start_url + "?dpi=" + new_resolution + "&well_color=" + well_color;
    $("#start").attr("href",start_url);
 }
 
@@ -152,9 +192,10 @@ function select_device()
    update_resolution();
 }
 
+/*this function is called when the show page loads; this is the default*/
 $(function(){
-	d3_generate_plate_data("scaling_plate",52);
-    set_plate_alignment_mode("scaling_plate");
+     d3_generate_plate_data("scaling_plate",52);
+     set_plate_alignment_mode("scaling_plate","red");
 });
 </script>
 
