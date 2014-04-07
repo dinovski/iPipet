@@ -19,11 +19,13 @@
 
 <h3 class="page-header" style="color:#653A71">USAGE: </h3>
 <font style="font-size:18px">
+
 	<div class="row">
 	<div class="col-xs-6">
+		<br/>
 		<p>Optimizing protocols for liquid-handling robots can be tedious for even simple tasks.</p>
-		<p><strong>iPipet</strong> was originally developed for combinatorial pooling of hundreds of samples as an alternative to costly robots.</p>
-		<p>We decided to make the program available to others who might have similar struggles. We hope you find it useful!</p>
+		<p><strong>iPipet</strong> was born out of necessity as an alternative to costly robots and was successfully used for combinatorial pooling of hundreds of samples.</p>
+		<p>We hope you find it useful!</p>
 		<br/>
 		<p><strong>iPipet can be used to transfer samples between plates.</strong> 
 		<p><em>One example may be cherry picking samples from multiple "source" plates to a common "destination" plate.</em></p>
@@ -35,76 +37,171 @@
 	
 
 <h3 class="page-header" style="color:#653A71">GETTING STARTED:</h3>
-	<div class="row">
-		<div class="col-sm-6">
+
+<div class="row">
+	<div class="col-sm-12">
 		1. If you haven't already, check out our <a href="{{ url_for("show",id="demolnk1") }}">demo</a> using a sample CSV file.
-		<br/>
-		<br/>
-		<br/>
-		<p>&nbsp;<em>You may also want to watch the video:</em></p>
-		<p>&nbsp;&nbsp;<em>(video editing by Joanna Kaplanis)</em></p>
-		</div>
-		<div class="col-sm-6">
-		<iframe src="//player.vimeo.com/video/90607081" width="360" height="220" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/90607081">iPipet Demo</a> from <a href="http://vimeo.com/user26499168">Team Erlich</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;<em>You may also want to watch the video (narration and editing by Joanna Kaplanis):</em></p>
+	<br/>
+
+	<center>
+		<iframe src="//player.vimeo.com/video/90988265" width="440" height="270" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/90988265">iPipet Demo</a> from <a href="http://vimeo.com/user26499168">Team Erlich</a> on <a href="https://vimeo.com">Vimeo</a>.
+	</center>
+
+
+	</div>
+</div>
+
+
+
+	<div class="row">
+		<div class="col-xs-12">
+			2. Otherwise, the first thing you need to do is create your own CSV file. This file <strong>must</strong> be correctly formatted.
+			<br/>
+			&nbsp;
 		</div>
 	</div>
-	<br/>
+
+
 	<div class="row">
-	2. Otherwise, the first thing you need to do is create your own CSV file. This file <strong>must</strong> be correctly formatted.</div>
-	<br/>
-	<div class="row">
-		<div class="col-xs-6"><em>
-		<p>The first 4 columns must be in the following order: source plate, source well, destination plate, destination well. Column 5 is optional and may include volume.</p>
-		<p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.</p>
-		<p>The well-numbering is highly important: wells must be numbered 1-96. Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
-		</em>
-		</div>
-		</p>
-		<br/>
-		<br/>
 		<div class="col-xs-6">
-		<img src="{{ url_for("static", filename="csv_screenshot.png") }}" /></div>
-	</div>
-	
-	<br/>
-	
-	<div class="row">To light up destination plate wells only, simply enter place holders in the source plate and source well columns (or vice versa if you prefer) in the CSV file:</div>
-	<br/>
-	<div class="row">
-		<div class="col-xs-6"><em>Note that the volume column is empty here. If you do not need to pipet variable volumes, simply leave this column blank. If you do use the volume column, ALL cells must have a value. Simply use "0" as a placeholder if necessary.</em></div>
-		<div class="col-xs-6"><img src="{{ url_for("static", filename="single_plate_screenshot.png") }}" /></div>
-	</div>
-	<br/>
-	<div class="row">Multi-channel pipetting:</div>
-		<br/>
-		<div class="row">
-		<div class="col-xs-6"><em><p>If you select the multi-channel pipet option on the home screen, your CSV file must be formatted accordingly.</p>
-		<p>Source and destination wells must be in groups of 8 adjacent wells.</p>
-		<p>For the example CSV on the right, columns 3 and 8 in the source plate and columns 1 and 2 in the destination plate will be illuminated.</p>
-		<p>See the <a href="{{ url_for("show",id="demolnk8") }}">multichannel demo</a> to get an idea of how the run screen looks.</p>
-		</em>
+		   <em>
+		   <p>The first 4 columns must be in the following order: source plate, source well, destination plate, destination well. Column 5 is optional and may include volume.</p>
+		   <p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.</p>
+		   <p>The well-numbering is highly important: wells must be numbered 1-96. Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
+		   </em>
 		</div>
-		<div class="col-xs-6"><img src="{{ url_for("static", filename="multichannel_screenshot.png") }}" /></div>
+
+		<div class="col-xs-6">
+			<br/>
+			<br/>
+			<img src="{{ url_for("static", filename="csv_screenshot.png") }}" />
+		</div>
 	</div>
-	<br/>
-	<div class="row">3. Once your CSV file is ready, go ahead and give your project a name and upload it on the <a href="{{ url_for("home",id="") }}">homepage.</a></div>
-	<br/>
-	<div class="row">4. You can provide an email if you'd like <strong>iPipet</strong> to send you the project link. Otherwise, feel free to leave this field blank. Just be sure to save your unique link. (It's easier to upload the file on a computer and open the link on your tablet.)</div>
-	<br/>
-	<div class="row">5. Click "SUBMIT CSV" at the bottom of the homepage. Then just make sure the wells of each plate line up with the plate diagram.
+	
+	<div class="row">
+		<div class="col-xs-12">
+		To light up destination plate wells only, simply enter place holders in the source plate and source well columns (or vice versa if you prefer) in the CSV file:
+		<br/>
+		&nbsp;
+		</div>
 	</div>
-	<br/>
-	<div class="row"><em>Note: The top plate on the run screen is the "source" plate and the bottom plate is the "destination" plate.</em>
+
+	<div class="row">
+		<div class="col-xs-6">
+			<em>
+				Note that the volume column is empty here.
+				If you do not need to pipet variable volumes, simply leave this column blank.
+				If you do use the volume column, ALL cells must have a value.
+				Simply use "0" as a placeholder if necessary.
+			</em>
+		</div>
+		<div class="col-xs-6">
+			<img src="{{ url_for("static", filename="single_plate_screenshot.png") }}" />
+		</div>
 	</div>
-	<br/>
-	<div class="row">6. It is highly recommended to test the program before handling actual samples to be sure the design is correct.
+
+	<div class="row">
+		<div class="col-xs-12">
+			Multi-channel pipetting:
+		</div>
 	</div>
-	<br/>
-	<div class="row"><em>A layer of plastic wrap over the tablet screen works well to prevent the plates from moving too much and still works with gloves. You can also tape the corners of the plates to the plastic wrap if you find that they are moving too much.</em>
+
+
+	<div class="row">
+		<div class="col-xs-6">
+			<em>
+				<p>If you select the multi-channel pipet option on the home screen,
+				your CSV file must be formatted accordingly.</p>
+				<p>Source and destination wells must be in groups of 8 adjacent wells.</p>
+				<p>For the example CSV on the right, columns 3 and 8 in the
+				source plate and columns 1 and 2 in the destination plate will be illuminated.</p>
+				<p>See the <a href="{{ url_for("show",id="demolnk8") }}">multichannel demo</a>
+				to get an idea of how the run screen looks.</p>
+			</em>
+		</div>
+
+		<div class="col-xs-6">
+			<img src="{{ url_for("static", filename="multichannel_screenshot.png") }}" />
+		</div>
 	</div>
-	<br/>
-	<div class="row">7. Make sure you have all your plates and you're ready to go!</div>
-<h3 class="page-header" style="color:#653A71"><em>Happy pipetting!<em></h3>
-</font>
+
+	<div class="row">
+		<div class="col-xs-12">
+			3. Once your CSV file is ready, go ahead and give 
+			your project a name and upload it on the <a href="{{ url_for("home",id="") }}">homepage.</a>
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			4. You can provide an email if you'd like <strong>iPipet</strong> to
+			send you the project link. Otherwise, feel free to leave this field blank.
+			Just be sure to save your unique link. (It's easier to upload the file
+			on a computer and open the link on your tablet.)
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			5. Click "SUBMIT CSV" at the bottom of the homepage.
+			Then just make sure the wells of each plate line up with the plate diagram.
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-xs-12">
+			<em>Note: The top plate on the run screen is the "source"
+				plate and the bottom plate is the "destination" plate.</em>
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			6. It is highly recommended to test the program before
+			handling actual samples to be sure the design is correct.
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<em>A layer of plastic wrap over the tablet screen works
+			well to limit plate movement and still works with gloves.
+			You can also tape the corners of the plates to the plastic
+			wrap if you find that they are moving too much.
+			</em>
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			7. Make sure you have all your plates and you're ready to go!
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+	<h3 class="page-header" style="color:#653A71"><em>Happy pipetting!<em></h3>
+	</font>
 </div>
 {% endblock %}
