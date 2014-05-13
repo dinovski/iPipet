@@ -18,19 +18,11 @@
 	</div>
 
 	<div id="run_start_button">
- 	  <br/>
-	  <br/>
-	  <br/>
-	  <br/>
-	  <br/>
+		<br/>
 		Welcome!
 		<br/>
-		Click "START" 
 		<br/>
-		to begin
-		<br/>
-		<br/>
-		<button type="button" class="btn btn-lg btn-danger" onclick="start();">START</button>
+		<button id="start_button" type="button" class="btn btn-lg btn-danger" onclick="start();">START</button>
 	</div>
 
 
@@ -40,6 +32,7 @@
 		<div id="run_jump_div">
 			<br/>
 			<button type="button" class="btn btn-lg btn-info" onclick="jump_step();">JUMP</button>
+			<br/>
 			<input type="text" class=""  id="current_step" size="4" />
 		</div>
 
@@ -49,12 +42,11 @@
 	<div id="run_replace_src_plate">
 		Replace
 		<br/>
-		<span class="label label-success">Source</span>
+		<span class="label label-success">SOURCE</span>
 		<br/>
-		with 
+		with:
 		<br/>
 		<span class="label label-info" id="replace_src_plate_label_name">XXXXX</span>
-		<br/>
 		<br/>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="source_plate_ok();">CONTINUE</button>
@@ -62,12 +54,11 @@
 	<div id="run_replace_dest_plate">
 		Replace
 		<br/>
-		<span class="label label-success">Destination</span>
+		<span class="label label-success">DESTINATION</span>
 		<br/>
-		with 
+		with
 		<br/>
 		<span class="label label-info" id="replace_dest_plate_label_name">XXXXX</span>
-		<br/>
 		<br/>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="destination_plate_ok();">CONTINUE</button>

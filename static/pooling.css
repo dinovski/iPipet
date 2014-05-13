@@ -116,12 +116,21 @@ div#run_prev_next_buttons {
 
 div#run_start_button {
     display: none;
+	position:absolute;
+	top:300px;
+	font-size:26px;
+}
+
+#start_button {
+	height:100px;
+	width:100px;
 }
 
 div#run_replace_src_plate {
     display: none;
     color:red;
 }
+
 
 div#run_replace_dest_plate {
     display: none;
@@ -143,7 +152,7 @@ div#last_step_warning {
 div#volume_info {
     display: none;
 	position: absolute;
-	top: 200px;
+	top: 260px;
 	left: 20px;	
 }
 
@@ -163,8 +172,7 @@ div#plates_bar {
 	position: absolute;
 	background-color:orange;
 	top: 10px;
-	left: 10px;
-	
+	left: 10px;	
 }
 
 
