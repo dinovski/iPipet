@@ -26,7 +26,7 @@
 
       <table class="table table-condensed" style="font-size:16px">
         <tr> 
-	    <td> Here's your unique project link:</td>
+	    <td>Project link:</td>
 	    <td> <a href="{{ url_for("show", id=info.id, _external=True) }} ">
 	    {% if info.description %}
 	    {{ info.description }}
@@ -34,6 +34,10 @@
 	    {{ info.id }}
 	    {% endif %}
 	    </a></td>
+	</tr>
+	<tr>
+		<td>CSV file:</td>
+		<td><a href="{{ url_for("csvdownload", id=info.id, _external=True) }} ">download file</a></td>
 	</tr>
 	<tr>
 	    {% if info.email %}

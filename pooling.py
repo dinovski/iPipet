@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, url_for, request, redirect, jsonify
-from flask import render_template
+from flask import Flask, url_for, request, redirect, jsonify, render_template, make_response
 from werkzeug import secure_filename
 import string
 import datetime
@@ -332,6 +331,16 @@ def data(id):
     json_path,csv_path = files_from_id(id)
     data = load_plating_csv(csv_path)
     return jsonify(data=data)
+    
+@app.route('/csvdownload/<id>')
+def csvdownload(id):
+    json_path,csv_path = files_from_id(id)
+    mycsv = open(csv_path).read()
+    response =  make_response(mycsv)
+    response.headers["Content-Disposition"] = "attachment; filename=%s.csv" % (id)
+    response.headers["Content-Type"] = "text/csv"
+    return response
+    
 
 
 if __name__ == "__main__":
