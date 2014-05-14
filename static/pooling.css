@@ -81,6 +81,14 @@ a.btn-splash:hover {
 
 }
 
+a.btn-old-splash3 {
+	display: block;
+	width:250px;
+	height:90px;
+	padding-top: 24px;
+	font-size:30px;
+}
+
 /*this is for splash2.html; found at http://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/*/
 div.col-center-block {
   	position: fixed;
@@ -106,18 +114,62 @@ span#twitter_text {
 	font-size: 16px;
 }
 
+/*******************************************
+ * Run-page related elements.
+ *
+ * NOTE: the final position (pixel-wise) of many of the elements
+ *       is calculated in runtime, in the recalc_sidebar_width()
+ *       function in 'run.html' (which is why their position is "absolute").
+ *
+ *       While this is not a recommended or web-friendly method,
+ *       The rendering of the elements is done on a known device (e.g. iPad),
+ *       and the position must be accurate.
+ *
+ *       Positioning guidelines:
+ *       1. Do not set left/right position.
+ *       1.1. All items will be (horizontally) aligned relative to their
+ *            parent element (with the 'plates_bar' or 'buttons_bar').
+ *       2. Set "top: NNpx" (pixels) for items at the top of the screen,
+ *            with low NN values (e.g. 10px or 20px).
+ *       3. Set "bottom: NNpx" (pixels) for items at the bottom of the screen.
+ *            these will be positioned NN pixels from the bottom.
+ *       4. For items in the middle/center of the screen (e.g. Next/Start buttons),
+ *            prefer using "top: 40%" (percent), and experiment until a good position
+ *            is found.
+ *******************************************/
+
 body#runbody {
 	background-color: black;
 }
 
-div#run_prev_next_buttons {
-    display: none;
+/* buttons_bar and plates_bar are the only top-level elements on the page */
+
+/* buttons_bar contains all the buttons and other
+ * displayable information on the page */
+div#buttons_bar {
+	font-size:150%;
+	color:#944DFF;
+
+
+	position: absolute;
+	top: 0px;
+/*	DO NOT SET 'left' item. final left/right position will be set dynamically */
+	padding: 2px;
 }
 
+/* plates_bar contains the two plates */
+div#plates_bar {
+	position: absolute;
+	top: 0px;
+/*	DO NOT SET 'left' item. final left/right position will be set dynamically */
+}
+
+
+/* "Start" button appear first when the page loads */
 div#run_start_button {
-    display: none;
+	display: none;
 	position:absolute;
-	top:300px;
+	top:30%;
 	font-size:26px;
 }
 
@@ -126,78 +178,73 @@ div#run_start_button {
 	width:100px;
 }
 
+/* "Replace Source" and "Replace Destination" elements
+ * are displayed when the user needs to change plates */
 div#run_replace_src_plate {
-    display: none;
-    color:red;
-}
+	display: none;
+	color:red;
 
+	position: absolute;
+	top: 0px;
+}
 
 div#run_replace_dest_plate {
-    display: none;
-    color:red;
+	display: none;
+	color:red;
+
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
+	bottom: 20px;
 }
 
-div#last_step_warning {
-    display: none;
-	font-size:300%;
-	color:#944DFF;
-	position:absolute;
-	top:400px;
-	left:150px;
-}
-
-div#volume_info {
-    display: none;
+/* Previous/Next/Jump buttons.
+ * The 'run_prev_next_buttons' contains all buttons+jump+volume info.
+ */
+div#run_prev_next_buttons {
+	display: none;
 	position: absolute;
-	top: 260px;
-	left: 20px;	
+	top: 0px;
+	height: 100%;
 }
 
-div#buttons_bar {
-	font-size:150%;
-	color:#944DFF;
-	margin-left: 2px;
-	margin-top: 10px;
-	float: left;
-}
-
-div#plates_bar {
-	float: left;
-}
-
-#run_prev_button {
-	position: absolute;
-	background-color:orange;
-	top: 10px;
-	left: 10px;	
-}
-
-
-#run_jump_div {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	
-}
-
-
+/* Next button (big, middle of screen) */
 #run_next_button {
 	position: absolute;
 	background-color:green;
 	height: 100px;
 	width: 100px;
-	top: 400px;
-	left: 10px;
+	top: 35%;
+}
+
+/* Previous button, small, on top */;
+#run_prev_button {
+	position: absolute;
+	background-color: orange;
+	top: 10px;
+}
+
+/* "Jump" div, containing the jump button and the input box */
+#run_jump_div {
+	position: absolute;
+	bottom: 20px;
+}
+
+/* div showing the volumne to pipet */
+div#volume_info {
+	display: none;
+	position: absolute;
+	top: 20%;
 }
 
 
-a.btn-old-splash3 {
-	display: block;
-	width:250px;
-	height:90px;
-	padding-top: 24px;
-	font-size:30px;
+
+
+/* Shown after the last step */
+div#last_step_warning {
+	display: none;
+	font-size:300%;
+	color:#944DFF;
+
+	position:absolute;
+	top: 30%;
 }
+

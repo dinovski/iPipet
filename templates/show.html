@@ -132,6 +132,25 @@
          </div> <!-- col-sm-6-->
       </div> <!-- formgroup: well colors -->
 
+<!--button display option -->
+    <div class="form-group">
+         <label for="input_description" class="col-sm-2 control-label">Button display:</label>
+         <div class="col-sm-6">
+             <div class="radio">
+                <label>
+                  <input type="radio" name="handedness" value="right" checked onchange="update_resolution();" >
+	           Right-handed
+                </label>
+             </div>
+
+	      <div class="radio">
+                <label>
+                   <input type="radio" name="handedness" value="left" onchange="update_resolution();">
+                  Left-handed
+                </label>
+              </div>
+         </div> <!-- col-sm-6-->
+      </div> <!-- formgroup:button display -->
 
    <div class="form-group">
       <label for="" class="col-sm-2 control-label">&nbsp;</label>
@@ -173,6 +192,8 @@ function update_resolution()
    
    var well_color = $("input[name=well_color]:checked").val();
 
+   var handedness = $("input[name=handedness]:checked").val();
+
    d3_plate_change_resolution_dpi("scaling_plate",new_resolution);
 /*call set_plate_alignment_mode function to change the display of the plate corners*/
    set_plate_alignment_mode("scaling_plate",well_color);
@@ -180,7 +201,7 @@ function update_resolution()
    // Update the "start" link, to include the resolution
    // as CGI parameter
    var start_url = "{{ url_for("run", id=info.id) }}";
-   start_url = start_url + "?dpi=" + new_resolution + "&well_color=" + well_color;
+   start_url = start_url + "?dpi=" + new_resolution + "&well_color=" + well_color + "&handedness=" + handedness;
    $("#start").attr("href",start_url);
 }
 

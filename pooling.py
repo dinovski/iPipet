@@ -309,13 +309,23 @@ def run(id):
     except:
         well_color = "red"
 
+    handedness = "right" # default right hand if not specified
+    try:
+        if 'handedness' in request.args:
+            new_handedness = request.args.get('handedness')
+            if new_handedness == "right" or new_handedness == "left":
+                handedness = new_handedness
+    except:
+        handedness = "right"
+
+
     # We dont really need this info,
     # but the function will validate that the ID exists.
     json_path,csv_path = files_from_id(id)
     info = json.load(file(json_path))
 
     data_url = url_for("data",id=id)
-    return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info,well_color=well_color)
+    return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info,well_color=well_color,handedness=handedness)
 
 @app.route('/data/<id>')
 def data(id):

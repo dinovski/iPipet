@@ -6,6 +6,9 @@
 {% set viewport_disable_zoom = 1 %}
 {% block body %}
 
+
+
+
 <!-- Buttons (on the side - go here -->
 <div id="buttons_bar">
 	<div id="run_data_loading">
@@ -27,8 +30,8 @@
 
 
 	<div id="run_prev_next_buttons">
-		<button id="run_next_button" type="button" class="btn btn-lg btn-primary" onclick="move_step(1);">NEXT</button>
 		<button id="run_prev_button" type="button" class="btn btn-lg btn-default" onclick="move_step(-1);">PREV</button>
+		<button id="run_next_button" type="button" class="btn btn-lg btn-primary" onclick="move_step(1);">NEXT</button>
 		<div id="run_jump_div">
 			<br/>
 			<button type="button" class="btn btn-lg btn-info" onclick="jump_step();">JUMP</button>
@@ -315,8 +318,18 @@ function recalc_sidebar_width()
 	var window_height_pixels = $(window).height();
 	var side_bar_border_width = 2 ;
 	var side_bar_width_pixels = window_width_pixels - plate_width_pixels - side_bar_border_width ;
+	var side_bar_height_pixels = window_height_pixels - side_bar_border_width ;
 	$("div#buttons_bar").width(side_bar_width_pixels);
 	$("div#buttons_bar").height(side_bar_height_pixels-10);
+
+	{% if handedness == 'right' %}
+	$("div#buttons_bar").css('left',0);
+	$("div#plates_bar").css('left',side_bar_width_pixels+1);
+	{% else %}
+	$("div#plates_bar").css('left',0);
+	$("div#buttons_bar").css('right',0);
+	$("div#buttons_bar").css('padding-left',20);
+	{% endif %}
 }
 
 $(function(){
