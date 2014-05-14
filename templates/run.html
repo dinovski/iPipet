@@ -324,11 +324,12 @@ function recalc_sidebar_width()
 
 	{% if handedness == 'right' %}
 	$("div#buttons_bar").css('left',0);
+	/*'left' defines the left side of plate_width_pixels, in other words, the left side of the div that contains both plates*/
 	$("div#plates_bar").css('left',side_bar_width_pixels+1);
 	{% else %}
 	$("div#plates_bar").css('left',0);
 	$("div#buttons_bar").css('right',0);
-	$("div#buttons_bar").css('padding-left',20);
+	$("div#buttons_bar").css('padding-left',65);
 	{% endif %}
 }
 

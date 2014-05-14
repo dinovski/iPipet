@@ -191,7 +191,6 @@ div#run_replace_src_plate {
 div#run_replace_dest_plate {
 	display: none;
 	color:red;
-
 	position: absolute;
 	bottom: 20px;
 }
@@ -212,27 +211,27 @@ div#run_prev_next_buttons {
 	background-color:green;
 	height: 100px;
 	width: 100px;
-	top: 35%;
+	top: 45%;
 }
 
-/* Previous button, small, on top */;
+/* Previous button, small, on top */
 #run_prev_button {
 	position: absolute;
-	background-color: orange;
+	background-color:orange;
 	top: 10px;
 }
 
 /* "Jump" div, containing the jump button and the input box */
 #run_jump_div {
 	position: absolute;
-	bottom: 20px;
+	bottom:0%;
 }
 
 /* div showing the volumne to pipet */
 div#volume_info {
 	display: none;
 	position: absolute;
-	top: 20%;
+	top: 30%;
 }
 
 
@@ -241,10 +240,9 @@ div#volume_info {
 /* Shown after the last step */
 div#last_step_warning {
 	display: none;
-	font-size:300%;
+	font-size:250%;
 	color:#944DFF;
-
 	position:absolute;
-	top: 30%;
+	top: 10%;
 }
 
