@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-xs-8">
     <h1 class="page-header">
-      <a href="{{ url_for("home",id="") }}"<font style="font-size:40px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px"></font></a>
+      <a href="{{ url_for("home",id="") }}"<font style="font-size:44px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px; color:black"></font></a>
       </h1>
    </div>
    <div class="col-xs-4">
@@ -17,12 +17,13 @@
 </div>
 
 
-<h3 class="page-header" style="color:#653A71">USAGE: </h3>
+<!-- <h2 class="page-header" style="color:#653A71">USAGE: </h2> -->
 <font style="font-size:18px">
 
 	<div class="row">
 	<div class="col-xs-6">
-		<br/>
+		
+		<h3 style="color:#653A71">Smart pipetting for high throughput experiments</h3>
 		<p>Optimizing protocols for liquid-handling robots can be tedious for even simple tasks.</p>
 		<p><strong>iPipet</strong> was born out of necessity as an alternative to costly robots and was successfully used for combinatorial pooling of hundreds of samples.</p>
 		<p>We hope you find it useful!</p>
@@ -70,7 +71,7 @@
 		   <em>
 		   <p>The first 4 columns must be in the following order: source plate, source well, destination plate, destination well. Column 5 is optional and may include volume.</p>
 		   <p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.</p>
-		   <p>The well-numbering is highly important: wells must be numbered 1-96. Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
+		   <p>The well-numbering is highly important: wells must be numbered 1-96 (or 1-384). Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
 		   </em>
 		</div>
 
