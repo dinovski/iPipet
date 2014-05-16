@@ -31,7 +31,7 @@
 				<ul class="dropdown-menu" role="menu">
 					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk1") }}">single-channel 96</a></li>
 					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk8") }}">multi-channel 96</a></li>
-					<li><a style="font-size:20px" href="{{ url_for("show", id = "demolnk8") }}">single-channel 384 well</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id = "384demo") }}">single-channel 384 well</a></li>
 				</ul>
 			</div>
 			
@@ -117,9 +117,9 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
 <div class="radio">
   <label>
     <input type="radio" name="pipet_type" id="optionsRadios2" value="multi8">
-    multi-channel
+    multi-channel (96 well plates only)
   </label>
-   <p class="help-block">Select multi-channel to light up 8 wells simultaneously. Your CSV file must be formatted accordingly. (96 well plates only)</p>
+   <p class="help-block">Select multi-channel to light up 8 wells simultaneously. <br/>Your CSV file must be formatted accordingly.</p>
 </div>
 </div>
 </div>
