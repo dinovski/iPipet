@@ -10,7 +10,7 @@
 			<strong>iPipet</strong>
 		</div>
 		<font style="font-size:26px">
-			&nbsp;a light tracking tool for 96 well plates
+			&nbsp;a smart benchtop tool
 		</font>
 	</div>
 </div>
@@ -29,8 +29,9 @@
 			<div class="btn-group">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="font-size:18px; color:white; background-color:#653A71">DEMO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
 				<ul class="dropdown-menu" role="menu">
-					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk1") }}">single-channel</a></li>
-					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk8") }}">multi-channel</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk1") }}">single-channel 96</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk8") }}">multi-channel 96</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id = "demolnk8") }}">single-channel 384 well</a></li>
 				</ul>
 			</div>
 			
@@ -39,7 +40,7 @@
 			</div>
 			
 			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="https://gist.github.com/dinovski/a55d2f8229ae3a3e1c31">DESIGN SHARING</a>
+				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="https://gist.github.com/dinovski/a55d2f8229ae3a3e1c31">DEVELOPERS</a>
 			</div>
 			
 	</div>
@@ -47,7 +48,7 @@
 <div class="row">
 	<div class="col-sm-7">
 		
-		<p style="font-size:24px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 well plates on a tablet computer.</strong>
+		<p style="font-size:24px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 and 384 well plates on a tablet computer.</strong>
 			<br/>
 			<br/>
 			<span id="twitter_button">
@@ -89,12 +90,12 @@
     <label for="input_description" class="col-sm-3 control-label">Description:</label>
     <div class="col-sm-6">
       <input type="text" class="form-control" id="input_description" name="description" placeholder="description">
-       <p class="help-block">Provide a short description of your project.</p>
+       <p class="help-block">optional: provide a short project description.</p>
     </div>
   </div>
 <!-- file upload -->
   <div class="form-group">
-    <label for="input_pooling_file" class="col-sm-3 control-label">CSV&nbsp;File:</label>
+    <label for="input_pooling_file" class="col-sm-3 control-label">CSV&nbsp;File:*</label>
     <div class="col-sm-9">
        <input type="file" name="csv_file" id="input_pooling_file">
        <p class="help-block">
@@ -118,13 +119,30 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
     <input type="radio" name="pipet_type" id="optionsRadios2" value="multi8">
     multi-channel
   </label>
-   <p class="help-block">Select multi-channel to light up 8 wells simultaneously (ie. entire columns). <br/>Your CSV file must be formatted accordingly.</p>
-</div>
-
+   <p class="help-block">Select multi-channel to light up 8 wells simultaneously. Your CSV file must be formatted accordingly. (96 well plates only)</p>
 </div>
 </div>
+</div>
 
-
+<!--plate type -->
+<div class="form-group">
+    <label for="input_description" class="col-sm-3 control-label">Plate type:</label>
+    <div class="col-sm-6">
+	<div class="radio">
+		<label>
+		<input type="radio" name="plate_type" id="optionsRadios1" value="96" checked>
+		96 well
+		</label>
+	</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="plate_type" id="optionsRadios2" value="384">
+    384 well
+  </label>
+   <p class="help-block">Remember to format your CSV file according to plate type.</p>
+</div>
+</div>
+</div>
 
 
 

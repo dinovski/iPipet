@@ -313,7 +313,7 @@ function recalc_sidebar_width()
 	/* Calculate the width of the left-side bar (where the buttons are),
 	   so that the plates will have enough space,
 	   and will be aligned to the right side of the window.*/
-	var plate_width_pixels = 11 * {{ dpi /2.54 }};
+	var plate_width_pixels = d3_plate_width() * {{ dpi /2.54 }};
 	var window_width_pixels = $(window).width();
 	var window_height_pixels = $(window).height();
 	var side_bar_border_width = 2 ;

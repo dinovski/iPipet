@@ -202,6 +202,16 @@ def create():
 
     if not (pipet_type=='single' or pipet_type=='multi8'):
         return "Error: invalid pipet type %s" % (pipet_type), 400
+    
+    if not 'plate_type' in request.form:
+        return "Error: missing 'plate_type' parameter", 400
+    plate_type = request.form['plate_type'].strip()
+
+    if not (plate_type=='96' or plate_type=='384'):
+        return "Error: invalid plate type %s" % (plate_type), 400
+    
+    if (pipet_type=='multi8' and plate_type=='384'):
+        return "Error: multi-channel pipetting is not currently supported for 384 well plates", 400
 
     ## Save the uploaded file, and the request parameters
     id = get_random_id()
@@ -239,7 +249,8 @@ def create():
              "numsteps": numsteps,
              "srcplates": srcplates,
              "destplates": destplates,
-             "pipet_type": pipet_type
+             "pipet_type": pipet_type,
+             "plate_type": int(plate_type)
              }
     json.dump(info,open(json_path,'w'))
 
@@ -286,6 +297,7 @@ def sendemail(email,description,link):
 def show(id):
     json_path,csv_path = files_from_id(id)
     info = json.load(file(json_path))
+    
     return render_template('show.html', info=info)
 
 @app.route('/run/<id>')
@@ -322,6 +334,7 @@ def run(id):
     # but the function will validate that the ID exists.
     json_path,csv_path = files_from_id(id)
     info = json.load(file(json_path))
+    
 
     data_url = url_for("data",id=id)
     return render_template("run.html",data_url=data_url,id=id,dpi=dpi,info=info,well_color=well_color,handedness=handedness)
@@ -348,4 +361,4 @@ if __name__ == "__main__":
     ##       Using TCP port 5106,
     ##       accessible with http://ipipetdev.teamerlich.org/
     ##       See /etc/lighttpd/conf-enabled/90-5-vhost-ipipet.teamerlich.org.conf
-    app.run(host='127.0.0.1',port=5106)
+    app.run(host='0.0.0.0',port=5106)

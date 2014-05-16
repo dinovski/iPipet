@@ -35,7 +35,11 @@
     <script src="{{ url_for("static", filename="jquery-2.0.3.min.js") }}"> </script>
     <script src="{{ url_for("static", filename="bootstrap.min.js") }}"></script>
     <script src="{{ url_for("static", filename="d3.v3.min.js") }}"></script>
+    {% if info and info.plate_type == 384 %}
+    <script src="{{ url_for("static", filename="d3_plate384.js") }}"></script>
+    {% else %}
     <script src="{{ url_for("static", filename="d3_plate96.js") }}"></script>
+    {% endif %}
 </head>
 <body {% if body_tag_id %}id="{{ body_tag_id}}"{% endif %} >
 {% block body %}{% endblock %}

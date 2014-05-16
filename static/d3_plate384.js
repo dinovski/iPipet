@@ -1,16 +1,16 @@
 /*
- Testing code for Drawing/Manipulating 96-Well Plate using D3.
+ Testing code for Drawing/Manipulating 384-Well Plate using D3.
 
  Typical usage:
 
 	<div id="from_plate"></div>
 	<script>
-	d3_generate_plate_data("from_plate",52);
+	d3_generate_plate384_data("from_plate",52);
 	var well_color = "red";
 	set_well_color("from_plate","A01",well_color);
-	set_well_color("from_plate","A12",well_color);
-	set_well_color("from_plate","H01",well_color);
-	set_well_color("from_plate","H12",well_color);
+	set_well_color("from_plate","A24",well_color);
+	set_well_color("from_plate","P01",well_color);
+	set_well_color("from_plate","P24",well_color);
 	</script>
 
 */
@@ -18,13 +18,13 @@
 /* Returns the width in CM of this plate. */
 function d3_plate_width()
 {
-     return 11;
+     return 11.5;
 }
 
 /* returns the height in CM of this plate */
 function d3_plate_height()
 {
-     return 7.5;
+     return 8;
 }
 
 function assert(condition, message) {
@@ -32,35 +32,35 @@ function assert(condition, message) {
         throw Error("Assert failed" + (typeof message !== "undefined" ? ": " + message : ""));
 }
 
-/* Given a Well number (1 to 96)
-   returns the Well's corresponding Row number (1-8) */
+/* Given a Well number (1 to 384)
+   returns the Well's corresponding Row number (1-16) */
 function well_to_row(well)
 {
-	assert(well>=1 && well<=96, "well_to_row(): invalid 'well' value: " + well);
-	return (well-1)%8+1;
+	assert(well>=1 && well<=384, "well_to_row(): invalid 'well' value: " + well);
+	return (well-1)%16+1;
 }
 
-/* Given a row number (1 to 8)
-   returns the row name ("A" to "H") */
+/* Given a row number (1 to 16)
+   returns the row name ("A" to "P") */
 function row_name(row)
 {
-	var names = [ "A", "B", "C", "D","E", "F", "G","H"];
-	assert( Math.floor(row)==row && row>=1 && row<=8,
+	var names = [ "A", "B", "C", "D","E", "F", "G","H","I","J","K","L","M","N","O","P"];
+	assert( Math.floor(row)==row && row>=1 && row<=16,
 		"row_name(): invalid 'row' value: " + row);
 	return names[row-1];
 }
 
-/* Given a Well number (1 to 96)
-   returns the Well's corresponding Column number (1-12) */
+/* Given a Well number (1 to 384)
+   returns the Well's corresponding Column number (1-24) */
 function well_to_column(well)
 {
-	assert(well>=1 && well<=96, "well_to_column(): invalid 'well' value: " + well);
-	return Math.floor((well-1)/8)+1;
+	assert(well>=1 && well<=384, "well_to_column(): invalid 'well' value: " + well);
+	return Math.floor((well-1)/16)+1;
 }
 
 function well_to_id(well)
 {
-	assert(well>=1 && well<=96, "well_to_id(): invalid 'well' value: " + well);
+	assert(well>=1 && well<=384, "well_to_id(): invalid 'well' value: " + well);
 	var col = well_to_column(well);
 	if (col<10) { col = "0" + col ; }
 	return row_name( well_to_row(well) ) + col;
@@ -132,11 +132,11 @@ function d3_plate_change_resolution_dpi(plate_id, new_dpi)
 */
 function d3_generate_plate_data(plate_id,ppcm)
 {
-        var rows = [ 1,2,3,4,5,6,7,8 ];
-	var columns = [ 1,2,3,4,5,6,7,8,9,10,11,12 ];
+        var rows = [ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 ];
+	var columns = [ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 ];
 
-	var wells = Array(96);
-	for (var i=0; i<96; ++i) wells[i] = i+1;
+	var wells = Array(384);
+	for (var i=0; i<384; ++i) wells[i] = i+1;
 
 	var plate_width_cm = d3_plate_width();
 	var plate_height_cm = d3_plate_height();
@@ -145,8 +145,8 @@ function d3_generate_plate_data(plate_id,ppcm)
 	var device_width_pixels = pixels_per_cm * plate_width_cm;
 	var device_height_pixels = pixels_per_cm * plate_height_cm;
 
-	var well_radius = 3; //in mm
-	var well_gap = 9; // in mm
+	var well_radius = 1.00; //in mm
+	var well_gap = 4.5; // in mm
 	var well_border_left = 6; //in mm
 	var well_border_top = 7; // in mm
 	var plate_column_header_offset = 0 ; // in mm
@@ -248,13 +248,50 @@ function reset_plate_wells(plate_id)
 
 }
 
+/* Given a well_id (e.g. "A12"), returns the row num*/
+function get_well_row(well_id)
+{
+	return well_id.substr(0,1);	
+	
+}
+
+
+
+/* Given a well_id (e.g. "A12"), returns the column num*/
+function get_well_column(well_id)
+{
+	return well_id.substr(1);
+	
+}
+
+
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
    and a valid HTML color (e.g. "red" or "#543FFA"),
    Sets the well to this color */
 function set_well_color(plate_id,well_id,well_color)
 {
-	d3.select("#" + svg_plate_well_id(plate_id,well_id))
-		.attr("fill",well_color);
+	/*use for loops to highlight entire row and entire column for given well id*/
+	var row = get_well_row(well_id);
+	
+	for (var i=1; i<=24; i += 1) {
+		var id = row + i;
+		if (i < 10) {
+			id = row + "0" + i;
+		}
+		d3.select("#" + svg_plate_well_id(plate_id,id)).attr("fill",well_color);
+			
+	}
+
+	var column = get_well_column(well_id); 
+		
+	for (var a=1; a<=16; a += 1) {
+		var id = row_name(a) + column;
+		
+		d3.select("#" + svg_plate_well_id(plate_id,id)).attr("fill",well_color);
+		
+	}
+	/*to highlight actual well; cyan works best with red but purple with both red and green*/
+	d3.select("#" + svg_plate_well_id(plate_id,well_id)).attr("fill","#944DFF");
 }
 
 /* Given a Plate ID of a <DIV>,
@@ -262,9 +299,9 @@ function set_well_color(plate_id,well_id,well_color)
    */
 function set_plate_alignment_mode(plate_id,well_color)
 {
-    reset_plate_wells(plate_id)
-    	set_well_color(plate_id,"A01",well_color);
-	set_well_color(plate_id,"A12",well_color);
-	set_well_color(plate_id,"H01",well_color);
-	set_well_color(plate_id,"H12",well_color);
+	reset_plate_wells(plate_id)
+	set_well_color(plate_id,"A01",well_color);
+	set_well_color(plate_id,"A24",well_color);
+	set_well_color(plate_id,"P01",well_color);
+	set_well_color(plate_id,"P24",well_color);
 }
