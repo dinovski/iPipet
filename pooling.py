@@ -2,6 +2,8 @@
 
 from flask import Flask, url_for, request, redirect, jsonify, render_template, make_response
 from werkzeug import secure_filename
+from lockfile import LockFile
+import markdown
 import string
 import datetime
 import random
@@ -24,6 +26,13 @@ if not os.path.isdir(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+community_public_file = os.path.join(app.config['UPLOAD_FOLDER'], "community.json")
+
+# Default shared designs which are always available
+default_shared_designs = [ { "description":"96-Wells, Single-Channel Demo","id":"demolnk1", "plate_type": 96, "pipet_type": "single"},
+                         { "description":"96-Wells, 8-Channel Demo","id":"demolnk8", "plate_type": 96, "pipet_type": "multi8"},
+                         { "description":"384-Wells, Single-Channel Demo","id":"384demo1", "plate_type":384, "pipet_type":"single" }]
 
 def get_random_id(size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
     return ''.join(random.choice(chars) for x in range(size))
@@ -102,6 +111,29 @@ def well_num_to_name(well):
     row = chr( ord('A') + int((well-1)%8) )
     col = (well-1)/8+1;
     return "%s%02d" % ( row, col )
+
+def add_shared_community_design(description,id,plate_type,pipet_type):
+    """
+    Add a plate-ID to the JSON list of shared designs.
+    """
+    try:
+        if not valid_id(id):
+            return
+        if len(description)==0:
+            return
+
+        lock = LockFile(community_public_file)
+        with lock:
+            data = []
+            try:
+                data = json.load(file(community_public_file))
+            except:
+                pass
+            data.append( { "description" : description, "id": id, "plate_type": plate_type, "pipet_type": pipet_type } )
+            json.dump(data,open(community_public_file,"w"))
+    except Exception as e:
+        # silently ignore any errors - the new plate will simply not be added to the list
+        sys.stderr.write("failed to add shared community (id = '%s', exception='%s')" % ( str(id), str(e) ))
 
 def load_plating_csv(filename):
     """
@@ -202,16 +234,23 @@ def create():
 
     if not (pipet_type=='single' or pipet_type=='multi8'):
         return "Error: invalid pipet type %s" % (pipet_type), 400
-    
+
     if not 'plate_type' in request.form:
         return "Error: missing 'plate_type' parameter", 400
     plate_type = request.form['plate_type'].strip()
 
     if not (plate_type=='96' or plate_type=='384'):
         return "Error: invalid plate type %s" % (plate_type), 400
-    
+
+    share_design = False
+    if 'share_design' in request.form:
+        share_design = (request.form['share_design'].strip() == "yes")
+
     if (pipet_type=='multi8' and plate_type=='384'):
         return "Error: multi-channel pipetting is not currently supported for 384 well plates", 400
+
+    if share_design and len(description)==0:
+        return "Error: when sharing a design, Description must not be empty", 400
 
     ## Save the uploaded file, and the request parameters
     id = get_random_id()
@@ -250,7 +289,8 @@ def create():
              "srcplates": srcplates,
              "destplates": destplates,
              "pipet_type": pipet_type,
-             "plate_type": int(plate_type)
+             "plate_type": int(plate_type),
+             "share_design": share_design
              }
     json.dump(info,open(json_path,'w'))
 
@@ -259,6 +299,9 @@ def create():
     link = url_for('show',id=id)
     if email:
          sendemail(email, description, link)
+
+    if share_design:
+        add_shared_community_design(description,id,int(plate_type),pipet_type)
 
     ## Redirect User to Plate summary page
     return redirect(link)
@@ -354,6 +397,16 @@ def csvdownload(id):
     response.headers["Content-Type"] = "text/csv"
     return response
     
+@app.route('/community')
+def community():
+    data = []
+    data.extend(default_shared_designs)
+    try:
+        tmp = json.load(file(community_public_file))
+        data.extend(tmp)
+    except:
+        pass
+    return render_template("community.html",data=data)
 
 
 if __name__ == "__main__":

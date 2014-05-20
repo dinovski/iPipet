@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="container">
+
+<div class="row">
+  <div class="col-xs-8">
+    <h1 class="page-header">
+      <a href="{{ url_for("home",id="") }}"<font style="font-size:44px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px; color:black"></font></a>
+      </h1>
+   </div>
+   <div class="col-xs-4">
+	<br/>
+	<br/>
+	<a href="http://www.teamerlich.org/"><img src="{{ url_for("static", filename="logo_wibr.png") }}" /></a>
+   </div>
+</div>
+
+
+<div class="row">
+<div class="col-xs-8">
+    <h3 style="color:#653A71">Shared Pipetting Designs</h3>
+
+    {% if (data|length) == 0 %}
+    No pipetting designs are currently shared.
+    {% else %}
+<table class="table table-stripped">
+<thead>
+<tr>
+    <th>Description</th>
+    <th>Plate Type</th>
+    <th>Pipet Type</th>
+    <th></th>
+    <th></th>
+</tr>
+</thead>
+<tbody>
+{% for i in data %}
+<tr>
+    <td>{{ i.description }}</td>
+    <td>{{ i.plate_type }}</td>
+    <td>{{ i.pipet_type }}</td>
+    <td><a href="{{ url_for("show", id=i.id, _external=True) }}">Try this design</a></td>
+    <td><a href="{{ url_for("csvdownload", id=i.id, _external=True) }}">Download CSV</a></td>
+</tr>
+</tbody>
+{% endfor %}
+</table>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
