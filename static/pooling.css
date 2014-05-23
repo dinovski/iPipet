@@ -138,6 +138,13 @@ span#twitter_text {
  *            is found.
  *******************************************/
 
+/*about page list items*/
+div.list_items {
+	font-size:22px;
+	font-weight:bold;
+}
+
+
 body#runbody {
 	background-color: black;
 }
@@ -169,13 +176,13 @@ div#plates_bar {
 div#run_start_button {
 	display: none;
 	position:absolute;
-	top:30%;
-	font-size:26px;
+	top:35%;
+	font-size:22px;
 }
 
 #start_button {
 	height:100px;
-	width:100px;
+	width:90px;
 }
 
 /* "Replace Source" and "Replace Destination" elements
@@ -183,9 +190,9 @@ div#run_start_button {
 div#run_replace_src_plate {
 	display: none;
 	color:red;
-
 	position: absolute;
 	top: 0px;
+	height:100%;
 }
 
 div#run_replace_dest_plate {
@@ -211,14 +218,14 @@ div#run_prev_next_buttons {
 	background-color:green;
 	height: 100px;
 	width: 100px;
-	top: 45%;
+	top: 47%;
 }
 
 /* Previous button, small, on top */
 #run_prev_button {
 	position: absolute;
 	background-color:orange;
-	top: 10px;
+	top: 12px;
 }
 
 /* "Jump" div, containing the jump button and the input box */
@@ -227,11 +234,12 @@ div#run_prev_next_buttons {
 	bottom:0%;
 }
 
-/* div showing the volumne to pipet */
+/* div showing the volume to pipet */
 div#volume_info {
 	display: none;
+	font-size:22px;
 	position: absolute;
-	top: 30%;
+	top: 35%;
 }
 
 

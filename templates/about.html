@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-xs-8">
     <h1 class="page-header">
-      <a href="{{ url_for("home",id="") }}"<font style="font-size:44px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px; color:black"></font></a>
+      <a href="{{ url_for("home",id="") }}"<font style="font-size:50px; color:#653A71"><strong>iPipet</strong></font><font style="font-size:26px; color:black"></font></a>
       </h1>
    </div>
    <div class="col-xs-4">
@@ -17,30 +17,25 @@
 </div>
 
 
-<!-- <h2 class="page-header" style="color:#653A71">USAGE: </h2> -->
+<h2 class="page-header" style="color:#653A71">Smart pipetting for high throughput experiments</h2>
 <font style="font-size:18px">
 
 	<div class="row">
-	<div class="col-xs-6">
-		
-		<h3 style="color:#653A71">Smart pipetting for high throughput experiments</h3>
-		<p>Optimizing protocols for liquid-handling robots can be tedious for even simple tasks.</p>
-		<p><strong>iPipet</strong> was born out of necessity as an alternative to costly robots and was successfully used for combinatorial pooling of hundreds of samples.</p>
-		<p>We hope you find it useful!</p>
-		<br/>
-		<p><strong>iPipet can be used to transfer samples between plates.</strong> 
-		<p><em>One example may be cherry picking samples from multiple "source" plates to a common "destination" plate.</em></p>
-		<p><strong>It can also be used to illuminate wells of a single plate, ie. to dispense reagents or normalize samples.</strong></p>
+		<div class="col-xs-6">
+			<p>Optimizing automated liquid-handling protocols can be tedious, even for simple tasks.</p>
+			<p><strong>iPipet</strong> was born out of necessity as an alternative to costly (often temperamental) robots. <em>We hope you find it useful!</em></p>
+			<p><strong>iPipet can be used to transfer samples between plates...</strong> 
+			<p>e.g. cherry picking samples from multiple "source" plates to a common "destination" plate.</p>
+			<p><strong>...or to illuminate wells of a single plate.</strong> </p><p>e.g. to dispense reagents or normalize samples.</p>
+		</div>
+	
+		<div class="col-xs-6"><img src="{{ url_for("static", filename="demo_img.png") }}" /> </div>
 	</div>
 	
-	<div class="col-xs-6"><br/><img src="{{ url_for("static", filename="demo_img.png") }}" /> </div>
-	</div>
-	
-
-<h3 class="page-header" style="color:#653A71">GETTING STARTED:</h3>
+<h2 class="page-header" style="color:#653A71">GETTING STARTED:</h2>
 
 <div class="row">
-	<div class="col-sm-12">
+	<div class="col-sm-12 list_items">
 		<strong>1. If you haven't already, check out a <a href="{{ url_for("show",id="demolnk1") }}">demo</a>. You can also <a href="{{ url_for("csvdownload",id="demolnk1") }}">download the corresponding CSV</a> to see how the file should look.</strong>
 	
 	<br/>
@@ -57,8 +52,8 @@
 
 
 	<div class="row">
-		<div class="col-xs-12">
-			<strong>2. Otherwise, the first thing you need to do is create your own CSV file. This file <em>must</em> be correctly formatted.</strong>
+		<div class="col-xs-12 list_items">
+			2. Otherwise, the first thing you need to do is create your own CSV file. This file <em>must</em> be correctly formatted.
 			<br/>
 			&nbsp;
 			<br/>
@@ -69,9 +64,9 @@
 	<div class="row">
 		<div class="col-xs-6">
 		   <em>
-		   <p>The first 4 columns must be in the following order: source plate, source well, destination plate, destination well. Column 5 is optional and may include volume.</p>
-		   <p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just make sure you do include a header in the file.</p>
-		   <p>The well-numbering is highly important: wells must be numbered 1-96 (or 1-384). Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
+		   <p>The first 4 columns must be in the following order: </p><p>source plate, source well, destination plate, destination well. (Column 5 is optional and may include volume.)</p>
+		   <p>Note: the header will be skipped so as long as the column order is correct you can name the columns whatever you'd like. Just be sure to include a header in the file.</p>
+		   <p>Wells <b>must </b> be numbered 1-96 (or 1-384). Wells 1-8 correspond to wells A1, B1, C1 ... H1 <strong><em>NOT</strong></em> A1, A2, A3 ... A8. If your wells are not in this order or are labeled alphanumerically (ie. 'H1' instead of '8') an easy solution is to first sort by the well columns so that they are in the correct order and then assign the correct number.</p>
 		   </em>
 		</div>
 
@@ -84,7 +79,7 @@
 	
 	<div class="row">
 		<div class="col-xs-12">
-		To light up destination plate wells only, simply enter place holders in the source plate and source well columns (or vice versa if you prefer) in the CSV file:
+		<strong>To light up destination plate wells only, simply enter place holders in the source plate and source well columns (or vice versa if you prefer) in the CSV file:</strong>
 		<br/>
 		&nbsp;
 		</div>
@@ -108,8 +103,8 @@
 	</div>
 
 	<div class="row">
-		<div class="col-xs-12">
-			<strong>Multi-channel pipetting:</strong> currently supported for <em>96 well plates only</em>.
+		<div class="col-xs-12" style="font-size:20px">
+			<strong>Multi-channel pipetting:</strong> currently supports 96 well plates only.
 			<br/>
 			&nbsp;
 			<br/>
@@ -124,7 +119,7 @@
 				<p>Source and destination wells must be in groups of 8 adjacent wells.</p>
 				<p>For the example CSV on the right, columns 3 and 8 in the
 				source plate and columns 1 and 2 in the destination plate will be illuminated.</p>
-				<p>See the <a href="{{ url_for("show",id="demolnk8") }}">multichannel demo</a>
+				<p>See the <a href="{{ url_for("show",id="demolnk8") }}" target="_blank">multichannel demo</a>
 				to get an idea of how the run screen looks.</p>
 			</em>
 		</div>
@@ -135,41 +130,18 @@
 	</div>
 	<br/>
 	<div class="row">
-		<div class="col-xs-12">
-			<strong>3. Once your CSV file is ready, go ahead and give 
-			your project a name and upload it on the <a href="{{ url_for("home",id="") }}">homepage.</a></strong>
+		<div class="col-xs-12 list_items">
+			3. Once your CSV file is ready, go ahead and give 
+			your project a name and upload it on the <a href="{{ url_for("home",id="") }}" target="_blank">homepage.</a>
 			<br/>
 			&nbsp;
 			<br/>
 		</div>
 	</div>
-
+	
 	<div class="row">
 		<div class="col-xs-12">
-			<strong>4. You can provide an email if you'd like <em>iPipet</em> to
-			send you the project link. Otherwise, feel free to leave this field blank.
-			Just be sure to save your unique link. (It's easier to upload the file
-			on a computer and open the link on your tablet.)</strong>
-			<br/>
-			&nbsp;
-			<br/>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-xs-12">
-			<strong>5. Click "SUBMIT CSV" at the bottom of the homepage.
-			Then just make sure the wells of each plate line up with the plate diagram.</strong>
-			<br/>
-			&nbsp;
-			<br/>
-		</div>
-	</div>
-
-
-	<div class="row">
-		<div class="col-xs-12">
-			<em>Note: The top plate on the run screen is the "source"
+			<em>Note: The top plate on the <a href="http://ipipet.teamerlich.org/run/demolnk1?dpi=132" target="_blank">run screen</a> is the "source"
 				plate and the bottom plate is the "destination" plate.</em>
 			<br/>
 			&nbsp;
@@ -178,44 +150,70 @@
 	</div>
 
 	<div class="row">
+		<div class="col-xs-12 list_items">
+			4. You can provide an email if you'd like <em>iPipet</em> to
+			send you the project link. Otherwise, feel free to leave this field blank.
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+	
+	<div class="row">
 		<div class="col-xs-12">
-			<strong>6. It is highly recommended to test the program before
-			handling actual samples to be sure the design is correct.</strong>
+			<em>Just be sure to save your unique link. It's easier to create and upload the CSV file
+			on a computer and open the link on your tablet.</em>
 			<br/>
 			&nbsp;
 			<br/>
 		</div>
 	</div>
 
+
 	<div class="row">
-		<div class="col-xs-12">
-			<em>A layer of plastic wrap over the tablet screen works
+		<div class="col-xs-12 list_items">
+			5. Click "SUBMIT CSV" at the bottom of the homepage.
+			Then just make sure the wells of each plate line up with the plate diagram.
+			<br/>
+			&nbsp;
+			<br/>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-xs-6">
+			<br/>
+			<p>It is highly recommended to test the program before
+			handling actual samples to be sure the design is correct.</p>
+			<p><em>A layer of plastic wrap over the tablet screen works
 			well to limit plate movement and still works with gloves.
-			You can also tape the corners of the plates to the plastic
-			wrap if you find that they are moving too much.
+			Taping the corners of the plates to the plastic
+			wrap works well if you find that they are moving too much. </p>
+			<p>You can also order a custom 3D printed plate adaptor like the one on the right. Simply download the <a href="http://www.thingiverse.com/thing:339588" target="_blank">STL file</a> and find a local <a href="http://www.3dhubs.com/" target="_blank">3D printer.</a></p>
 			</em>
+						
+		</div>
+
+		<div class="col-xs-6">
+			<img src="{{ url_for("static", filename="adaptor1_rescale.JPG") }}" />
+		</div>
+		<div class="row">
+		<div class="col-xs-12 list_items">
 			<br/>
-			&nbsp;
-			<br/>
+			6. Make sure you have all your plates and you're ready to go!
 		</div>
 	</div>
-
-	<div class="row">
-		<div class="col-xs-12">
-			<strong>7. Make sure you have all your plates and you're ready to go!</strong>
-			<br/>
-			&nbsp;
-			<br/>
-		</div>
+	
 	</div>
 
 	<h3 class="page-header" style="color:#653A71"><em>Happy pipetting!</em></h3>
 	</font>
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-4">
 		&#169; Erlich Lab 2014
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-8">
 			<div class="pull-right">
 			Questions? Email dina at wi dot mit dot edu or Tweet <a href="https://twitter.com/dinazielinski">@dinazielinski</a>
 			</div>

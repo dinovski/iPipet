@@ -9,7 +9,7 @@
 		<div class="header-text">
 			<strong>iPipet</strong>
 		</div>
-		<font style="font-size:26px">
+		<font style="font-size:22px">
 			&nbsp;a smart benchtop tool
 		</font>
 	</div>
@@ -31,7 +31,7 @@
 				<ul class="dropdown-menu" role="menu">
 					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk1") }}">single-channel 96</a></li>
 					<li><a style="font-size:20px" href="{{ url_for("show", id="demolnk8") }}">multi-channel 96</a></li>
-					<li><a style="font-size:20px" href="{{ url_for("show", id = "384demo1") }}">single-channel 384 well</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("show", id = "384demo1") }}">single-channel 384</a></li>
 				</ul>
 			</div>
 			
@@ -40,7 +40,13 @@
 			</div>
 			
 			<div class="btn-group">
-				<a type="button" class="btn btn-default" style="font-size:18px; color:white; background-color:#653A71" href="{{url_for("community",_external=True)}}">Shared Designs</a>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="font-size:18px; color:white; background-color:#653A71">FILES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a style="font-size:20px" href="{{url_for("community",_external=True)}}"target="_blank">shared designs</a></li>
+					<li><a style="font-size:20px" href="http://www.thingiverse.com/thing:339588" target="_blank">3D printing</a></li>
+					<li><a style="font-size:20px" href="https://github.com/dinovski/ipipet" target="_blank">source code</a></li>
+				</ul>
+				
 			</div>
 			
 	</div>
@@ -147,12 +153,12 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
 
 <!--Share Plate Design-->
 <div class="form-group">
-    <label for="share_design" class="col-sm-3 control-label">Share:</label>
+    <label for="share_design" class="col-sm-3 control-label">Sharing:</label>
     <div class="col-sm-6">
 	<div class="checkbox">
 		<label>
 		<input type="checkbox" name="share_design" id="share_design" value="yes">
-		Share This Pipetting Design
+		share this pipetting design
 		</label>
         <p class="help-block">A link to this design will be added to the <a href="{{ url_for("community") }}">Community Page</a>.
 	</div>
