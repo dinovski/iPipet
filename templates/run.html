@@ -27,6 +27,12 @@
 		<br/>
 		<button id="start_button" type="button" class="btn btn-lg btn-danger" onclick="start();">START</button>
 	</div>
+	<div id="replace_plate_message">
+		Replace
+		<span class="label label-grey" id="replace_plate_message_place">XXXXX</span>
+		With
+		<span class="label label-grey" id="replace_plate_message_id">XXXXX</span>
+	</div>
 
 
 	<div id="run_prev_next_buttons">
@@ -44,12 +50,12 @@
 
 	<div id="run_replace_src_plate">
 		
-		<span class="label label-info" id="replace_src_plate_label_name">XXXXX</span>
+		<span class="label label-grey" id="replace_src_plate_label_name">XXXXX</span>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="source_plate_ok();">RESUME</button>
 	</div>
 	<div id="run_replace_dest_plate">
-		<span class="label label-info" id="replace_dest_plate_label_name">XXXXX</span>
+		<span class="label label-grey" id="replace_dest_plate_label_name">XXXXX</span>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="destination_plate_ok();">RESUME</button>
 	</div>
@@ -184,6 +190,9 @@ function check_replace_source_plate()
         set_plate_alignment_mode("src_plate","{{ well_color }}");
         $("div#run_replace_src_plate").show();
         $("#replace_src_plate_label_name").text(src_plate_name);
+	$("#replace_plate_message").show();
+        $("#replace_plate_message_place").text("source");
+        $("#replace_plate_message_id").text(src_plate_name);
 
         if (current_step>1) {
             //Don't flash the window if this is the first step
@@ -219,6 +228,9 @@ function check_replace_destination_plate()
         set_plate_alignment_mode("dst_plate","{{ well_color }}");
         $("div#run_replace_dest_plate").show();
         $("#replace_dest_plate_label_name").text(dst_plate_name);
+	$("#replace_plate_message").show();
+        $("#replace_plate_message_place").text("destination");
+        $("#replace_plate_message_id").text(dst_plate_name);
         if (current_step>1) {
             //Don't flash the window if this is the first step
             flash_window();
@@ -229,6 +241,7 @@ function check_replace_destination_plate()
 function destination_plate_ok()
 {
     $("div#run_replace_dest_plate").hide();
+    $("#replace_plate_message").hide();
     var step_details = plating_steps[current_step-1];
     var dst_plate_name = step_details[4];
 

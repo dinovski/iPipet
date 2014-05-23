@@ -185,6 +185,15 @@ div#run_start_button {
 	width:90px;
 }
 
+div#replace_plate_message {
+	display: none;
+	position: absolute;
+	top: 40%;
+	font-size: 22px;
+	width:90px;
+	height:120px;
+}
+
 /* "Replace Source" and "Replace Destination" elements
  * are displayed when the user needs to change plates */
 div#run_replace_src_plate {
@@ -254,3 +263,7 @@ div#last_step_warning {
 	top: 10%;
 }
 
+
+.label-grey {
+	background: grey;
+}
