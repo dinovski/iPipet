@@ -1,5 +1,21 @@
 #!/bin/sh
 
+#This file is part of iPipet.
+#copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
+
+#iPipet is free software: you can redistribute it and/or modify
+#it under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or any later version.
+
+#iPipet is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU Affero General Public License
+#along with iPipet.  If not, see <http://www.gnu.org/licenses/agpl-3.0.html>.
+
+
 ##
 ## A user-land script, based gunicorn init.d script here:
 ##    https://gist.github.com/suda/748450
