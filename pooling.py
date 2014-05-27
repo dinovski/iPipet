@@ -115,7 +115,7 @@ def files_from_id(id):
         raise Exception("Error: invalid id '%s' (no such entry/json)" % ( id ))
     return json_path,csv_path
 
-def well_num_to_name(well):
+def well96_num_to_name(well):
     """
     Given a Well number (1 to 96) returns its name (e.g. 14 => "B02")
     """
@@ -127,6 +127,20 @@ def well_num_to_name(well):
         raise Exception("Error: invalid well value '%d'" % ( well ))
     row = chr( ord('A') + int((well-1)%8) )
     col = (well-1)/8+1;
+    return "%s%02d" % ( row, col )
+
+def well384_num_to_name(well):
+    """
+    Given a Well number (1 to 384) returns its name (e.g. 17 => "A02")
+    """
+    try:
+        well = int(well)
+    except ValueError:
+        raise Exception("Error: invalid well number '%s'" % ( well ))
+    if well<1 or well>384:
+        raise Exception("Error: invalid well value '%d'" % ( well ))
+    row = chr( ord('A') + int((well-1)%16) )
+    col = (well-1)/16+1;
     return "%s%02d" % ( row, col )
 
 def add_shared_community_design(description,id,plate_type,pipet_type):
@@ -152,16 +166,16 @@ def add_shared_community_design(description,id,plate_type,pipet_type):
         # silently ignore any errors - the new plate will simply not be added to the list
         sys.stderr.write("failed to add shared community (id = '%s', exception='%s')" % ( str(id), str(e) ))
 
-def load_plating_csv(filename):
+def load_plating_csv(plate_type, filename):
     """
     Given a filename of a CSV containing manual plating instructions,
     loads the CSV and returns an array-of-array, containing the plating steps.
 
     The CSV is expected to have 6 fields:
         source plate,
-        source well number (1-96)
+        source well number (1-96 or 1-384)
         dest plate,
-        dest well number (1-96)
+        dest well number (1-96 or 1-384)
         volume,
         specimen name.
 
@@ -169,6 +183,13 @@ def load_plating_csv(filename):
     The output data will have 11 elements, and is tightly coupled
     with the JavaScript parsing code.
     """
+    well_num_to_name = "foo"
+    if plate_type == 96:
+        well_num_to_name = well96_num_to_name
+    elif plate_type == 384:
+        well_num_to_name = well384_num_to_name
+    else:
+        raise "Invalid plate_type %s" % ( plate_type )
     try:
         data = [ ]
         prev_src_plate = None
@@ -402,7 +423,9 @@ def run(id):
 @app.route('/data/<id>')
 def data(id):
     json_path,csv_path = files_from_id(id)
-    data = load_plating_csv(csv_path)
+    info = json.load(file(json_path))
+    foo = info[u"plate_type"];
+    data = load_plating_csv(foo,csv_path)
     return jsonify(data=data)
     
 @app.route('/csvdownload/<id>')
