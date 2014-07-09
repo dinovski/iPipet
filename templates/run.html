@@ -93,10 +93,11 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	  <div id="src_plate_name"></div>
 	  <br/>
 	  <div id="src_plate"></div>
-	  <br/>
-	  <br/>
-	  <br/>
-	  <br/>
+		{% if info and info.plate_type == 384 %}
+		<div id="plate_vertical_space384">&nbsp;</div>
+		{% else %}
+		<div id="plate_vertical_space96">&nbsp;</div>
+		{% endif %}
 	  <div id="dst_plate"></div>
 </div> <!-- plates bar -->
 

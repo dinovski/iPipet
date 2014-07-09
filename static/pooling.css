@@ -171,6 +171,15 @@ div#plates_bar {
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 }
 
+/*space between plates for 96 well plates*/
+div#plate_vertical_space96 {
+	height:83px;
+}
+
+/*space between plates for 384 well plates*/
+div#plate_vertical_space384 {
+	height:58px;
+}
 
 /* "Start" button appear first when the page loads */
 div#run_start_button {

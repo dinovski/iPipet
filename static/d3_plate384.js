@@ -165,8 +165,8 @@ function d3_generate_plate_data(plate_id,ppcm)
 
 	var well_radius = 1.00; //in mm
 	var well_gap = 4.5; // in mm
-	var well_border_left = 6; //in mm
-	var well_border_top = 7; // in mm
+	var well_border_left = 8.4; //in mm
+	var well_border_top = 4; // in mm
 	var plate_column_header_offset = 0 ; // in mm
 	var plate_row_header_offset = 0 ; // in mm
 
@@ -211,7 +211,7 @@ function d3_generate_plate_data(plate_id,ppcm)
 	    .attr("x", function(d) {
 			var column = (d-1) ;
 			return plate_row_header_offset + well_border_left + column * well_gap ; })
-	    .attr("y", 0)
+	    .attr("y", -1)
 	    .attr("fill", "red")
 	    .attr("font-size", 3)
 	    .attr("font-family","sans-serif")
