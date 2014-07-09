@@ -112,8 +112,8 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
   <div class="form-group">
     <label for="input_description" class="col-sm-3 control-label">Description:</label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" id="input_description" name="description" placeholder="description">
-       <p class="help-block">optional: provide a short project description.</p>
+      <input type="text" class="form-control" id="input_description" name="description" placeholder="project description">
+       
     </div>
   </div>
 <!-- file upload -->
@@ -127,9 +127,23 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
       </p>
     </div>
   </div>
+  
+<!--Share Plate Design-->
+<div class="form-group">
+    <label for="share_design" class="col-sm-3 control-label">Sharing:</label>
+    <div class="col-sm-6">
+	<div class="checkbox">
+		<label>
+		<input type="checkbox" name="share_design" id="share_design" value="yes">
+		share this file on the <a href="{{ url_for("community") }}">Community Page</a>
+		</label>
+       	</div>
+    </div>
+</div>  
+  
 <!--pipet type -->
 <div class="form-group">
-    <label for="input_description" class="col-sm-3 control-label">Pipet type:</label>
+    <label for="input_description" class="col-sm-3 control-label">Pipet type:*</label>
     <div class="col-sm-6">
     <div class="radio">
   <label>
@@ -149,7 +163,7 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
 
 <!--plate type -->
 <div class="form-group">
-    <label for="input_description" class="col-sm-3 control-label">Plate type:</label>
+    <label for="input_description" class="col-sm-3 control-label">Plate type:*</label>
     <div class="col-sm-6">
 	<div class="radio">
 		<label>
@@ -168,27 +182,12 @@ source_plate, source_well, destination_plate, destination_well, [volume], [info]
 </div>
 
 
-<!--Share Plate Design-->
-<div class="form-group">
-    <label for="share_design" class="col-sm-3 control-label">Sharing:</label>
-    <div class="col-sm-6">
-	<div class="checkbox">
-		<label>
-		<input type="checkbox" name="share_design" id="share_design" value="yes">
-		share this pipetting design
-		</label>
-        <p class="help-block">A link to this design will be added to the <a href="{{ url_for("community") }}">Community Page</a>.
-	</div>
-    </div>
-</div>
-
-
 <!-- put email button here -->
 <h4 class="page-header">Optional: you may provide an email address to which your unique link will be sent </h4>
 <div class="form-group">
     <label for="input_email" class="col-sm-3 control-label">Email:</label>
     <div class="col-sm-6">
-      <input type="email" class="form-control" id="input_email" name="email" placeholder="email">
+      <input type="email" class="form-control" id="input_email" name="email" placeholder="email address">
       <p class="help-block">An email with your link and instructions will be sent to this address. We will NOT share or use your email for any other purposes.</p>
     </div>
   </div>
