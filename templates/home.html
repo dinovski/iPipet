@@ -121,6 +121,9 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
     <label for="input_pooling_file" class="col-sm-3 control-label">CSV&nbsp;File:*</label>
     <div class="col-sm-9">
        <input type="file" name="csv_file" id="input_pooling_file">
+       <p>
+       or use a previously <a href="{{ url_for("community") }}">shared design</a>.
+       </p>
        <p class="help-block">
 File MUST be in CSV format with the following columns &nbsp;(brackets represent optional fields):<br/>
 source_plate, source_well, destination_plate, destination_well, [volume], [info]
