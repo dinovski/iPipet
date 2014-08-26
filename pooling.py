@@ -262,8 +262,10 @@ def create():
 
     if not 'csv_file' in request.files:
         return "Error: missing CSV file", 400
-    file = request.files['csv_file']
-    if not file:
+    # access file from the files dictionary on the request object
+    # http://flask.pocoo.org/docs/0.10/patterns/fileuploads/
+    uploaded_file = request.files['csv_file'] 
+    if not uploaded_file:
         return "Error: no CSV file uploaded", 400
 
     if not 'pipet_type' in request.form:
@@ -295,7 +297,7 @@ def create():
     json_path,csv_path = files_from_id_unsafe(id)
 
     ## TODO: Validate CSV content
-    file.save(csv_path)
+    uploaded_file.save(csv_path)
 
     ## TODO: Read and analyze CSV file
     f = open(csv_path,"r")
