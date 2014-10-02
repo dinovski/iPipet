@@ -51,6 +51,14 @@ default_shared_designs = [ { "description":"96-Wells, Single-Channel Demo","id":
                          { "description":"96-Wells, 8-Channel Demo","id":"demolnk8", "plate_type": 96, "pipet_type": "multi8"},
                          { "description":"384-Wells, Single-Channel Demo","id":"384demo1", "plate_type":384, "pipet_type":"single" }]
 
+#use csv sniffer to handle delimiters, spaces, quotes etc
+def opencsv(filename):
+	f = open(filename, 'rU') #U takes care of mac newline character
+	dialect = csv.Sniffer().sniff(f.read()) 
+	f.seek(0)
+	reader = csv.reader(f, dialect)
+	return reader
+	
 def get_random_id(size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
     return ''.join(random.choice(chars) for x in range(size))
 
@@ -195,7 +203,8 @@ def load_plating_csv(plate_type, filename):
         prev_src_plate = None
         prev_dst_plate = None
         try:
-            for row_num,row in enumerate(csv.reader(open(filename))):
+            rdr = opencsv(filename)
+            for row_num,row in enumerate(rdr):
                 if row_num==0: # skip header line
                     continue
                 if len(row) < 4:
@@ -262,10 +271,8 @@ def create():
 
     if not 'csv_file' in request.files:
         return "Error: missing CSV file", 400
-    # access file from the files dictionary on the request object
-    # http://flask.pocoo.org/docs/0.10/patterns/fileuploads/
-    uploaded_file = request.files['csv_file'] 
-    if not uploaded_file:
+    file = request.files['csv_file']
+    if not file:
         return "Error: no CSV file uploaded", 400
 
     if not 'pipet_type' in request.form:
@@ -297,11 +304,10 @@ def create():
     json_path,csv_path = files_from_id_unsafe(id)
 
     ## TODO: Validate CSV content
-    uploaded_file.save(csv_path)
+    file.save(csv_path)
 
-    ## TODO: Read and analyze CSV file
-    f = open(csv_path,"r")
-    reader = csv.reader(f)
+    ## Read and analyze CSV file using opencsv function
+    reader = opencsv(csv_path)
     numsteps = 0
     srcplates = []
     destplates = []
