@@ -358,7 +358,7 @@ def sendemail(email,description,link):
 
     # Subject
     args.append('-s')
-    args.append('ipipet file')
+    args.append('ipipet file: %s' % description)
 
     # From
     args.append('-r')
