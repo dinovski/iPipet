@@ -221,10 +221,10 @@ def load_plating_csv(plate_type, filename):
                         int(row[3]),             # 6. Destination Well number (1-96)
                         well_num_to_name(row[3])]# 7. Destination Well Name (e.g. "F11")
 
-		if len(row) >= 5:
-			temp.append(float(row[4]))           # 8. volume
-		if len(row) >= 6:
-			temp.append(row[5])      # 9. Specimen Name
+                if len(row) >= 5:
+                    temp.append(float(row[4]))   # 8. volume
+                if len(row) >= 6:
+                    temp.append(row[5])          # 9. Specimen Name
 
                 data.append(temp)
             return data
