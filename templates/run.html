@@ -59,11 +59,11 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 			<input type="text" class=""  id="current_step" size="4" />
 		</div>
 
-		
+
 	</div>
 
 	<div id="run_replace_src_plate">
-		
+
 		<span class="label label-grey" id="replace_src_plate_label_name">XXXXX</span>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="source_plate_ok();">RESUME</button>
@@ -73,11 +73,11 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="destination_plate_ok();">RESUME</button>
 	</div>
-	
+
 	<div id="last_step_warning">
 		DONE! (end of CSV)
 	</div>
-	
+
 	<div id="volume_info">
 		<br/>
 		<h1 style="color:#AEEEEE"><span class="label label-info" id="volume_value" style="color:blue">XXXXX</span>ul</h1>
@@ -91,6 +91,10 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 <!-- Plates go here -->
 <div id="plates_bar">
 	  <div id="src_plate_name"></div>
+	  <!--<svg id="down_arrow" height="30" width="200"> <text x="100" y="15" fill="red"> ↧ </text></svg>-->
+	  <div id="down_arrow"> ↓ </div>
+	  <div id="right_arrow"> → </div>
+	  <div id="up_arrow"> ↑ </div>
 	  <br/>
 	  <div id="src_plate"></div>
 		{% if info and info.plate_type == 384 %}
