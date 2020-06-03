@@ -171,6 +171,31 @@ div#plates_bar {
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 }
 
+div#down_arrow{
+    display: none;
+	font-size: 60px;
+	font-weight: bold;
+	color: red;
+	position: fixed;
+	top: 40%;
+	left: 209px;
+}
+
+div.right_arrow {
+	font-size: 60px;
+	color: red;
+	font-weight: bold;
+}
+
+div#up_arrow {
+    display: none;
+	position: fixed;
+	bottom: 74px;
+	left: 206px;
+	font-size: 60px;
+	color: red;
+	font-weight: bold;
+}
 /*space between plates for 96 well plates*/
 div#plate_vertical_space96 {
 	height:83px;
