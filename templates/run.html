@@ -49,6 +49,10 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	</div>
 
 
+	<div id="control_well">
+		CONTROL
+	</div>
+
 	<div id="run_prev_next_buttons">
 		<button id="run_prev_button" type="button" class="btn btn-lg btn-default" onclick="move_step(-1);">PREV</button>
 		<button id="run_next_button" type="button" class="btn btn-lg btn-primary" onclick="move_step(1);">NEXT</button>
@@ -199,11 +203,21 @@ function check_replace_source_plate()
 {
     var step_details = plating_steps[current_step-1];
     var src_plate_name = step_details[1];
+    var step_info = step_details[8];
 
     if ( src_plate_name === prev_src_plate_name ) {
         // Current Source Plate is OK (no need to replace it).
         $("div#run_replace_src_plate").hide();
         source_plate_ok();
+
+        if ((step_info == "flash") || (step_info == "Flash")) {
+        // flash is a keyword to alert the user about controls.
+        flash_window();
+        $("div#run_prev_next_buttons").hide();
+        set_plate_alignment_mode("src_plate","{{ well_color }}");
+        $("div#run_replace_src_plate").show();
+        $("#control_well").show();
+        }
     } else {
         //User need to replace source plate
         set_plate_alignment_mode("src_plate","{{ well_color }}");
@@ -217,6 +231,11 @@ function check_replace_source_plate()
             //Don't flash the window if this is the first step
             flash_window();
         }
+        //support a scenario where you need to replace a plate and it's a control well
+         if ((step_info == "flash") || (step_info == "Flash")) {
+         	$("#control_well").show();
+         }
+
     }
 }
 
@@ -232,6 +251,8 @@ function source_plate_ok()
 
     // When the source plate is OK, check the destination plate
     check_replace_destination_plate();
+    // remove control msg after resume
+    $("#control_well").hide();
 }
 
 function check_replace_destination_plate()

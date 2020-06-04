@@ -227,6 +227,16 @@ div#replace_plate_message {
 	width:90px;
 	height:120px;
 }
+div#control_well {
+	display: none;
+	position: absolute;
+	top: 20%;
+	font-size: 22px;
+	width:90px;
+	height:120px;
+	color: orange;
+	font-weight: bold;
+}
 
 /* "Replace Source" and "Replace Destination" elements
  * are displayed when the user needs to change plates */
