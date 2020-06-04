@@ -12,7 +12,7 @@ Create directories for ipipet:
     sudo chmod 0755 /var/{run,log}/ipipet
 ```
 
-The run the flask app with gunicorn as user ipipet:
+Run the flask app with gunicorn as user ipipet:
 ```
     sudo ./pooling.sh start
 ```
