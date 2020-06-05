@@ -22,6 +22,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	along with iPipet.  If not, see <http://www.gnu.org/licenses/agpl-3.0.html>.
 -->
 
+<div class="main_container {{handedness}}">
 
 <!-- Buttons (on the side - go here -->
 <div id="buttons_bar">
@@ -108,7 +109,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 		{% endif %}
 	  <div id="dst_plate"></div>
 </div> <!-- plates bar -->
-
+</div>
 <script>
 
 var plating_steps;
@@ -118,6 +119,7 @@ var current_step = 0;
 
 function flash_window()
 {
+	hide_arrows();
     $("body").css("background","white");
     setTimeout(flash_window_off,750);
 }
@@ -212,11 +214,11 @@ function check_replace_source_plate()
 
         if ((step_info == "flash") || (step_info == "Flash")) {
         // flash is a keyword to alert the user about controls.
-        flash_window();
-        $("div#run_prev_next_buttons").hide();
-        set_plate_alignment_mode("src_plate","{{ well_color }}");
-        $("div#run_replace_src_plate").show();
-        $("#control_well").show();
+        	set_plate_alignment_mode("src_plate","{{ well_color }}");
+        	$("div#run_prev_next_buttons").hide();
+        	$("div#run_replace_src_plate").show();
+        	$("#control_well").show();
+			flash_window();
         }
     } else {
         //User need to replace source plate
@@ -359,7 +361,7 @@ function recalc_sidebar_width()
 	var side_bar_border_width = 2 ;
 	var side_bar_width_pixels = window_width_pixels - plate_width_pixels - side_bar_border_width ;
 	var side_bar_height_pixels = window_height_pixels - side_bar_border_width ;
-	$("div#buttons_bar").width(side_bar_width_pixels);
+	$("div#buttons_bar").width(side_bar_width_pixels/40);
 	$("div#buttons_bar").height(side_bar_height_pixels-10);
 
 	{% if handedness == 'right' %}
@@ -386,7 +388,7 @@ $(function(){
             alert("Failed to get plating information (url = {{ data_url }})");
           });
 
-	recalc_sidebar_width();
+	//recalc_sidebar_width();
 });
 
 </script>
