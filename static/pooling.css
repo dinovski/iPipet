@@ -148,6 +148,13 @@ div.list_items {
 body#runbody {
 	background-color: black;
 }
+.main_container {
+    display:flex;
+}
+
+.main_container.left {
+    flex-direction:row-reverse;
+}
 
 /* buttons_bar and plates_bar are the only top-level elements on the page */
 
@@ -157,17 +164,20 @@ div#buttons_bar {
 	font-size:150%;
 	color:#944DFF;
 
+	flex-grow:3;
 
-	position: absolute;
-	top: 0px;
+
+	/*position: absolute;
+	top: 0px;*/
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 	padding: 2px;
 }
 
 /* plates_bar contains the two plates */
 div#plates_bar {
-	position: absolute;
-	top: 0px;
+    flex-grow:1;
+	/*position: absolute;
+	top: 0px;*/
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 }
 
@@ -182,9 +192,14 @@ div#down_arrow{
 }
 
 div.right_arrow {
+    display: none;
+	position: fixed;
+	/*bottom: 471px;*/
+	left: 10px;
 	font-size: 60px;
-	color: red;
-	font-weight: bold;
+	width:70px;
+	height:70px;
+	color:white;
 }
 
 div#up_arrow {
@@ -305,6 +320,7 @@ div#last_step_warning {
 	color:#944DFF;
 	position:absolute;
 	top: 10%;
+	max-width: 50px;
 }
 
 

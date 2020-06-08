@@ -167,8 +167,8 @@ function d3_generate_plate_data(plate_id,ppcm)
 	var well_gap = 9; // in mm
 	var well_border_left = 6; //in mm
 	var well_border_top = 7; // in mm
-	var plate_column_header_offset = 0 ; // in mm
-	var plate_row_header_offset = 0 ; // in mm
+	var plate_column_header_offset = 1.5 ; // in mm
+	var plate_row_header_offset = 1.5 ; // in mm
 
 	var tmp  = document.getElementById(plate_id);
 	assert(tmp !== null,"d3_generate_plate_data(): error: can't find HTML element with id: "+plate_id);
@@ -183,7 +183,7 @@ function d3_generate_plate_data(plate_id,ppcm)
 	var svg = d3.select("#" + plate_id).append("svg")
 	  .attr("id", svg_plate_id(plate_id))
 	  .attr("viewBox", viewBox)
-	  .attr("width", device_width_pixels)
+	  .attr("width", device_width_pixels +100)
 	  .attr("height", device_height_pixels);
 
 
@@ -210,7 +210,7 @@ function d3_generate_plate_data(plate_id,ppcm)
 	    //.attr("id", function(d) { return "column_header_" + d; })
 	    .attr("x", function(d) {
 			var column = (d-1) ;
-			return plate_row_header_offset + well_border_left + column * well_gap ; })
+			return plate_row_header_offset + well_border_left + column * well_gap +9; })
 	    .attr("y", 0)
 	    .attr("fill", "red")
 	    .attr("font-size", 3)
@@ -226,9 +226,9 @@ function d3_generate_plate_data(plate_id,ppcm)
 	   .enter().append("text")
 	    .attr("class","row_headers")
 	    //.attr("id", function(d) { return "column_header_" + d; })
-	    .attr("x", 0)
+	    .attr("x", 10)
 	    .attr("y", function(d) {
-			return plate_column_header_offset + well_border_top + (d-1) * well_gap + 1; })
+			return plate_column_header_offset + well_border_top + (d-1) * well_gap +1; })
 	    .attr("fill", "red")
 	    .attr("font-size", 3)
 	    .attr("font-family","sans-serif")
@@ -236,21 +236,22 @@ function d3_generate_plate_data(plate_id,ppcm)
 	    .text(function(d) { return row_name(d) ; })
 	    .attr("id",function(d) { return plate_id+ "_row_" + row_name(d) ; });
 
-//	/* Draw arrows Headers */
-//	svg.selectAll(".right_arrow")
-//	    .data(rows)
-//	   .enter().append("text")
-//	    .attr("class","arrow")
-//	    //.attr("id", function(d) { return "column_header_" + d; })
-//	    .attr("x", "0")
-//	    .attr("y", function(d) {
-//			return plate_column_header_offset + well_border_top + (d-1) * well_gap - 1 ; })
-//	    .attr("fill", "white")
-//	    .attr("font-size", 20)
-//	    .attr("font-family","sans-serif")
-//	    .attr("alignment-baseline","central")
-//	    .text("→")
-//	    .attr("id", function(d) { return plate_id +"_arrow_"+ row_name(d); });
+	/* Draw arrows  */
+	svg.selectAll(".right_arrow")
+	    .data(rows)
+	   .enter().append("text")
+	    .attr("class","arrow")
+	    //.attr("id", function(d) { return "column_header_" + d; })
+	    .attr("x", -11)
+	    .attr("y", function(d) {
+			return plate_column_header_offset + well_border_top + (d-1) * well_gap - 1; })
+	    .style("fill", "red")
+	    .style("display", "none")
+	    .attr("font-size", 20)
+	    .attr("font-family","sans-serif")
+	    .attr("alignment-baseline","central")
+	    .text("→")
+	    .attr("id", function(d) { return plate_id +"_arrow_"+ row_name(d); });
 
 
 	/* Generate 96 wells, positioned correctly (in terms of MM alignment, 
@@ -266,7 +267,7 @@ function d3_generate_plate_data(plate_id,ppcm)
 	    .attr("id", function(d) { return svg_plate_well_id(plate_id,well_to_id(d)); })
 	    .attr("cx", function(d) {
 			var column = well_to_column(d)-1;
-			return plate_row_header_offset + well_border_left + column * well_gap ; })
+			return plate_row_header_offset + well_border_left + column * well_gap +10 ; })
 	    .attr("cy", function(d) {
 			var row = well_to_row(d)-1;
 			return plate_column_header_offset + well_border_top + row * well_gap ; })
@@ -282,7 +283,7 @@ function reset_plate_wells(plate_id)
 	var id = svg_plate_id(plate_id);
 	d3.select("#" + id).selectAll(".well")
 		.style("fill","black");
-	//reset_plate_indicators(plate_id);
+	reset_arrow_color(plate_id);
 }
 function reset_plate_indicators(plate_id)
 {
@@ -297,17 +298,6 @@ function reset_plate_indicators(plate_id)
 		.style("fill","red");
 }
 
-function set_plate_indicators(plate_id,well_id,well_color)
-{
-    d3.select("#" + get_col_id(plate_id,well_id))
-		.style("font-size","5");
-	d3.select("#" + get_row_id(plate_id,well_id))
-		.style("font-size","5");
-	d3.select("#" + get_col_id(plate_id,well_id))
-		.style("fill","green");
-	d3.select("#" + get_row_id(plate_id,well_id))
-		.style("fill","green");
-}
 
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
    and a valid HTML color (e.g. "red" or "#543FFA"),
@@ -317,8 +307,26 @@ function set_well_color(plate_id,well_id,well_color)
 	highlight_row(plate_id,well_id);
 	d3.select("#" + svg_plate_well_id(plate_id,well_id))
 		.style("fill","red");
-	//set_plate_indicators(plate_id,well_id,well_color);
+	set_arrow_color(plate_id,well_id,well_color);
+}
 
+function set_arrow_color(plate_id,well_id,well_color)
+{
+	var id = svg_plate_id(plate_id);
+    d3.select("#" + id).selectAll(".arrow")[0]
+    .filter(c => c.id.includes(well_id.slice(1)) || c.id.includes(well_id[0]))
+    .forEach( c=>c.style.fill = "red");
+}
+
+function reset_arrow_color(plate_id,well_id,well_color) {
+    var id = svg_plate_id(plate_id);
+    d3.select("#" + id).selectAll(".arrow")[0].forEach( c=>c.style.fill = "black");
+    d3.select("#" + id).selectAll(".arrow")[0].forEach( c=>c.style.display = "block");
+
+}
+
+function hide_arrows() {
+    d3.selectAll(".arrow")[0].forEach( c=>c.style.display = "none");
 }
 
 function get_row_id(plate_id,well_id)
