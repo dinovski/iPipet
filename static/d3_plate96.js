@@ -285,19 +285,6 @@ function reset_plate_wells(plate_id)
 		.style("fill","black");
 	reset_arrow_color(plate_id);
 }
-function reset_plate_indicators(plate_id)
-{
-    var id = svg_plate_id(plate_id);
-    d3.select("#" + id).selectAll(".row_headers")
-		.style("font-size","3");
-	d3.select("#" + id).selectAll(".column_headers")
-		.style("font-size","3");
-	d3.select("#" + id).selectAll(".row_headers")
-		.style("fill","red");
-	d3.select("#" + id).selectAll(".column_headers")
-		.style("fill","red");
-}
-
 
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
    and a valid HTML color (e.g. "red" or "#543FFA"),
@@ -310,14 +297,22 @@ function set_well_color(plate_id,well_id,well_color)
 	set_arrow_color(plate_id,well_id,well_color);
 }
 
+/* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
+   Sets the arrows to this color */
 function set_arrow_color(plate_id,well_id,well_color)
 {
 	var id = svg_plate_id(plate_id);
     d3.select("#" + id).selectAll(".arrow")[0]
     .filter(c => c.id.includes(well_id.slice(1)) || c.id.includes(well_id[0]))
     .forEach( c=>c.style.fill = "red");
-}
+//    if(plate_id == 'dst_plate'
+//    && document.getElementById("run_prev_next_buttons").style['display'] != "none"){
+//        generate_sound(well_id);
+//    }
 
+}
+/* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
+   reset back the arrows color to black */
 function reset_arrow_color(plate_id,well_id,well_color) {
     var id = svg_plate_id(plate_id);
     d3.select("#" + id).selectAll(".arrow")[0].forEach( c=>c.style.fill = "black");
@@ -325,20 +320,10 @@ function reset_arrow_color(plate_id,well_id,well_color) {
 
 }
 
+/* Method whice hides the arrows in some screens that they shouldn't appear on */
 function hide_arrows() {
     d3.selectAll(".arrow")[0].forEach( c=>c.style.display = "none");
 }
-
-function get_row_id(plate_id,well_id)
-{
-    return plate_id+ "_row_"+ well_id[0];
-}
-
-function get_col_id(plate_id,well_id)
-{
-    return plate_id+ "_col_"+ well_id.slice(2,4).replace(/^0+/, '');
-}
-
 
 function highlight_row(plate_id,well_id)
 {
@@ -353,9 +338,18 @@ function highlight_row(plate_id,well_id)
    */
 function set_plate_alignment_mode(plate_id,well_color)
 {
-    reset_plate_wells(plate_id)
-    	set_well_color(plate_id,"A01",well_color);
+    reset_plate_wells(plate_id);
+    set_well_color(plate_id,"A01",well_color);
 	set_well_color(plate_id,"A12",well_color);
 	set_well_color(plate_id,"H01",well_color);
 	set_well_color(plate_id,"H12",well_color);
+	hide_arrows();
+}
+
+/* Given a text string, speech the text into sound
+   */
+function generate_sound(info) {
+    const msg = new SpeechSynthesisUtterance(info);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(msg);
 }

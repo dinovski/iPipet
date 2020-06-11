@@ -96,7 +96,6 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 <!-- Plates go here -->
 <div id="plates_bar">
 	  <div id="src_plate_name"></div>
-	  <!--<svg id="down_arrow" height="30" width="200"> <text x="100" y="15" fill="red"> ↧ </text></svg>-->
 	  <div id="down_arrow"> ↓ </div>
 	  <div id="right_arrow"> → </div>
 	  <div id="up_arrow"> ↑ </div>
@@ -310,7 +309,7 @@ function show_step_wells()
 
 	    reset_plate_wells("src_plate");
 	    set_well_color("src_plate",src_well_name,"{{ well_color }}");
-
+		generate_sound(step_details[8]);
 	    reset_plate_wells("dst_plate");
 	    set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
 {% else %}
@@ -320,6 +319,7 @@ function show_step_wells()
 		var step_details = plating_steps[current_step-1+i];
 		var src_well_name  = step_details[3];
 		var dst_well_name  = step_details[6];
+		<!--generate_sound(step_details[8]);-->
 		set_well_color("src_plate",src_well_name,"{{ well_color }}");
 		set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
 	     }
