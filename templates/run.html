@@ -82,10 +82,15 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	<div id="last_step_warning">
 		DONE! (end of CSV)
 	</div>
-
 	<div id="volume_info">
 		<br/>
 		<h1 style="color:#AEEEEE"><span class="label label-info" id="volume_value" style="color:blue">XXXXX</span>ul</h1>
+		<br/>
+	</div>
+
+	<div id="well_info">
+		<br/>
+		<h1 style="color:#653A71"><span class="label label-info" id="well_value" style="color:green ;font-size:33px; background:white">XXXXX</span></h1>
 		<br/>
 	</div>
 
@@ -211,8 +216,9 @@ function check_replace_source_plate()
         $("div#run_replace_src_plate").hide();
         source_plate_ok();
 
-        if ((step_info == "flash") || (step_info == "Flash")) {
-        // flash is a keyword to alert the user about controls.
+        if ((step_info == "flash") || (step_info == "Flash")
+			|| (step_info == "control") || (step_info == "Control")) {
+        // flash / control is a keyword to alert the user about controls.
         	set_plate_alignment_mode("src_plate","{{ well_color }}");
         	$("div#run_prev_next_buttons").hide();
         	$("div#run_replace_src_plate").show();
@@ -329,9 +335,12 @@ function show_step_wells()
     if (step_details.length >= 8) {
 	/* We have "volume" information, show the volume 'div' */
 	$("#volume_info").show();
+	$("#well_info").show();
         $("#volume_value").text(step_details[7]);
+        $("#well_value").text(step_details[8]);
     } else {
 	$("#volume_info").hide();
+	$("#well_value").hide();
     }
 }
 
