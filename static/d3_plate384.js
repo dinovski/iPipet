@@ -251,9 +251,9 @@ function d3_generate_plate_data(plate_id,ppcm)
 	    .attr("cy", function(d) {
 			var row = well_to_row(d)-1;
 			return plate_column_header_offset + well_border_top + row * well_gap ; })
-	    .attr("stroke","black")
-	    .attr("stroke-width",0.1)
-	    .attr("fill", "white");
+	    .attr("stroke","white")
+	    .attr("stroke-width",0.5)
+	    .attr("fill", "black");
 }
 
 /* Given a plate_id of a <DIV>,
@@ -262,7 +262,7 @@ function reset_plate_wells(plate_id)
 {
 	var id = svg_plate_id(plate_id);
 	d3.select("#" + id).selectAll(".well")
-		.attr("fill","white");
+		.attr("fill","black");
 
 }
 

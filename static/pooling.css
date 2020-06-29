@@ -148,6 +148,13 @@ div.list_items {
 body#runbody {
 	background-color: black;
 }
+.main_container {
+    display:flex;
+}
+
+.main_container.left {
+    flex-direction:row-reverse;
+}
 
 /* buttons_bar and plates_bar are the only top-level elements on the page */
 
@@ -157,20 +164,53 @@ div#buttons_bar {
 	font-size:150%;
 	color:#944DFF;
 
+	flex-grow:3;
 
-	position: absolute;
-	top: 0px;
+
+	/*position: absolute;
+	top: 0px;*/
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 	padding: 2px;
 }
 
 /* plates_bar contains the two plates */
 div#plates_bar {
-	position: absolute;
-	top: 0px;
+    flex-grow:1;
+	/*position: absolute;
+	top: 0px;*/
 /*	DO NOT SET 'left' item. final left/right position will be set dynamically */
 }
 
+div#down_arrow{
+    display: none;
+	font-size: 60px;
+	font-weight: bold;
+	color: red;
+	position: fixed;
+	top: 40%;
+	left: 209px;
+}
+
+div.right_arrow {
+    display: none;
+	position: fixed;
+	/*bottom: 471px;*/
+	left: 10px;
+	font-size: 60px;
+	width:70px;
+	height:70px;
+	color:white;
+}
+
+div#up_arrow {
+    display: none;
+	position: fixed;
+	bottom: 74px;
+	left: 206px;
+	font-size: 60px;
+	color: red;
+	font-weight: bold;
+}
 /*space between plates for 96 well plates*/
 div#plate_vertical_space96 {
 	height:83px;
@@ -201,6 +241,16 @@ div#replace_plate_message {
 	font-size: 22px;
 	width:90px;
 	height:120px;
+}
+div#control_well {
+	display: none;
+	position: absolute;
+	top: 20%;
+	font-size: 22px;
+	width:90px;
+	height:120px;
+	color: orange;
+	font-weight: bold;
 }
 
 /* "Replace Source" and "Replace Destination" elements
@@ -260,7 +310,13 @@ div#volume_info {
 	top: 35%;
 }
 
-
+/* div showing the info column to pipet */
+div#well_info {
+	display: none;
+	font-size:22px;
+	position: absolute;
+	top: 25%;
+}
 
 
 /* Shown after the last step */
@@ -270,6 +326,7 @@ div#last_step_warning {
 	color:#944DFF;
 	position:absolute;
 	top: 10%;
+	max-width: 50px;
 }
 
 

@@ -22,6 +22,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	along with iPipet.  If not, see <http://www.gnu.org/licenses/agpl-3.0.html>.
 -->
 
+<div class="main_container {{handedness}}">
 
 <!-- Buttons (on the side - go here -->
 <div id="buttons_bar">
@@ -49,6 +50,10 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	</div>
 
 
+	<div id="control_well">
+		CONTROL
+	</div>
+
 	<div id="run_prev_next_buttons">
 		<button id="run_prev_button" type="button" class="btn btn-lg btn-default" onclick="move_step(-1);">PREV</button>
 		<button id="run_next_button" type="button" class="btn btn-lg btn-primary" onclick="move_step(1);">NEXT</button>
@@ -59,11 +64,11 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 			<input type="text" class=""  id="current_step" size="4" />
 		</div>
 
-		
+
 	</div>
 
 	<div id="run_replace_src_plate">
-		
+
 		<span class="label label-grey" id="replace_src_plate_label_name">XXXXX</span>
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="source_plate_ok();">RESUME</button>
@@ -73,14 +78,19 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 		<br/>
 		<button type="button" class="btn btn-lg btn-danger" onclick="destination_plate_ok();">RESUME</button>
 	</div>
-	
+
 	<div id="last_step_warning">
 		DONE! (end of CSV)
 	</div>
-	
 	<div id="volume_info">
 		<br/>
 		<h1 style="color:#AEEEEE"><span class="label label-info" id="volume_value" style="color:blue">XXXXX</span>ul</h1>
+		<br/>
+	</div>
+
+	<div id="well_info">
+		<br/>
+		<h1 style="color:#653A71"><span class="label label-info" id="well_value" style="color:green ;font-size:33px; background:white"></span></h1>
 		<br/>
 	</div>
 
@@ -91,6 +101,9 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 <!-- Plates go here -->
 <div id="plates_bar">
 	  <div id="src_plate_name"></div>
+	  <div id="down_arrow"> ↓ </div>
+	  <div id="right_arrow"> → </div>
+	  <div id="up_arrow"> ↑ </div>
 	  <br/>
 	  <div id="src_plate"></div>
 		{% if info and info.plate_type == 384 %}
@@ -100,7 +113,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 		{% endif %}
 	  <div id="dst_plate"></div>
 </div> <!-- plates bar -->
-
+</div>
 <script>
 
 var plating_steps;
@@ -110,6 +123,7 @@ var current_step = 0;
 
 function flash_window()
 {
+	hide_arrows();
     $("body").css("background","white");
     setTimeout(flash_window_off,750);
 }
@@ -195,11 +209,23 @@ function check_replace_source_plate()
 {
     var step_details = plating_steps[current_step-1];
     var src_plate_name = step_details[1];
+    var step_info = step_details[8];
 
     if ( src_plate_name === prev_src_plate_name ) {
         // Current Source Plate is OK (no need to replace it).
         $("div#run_replace_src_plate").hide();
         source_plate_ok();
+
+        if ((step_info == "flash") || (step_info == "Flash")
+			|| (step_info == "control") || (step_info == "Control")) {
+        // flash / control is a keyword to alert the user about controls.
+        	set_plate_alignment_mode("src_plate","{{ well_color }}");
+        	set_plate_alignment_mode("dst_plate","{{ well_color }}");
+        	$("div#run_prev_next_buttons").hide();
+        	$("div#run_replace_src_plate").show();
+        	<!--$("#control_well").show();-->
+			flash_window();
+        }
     } else {
         //User need to replace source plate
         set_plate_alignment_mode("src_plate","{{ well_color }}");
@@ -213,6 +239,11 @@ function check_replace_source_plate()
             //Don't flash the window if this is the first step
             flash_window();
         }
+        //support a scenario where you need to replace a plate and it's a control well
+         if ((step_info == "flash") || (step_info == "Flash")) {
+         	$("#control_well").show();
+         }
+
     }
 }
 
@@ -228,6 +259,8 @@ function source_plate_ok()
 
     // When the source plate is OK, check the destination plate
     check_replace_destination_plate();
+    // remove control msg after resume
+    $("#control_well").hide();
 }
 
 function check_replace_destination_plate()
@@ -283,7 +316,7 @@ function show_step_wells()
 
 	    reset_plate_wells("src_plate");
 	    set_well_color("src_plate",src_well_name,"{{ well_color }}");
-
+		generate_sound(step_details[8]);
 	    reset_plate_wells("dst_plate");
 	    set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
 {% else %}
@@ -293,8 +326,8 @@ function show_step_wells()
 		var step_details = plating_steps[current_step-1+i];
 		var src_well_name  = step_details[3];
 		var dst_well_name  = step_details[6];
-		set_well_color("src_plate",src_well_name,"{{ well_color }}");
-		set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
+		set_well_color("src_plate",src_well_name,"{{ well_color }}","multi");
+		set_well_color("dst_plate",dst_well_name,"{{ well_color }}","multi");
 	     }
 {% endif %}
     
@@ -302,9 +335,12 @@ function show_step_wells()
     if (step_details.length >= 8) {
 	/* We have "volume" information, show the volume 'div' */
 	$("#volume_info").show();
+	$("#well_info").show();
         $("#volume_value").text(step_details[7]);
+        $("#well_value").text(step_details[8]);
     } else {
 	$("#volume_info").hide();
+	$("#well_value").hide();
     }
 }
 
@@ -334,7 +370,7 @@ function recalc_sidebar_width()
 	var side_bar_border_width = 2 ;
 	var side_bar_width_pixels = window_width_pixels - plate_width_pixels - side_bar_border_width ;
 	var side_bar_height_pixels = window_height_pixels - side_bar_border_width ;
-	$("div#buttons_bar").width(side_bar_width_pixels);
+	$("div#buttons_bar").width(side_bar_width_pixels/40);
 	$("div#buttons_bar").height(side_bar_height_pixels-10);
 
 	{% if handedness == 'right' %}
@@ -361,7 +397,7 @@ $(function(){
             alert("Failed to get plating information (url = {{ data_url }})");
           });
 
-	recalc_sidebar_width();
+	//recalc_sidebar_width();
 });
 
 </script>
