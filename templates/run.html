@@ -220,9 +220,10 @@ function check_replace_source_plate()
 			|| (step_info == "control") || (step_info == "Control")) {
         // flash / control is a keyword to alert the user about controls.
         	set_plate_alignment_mode("src_plate","{{ well_color }}");
+        	set_plate_alignment_mode("dst_plate","{{ well_color }}");
         	$("div#run_prev_next_buttons").hide();
         	$("div#run_replace_src_plate").show();
-        	$("#control_well").show();
+        	<!--$("#control_well").show();-->
 			flash_window();
         }
     } else {
@@ -325,9 +326,8 @@ function show_step_wells()
 		var step_details = plating_steps[current_step-1+i];
 		var src_well_name  = step_details[3];
 		var dst_well_name  = step_details[6];
-		<!--generate_sound(step_details[8]);-->
-		set_well_color("src_plate",src_well_name,"{{ well_color }}");
-		set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
+		set_well_color("src_plate",src_well_name,"{{ well_color }}","multi");
+		set_well_color("dst_plate",dst_well_name,"{{ well_color }}","multi");
 	     }
 {% endif %}
     

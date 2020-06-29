@@ -289,12 +289,15 @@ function reset_plate_wells(plate_id)
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
    and a valid HTML color (e.g. "red" or "#543FFA"),
    Sets the well to this color */
-function set_well_color(plate_id,well_id,well_color)
+function set_well_color(plate_id,well_id,well_color,pipet_type='single')
 {
-	highlight_row(plate_id,well_id);
+    //supporting multi pipette mode when we won't highlight row/column
+    if(pipet_type == 'single'){
+        highlight_row(plate_id,well_id);
+        set_arrow_color(plate_id,well_id,well_color);
+    }
 	d3.select("#" + svg_plate_well_id(plate_id,well_id))
 		.style("fill","red");
-	set_arrow_color(plate_id,well_id,well_color);
 }
 
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),
@@ -305,10 +308,6 @@ function set_arrow_color(plate_id,well_id,well_color)
     d3.select("#" + id).selectAll(".arrow")[0]
     .filter(c => c.id.includes(well_id.slice(1)) || c.id.includes(well_id[0]))
     .forEach( c=>c.style.fill = "red");
-//    if(plate_id == 'dst_plate'
-//    && document.getElementById("run_prev_next_buttons").style['display'] != "none"){
-//        generate_sound(well_id);
-//    }
 
 }
 /* Given a plate id of a <DIV>, and a Well ID (e.g. "D11"),

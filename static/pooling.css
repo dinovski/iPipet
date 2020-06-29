@@ -313,7 +313,7 @@ div#volume_info {
 /* div showing the info column to pipet */
 div#well_info {
 	display: none;
-	font-size:25px;
+	font-size:22px;
 	position: absolute;
 	top: 25%;
 }
