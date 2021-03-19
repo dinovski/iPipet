@@ -1,4 +1,4 @@
-**Setup:**
+**Local setup:**
 
 Create system user 'ipipet':
 ```
