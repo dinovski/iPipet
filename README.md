@@ -1,3 +1,5 @@
+ipipet.teamerlich.org is no longer maintained. Below are instructions to run iPipet locally:
+
 **Local setup:**
 
 Create system user 'ipipet':
