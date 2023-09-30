@@ -1,0 +1,399 @@
+Metadata-Version: 2.1
+Name: Flask-Reuploaded
+Version: 1.3.0
+Summary: Flexible and efficient upload handling for Flask
+Home-page: https://github.com/jugmac00/flask-reuploaded
+Author: Matthew "LeafStorm" Frazier
+Author-email: leafstormrush@gmail.com
+Maintainer: Jürgen Gmach
+Maintainer-email: juergen.gmach@googlemail.com
+License: MIT
+Project-URL: Source, https://github.com/jugmac00/flask-reuploaded
+Project-URL: Issue Tracker, https://github.com/jugmac00/flask-reuploaded/issues
+Project-URL: Documentation, https://flask-reuploaded.readthedocs.io/en/latest/
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Framework :: Flask
+Requires-Python: >= 3.7
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: Flask (>=1.0.4)
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+
+.. image:: https://github.com/jugmac00/flask-reuploaded/workflows/CI/badge.svg?branch=master
+   :target: https://github.com/jugmac00/flask-reuploaded/actions?workflow=CI
+   :alt: CI Status
+
+.. image:: https://coveralls.io/repos/github/jugmac00/flask-reuploaded/badge.svg?branch=master
+    :target: https://coveralls.io/github/jugmac00/flask-reuploaded?branch=master
+
+.. image:: https://img.shields.io/pypi/v/flask-reuploaded   
+    :alt: PyPI
+    :target: https://github.com/jugmac00/flask-reuploaded
+
+.. image:: https://img.shields.io/pypi/pyversions/flask-reuploaded   
+    :alt: PyPI - Python Version
+    :target: https://pypi.org/project/Flask-Reuploaded/
+
+.. image:: https://img.shields.io/pypi/l/hibpcli
+    :target: https://github.com/jugmac00/flask-reuploaded/blob/master/LICENSE
+
+
+Flask-Reuploaded
+================
+
+Flask-Reuploaded provides file uploads for Flask.
+
+
+Notes on this package
+---------------------
+
+This is an independently maintained version of `Flask-Uploads`
+based on the 0.2.1 version of the original,
+but also including four years of unreleased changes,
+at least not released to PyPI.
+
+Noteworthy is the fix for the `Werkzeug` API change.
+
+
+Goals
+-----
+
+- provide a stable drop-in replacement for `Flask-Uploads`
+- regain momentum for this widely used package
+- provide working PyPI packages
+
+
+Migration guide from `Flask-Uploads`
+------------------------------------
+
+Incompatibilities between Flask-Reuploaded and Flask-Uploads
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As already mentioned,
+staying compatible with `Flask-Uploads` is one of this project's goals.
+
+Nevertheless, there are the following known incompatibilities:
+
+- the `patch_request_class` helper function has been removed;
+  the function was only necessary for Flask 0.6 and earlier.
+  Since then you can use Flask's own
+  `MAX_CONTENT_LENGTH <https://flask.palletsprojects.com/en/1.1.x/config/#MAX_CONTENT_LENGTH>`_
+  environment variable,
+  so you don’t read more than this many bytes from the incoming request data.
+- `autoserve` of uploaded images now has been deactivated;
+  this was a poorly documented "feature",
+  which even could have lead to unwanted data disclosure;
+  if you want to activate the feature again,
+  you need to set `UPLOADS_AUTOSERVE=True`
+
+Uninstall and install
+~~~~~~~~~~~~~~~~~~~~~
+
+If you have used `Flask-Uploads` and want to migrate to `Flask-Reuploaded`,
+you only have to install `Flask-Reuploaded` instead of `Flask-Uploads`.
+
+That's all!
+
+So, if you use `pip` to install your packages, instead of ...
+
+.. code-block:: bash
+
+    $ pip install `Flask-Uploads`  # don't do this! package is broken
+
+... just do ...
+
+.. code-block:: bash
+
+    $ pip install `Flask-Reuploaded`
+
+`Flask-Reuploaded` is a drop-in replacement.
+
+This means you do not have to change a single line of code.
+
+
+Installation
+------------
+
+.. code-block:: bash
+
+    $ pip install Flask-Reuploaded
+
+
+Getting started
+---------------
+
+create an UploadSet
+
+.. code-block:: python
+
+    from flask_uploads import IMAGES
+
+    photos = UploadSet("photos", IMAGES)
+
+configure your Flask app and this extension
+
+.. code-block:: python
+
+    app.config["UPLOADED_PHOTOS_DEST"] = "static/img"
+    app.config["SECRET_KEY"] = os.urandom(24)
+    configure_uploads(app, photos)
+
+use `photos` in your view function
+
+.. code-block:: python
+
+    photos.save(request.files['photo'])
+
+See below for a complete example.
+
+
+Documentation
+-------------
+
+You can find the documentation at:
+
+https://flask-reuploaded.readthedocs.io/en/latest/
+
+You can generate the documentation locally:
+
+.. code-block:: bash
+
+    tox -e docs
+
+You can update the dependencies for documentation generation:
+
+.. code-block:: bash
+
+    tox -e upgradedocs
+
+
+Minimal example application
+----------------------------
+
+
+Application code, e.g. main.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    import os
+
+    from flask import Flask, flash, render_template, request
+    # please note the import from `flask_uploads` - not `flask_reuploaded`!!
+    # this is done on purpose to stay compatible with `Flask-Uploads`
+    from flask_uploads import IMAGES, UploadSet, configure_uploads
+
+    app = Flask(__name__)
+    photos = UploadSet("photos", IMAGES)
+    app.config["UPLOADED_PHOTOS_DEST"] = "static/img"
+    app.config["SECRET_KEY"] = os.urandom(24)
+    configure_uploads(app, photos)
+
+
+    @app.route("/", methods=['GET', 'POST'])
+    def upload():
+        if request.method == 'POST' and 'photo' in request.files:
+            photos.save(request.files['photo'])
+            flash("Photo saved successfully.")
+            return render_template('upload.html')
+        return render_template('upload.html')
+
+
+HTML code for `upload.html`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: html
+
+    <!doctype html>
+    <html lang=en>
+    <head>
+        <meta charset=utf-8>
+        <title>Flask-Reuploaded Example</title>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+    <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+        <input type=file name=photo>
+        <button type="submit">Submit</button>
+    </form>
+    </body>
+    </html>
+
+
+Project structure
+~~~~~~~~~~~~~~~~~
+
+The project structure would look as following...
+
+.. code-block:: bash
+
+    ❯ tree -I "__*|h*"
+    .
+    ├── main.py
+    ├── static
+    │   └── img
+    └── templates
+        └── upload.html
+
+
+Running the example application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to run the application,
+you have to enter the following commands...
+
+.. code-block:: bash
+
+    ❯ export FLASK_APP=main.py
+
+    ❯ flask run
+
+Then point your browser to `http://127.0.0.1:5000/`.
+
+
+Contributing
+------------
+
+Contributions are more than welcome.
+
+Please have a look at the `open issues <https://github.com/jugmac00/flask-reuploaded/issues>`_.
+
+There is also a `short contributing guide <https://github.com/jugmac00/flask-reuploaded/blob/master/CONTRIBUTING.rst>`_.
+
+
+Changelog
+=========
+
+1.3.0 (2022.12.20)
+------------------
+- improve documentation
+  (`#133 <https://github.com/jugmac00/flask-reuploaded/issues/133>`_)
+- drop support for Python 3.6
+- add support for Python 3.11
+- update dependencies for building documentation
+
+
+1.2.0 (2021.11.07)
+------------------
+- add contexts to coverage report
+- pin documentation dependencies to prevent future breakage
+- fix typing errors (mypy) with recently released Flask 2.0.1
+- add support for Python 3.10
+
+
+1.1.0 (2021.05.09)
+------------------
+- make type checkers aware that this library is using type annotations
+
+
+1.0.0 (2021.04.07)
+------------------
+- raise test coverage to 100%
+- use official `Pallets` theme for the documentation
+- remove deprecated `patch_request_class` helper function; use `MAX_CONTENT_LENGTH` instead.
+- `autoserve` now has been deactivated by default and needs explicit activation
+  via the setting `UPLOADS_AUTOSERVE=True`
+
+
+0.5.0
+-----
+- improve documentation of example app
+- document surprising `autoserve` feature
+- issue a warning when using `autoserve` without explicit configuration
+
+
+0.4.0
+-----
+- add type annotations
+- drop support for Python 2 and Python 3.5
+  (`#8 <https://github.com/jugmac00/flask-reuploaded/issues/8>`_)
+- deprecate `patch_request_class`
+  (`#43 <https://github.com/jugmac00/flask-reuploaded/issues/43>`_)
+- use a `src` directory for source code
+  (`#21 <https://github.com/jugmac00/flask-reuploaded/issues/21>`_)
+- add tox env for check-python-versions
+  (`#20 <https://github.com/jugmac00/flask-reuploaded/issues/20>`_)
+- add flake8-bugbear
+- add short contribution guide
+  (`#6 <https://github.com/jugmac00/flask-reuploaded/issues/6>`_)
+- add `getting started`
+  (`#59 <https://github.com/jugmac00/flask-reuploaded/issues/59>`_)
+- delete broken example and add minimal example to README
+  (`#15 <https://github.com/jugmac00/flask-reuploaded/issues/15>`_)
+- add support for Python 3.9
+- use gh actions instead of Travis CI
+
+
+0.3.2
+-----
+- documentation update
+  (`#5 <https://github.com/jugmac00/flask-reuploaded/issues/5>`_)
+
+  * update docs/index.rst
+  * use blue ReadTheDocs theme
+  * update sphinx configuration
+  * add documentation link to `setup.py`, so it shows on PyPi
+  * add note about documentation in the README file
+  * delete old theme files
+- configure `isort` to force single line imports
+
+
+0.3.1
+-----
+- add badges to README
+  (`# 31 <https://github.com/jugmac00/flask-reuploaded/issues/31>`_)
+- add migration guide from `Flask-Uploads` to `Flask-Reuploaded`
+  (`#11 <https://github.com/jugmac00/flask-reuploaded/issues/11>`_)
+- add packaging guide
+  (`#28 <https://github.com/jugmac00/flask-reuploaded/issues/28>`_)
+- update installation instruction in README
+
+
+0.3
+---
+
+Besides including four years of unreleased changes from the original
+package, most notable the fix for the Werkzeug API change, the
+following changes happened since forking the original package.
+
+- rename package from `Flask-Uploads` to `Flask-Reuploaded`
+  (`#10 <https://github.com/jugmac00/flask-reuploaded/issues/10>`_)
+- update `setup.py`
+  (`#12 <https://github.com/jugmac00/flask-reuploaded/issues/12>`_)
+- start using pre-commit.com
+  (`#4 <https://github.com/jugmac00/flask-reuploaded/issues/4>`_)
+- update README
+  (`#14 <https://github.com/jugmac00/flask-reuploaded/issues/14>`_)
+- setup CI (Travis)
+  (`#3 <https://github.com/jugmac00/flask-reuploaded/issues/3>`_)
+- fix broken tests
+  (`#13 <https://github.com/jugmac00/flask-reuploaded/issues/13>`_)
+- make use of `pytest` instead of the no longer maintained `nose`
+  (`#2 <https://github.com/jugmac00/flask-reuploaded/issues/2>`_)
+- add a changelog and start tracking changes
+  (`#1 <https://github.com/jugmac00/flask-reuploaded/issues/1>`_)

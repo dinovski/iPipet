@@ -1,0 +1,5 @@
+Flask==2.3.3
+Werkzeug==2.3.7
+lockfile==0.12.2
+markdown==3.4.4
+
