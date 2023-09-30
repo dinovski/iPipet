@@ -8,4 +8,4 @@ git checkout heroku
 flask run
 ```
 
-NOTE: some of the files are missing for the demos/eamples.
+NOTE: some of the files are missing for the demos/examples.
