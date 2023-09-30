@@ -83,7 +83,7 @@ default_shared_designs = [
 
 # use csv sniffer to handle delimiters, spaces, quotes etc
 def opencsv(filename):
-    f = open(filename, "rU")  # U takes care of mac newline character
+    f = open(filename, "r") 
     dialect = csv.Sniffer().sniff(f.read())
     f.seek(0)
     reader = csv.reader(f, dialect)
