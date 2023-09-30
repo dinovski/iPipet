@@ -205,7 +205,7 @@ def add_shared_community_design(description, id, plate_type, pipet_type):
         with lock:
             data = []
             try:
-                data = json.load(file(community_public_file))
+                data = json.load(open(community_public_file))
             except:
                 pass
             data.append(
@@ -449,7 +449,7 @@ def sendemail(email, description, link):
 @app.route("/show/<id>")
 def show(id):
     json_path, csv_path = files_from_id(id)
-    info = json.load(file(json_path))
+    info = json.load(open(json_path))
 
     return render_template("show.html", info=info)
 
@@ -503,7 +503,7 @@ def run(id):
 @app.route("/data/<id>")
 def data(id):
     json_path, csv_path = files_from_id(id)
-    info = json.load(file(json_path))
+    info = json.load(open(json_path))
     foo = info["plate_type"]
     data = load_plating_csv(foo, csv_path)
     return jsonify(data=data)
@@ -524,7 +524,7 @@ def community():
     data = []
     data.extend(default_shared_designs)
     try:
-        tmp = json.load(file(community_public_file))
+        tmp = json.load(open(community_public_file))
         data.extend(tmp)
     except:
         pass
@@ -532,8 +532,4 @@ def community():
 
 
 if __name__ == "__main__":
-    ## NOTE: Running "./pooling.py" directly starts the DEVELOPMENT version,
-    ##       Using TCP port 5106,
-    ##       accessible with http://ipipetdev.teamerlich.org/
-    ##       See /etc/lighttpd/conf-enabled/90-5-vhost-ipipet.teamerlich.org.conf
-    app.run(host="0.0.0.0", port=5106)
+    app.run(debug=True, port=33507)
