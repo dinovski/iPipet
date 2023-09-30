@@ -532,5 +532,6 @@ def community():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv('PORT'))
+    # Heroku uses gunicorn as HTTP server
+    port = int(os.getenv('PORT', 5000))
     app.run(debug=True, port=port)
