@@ -532,4 +532,5 @@ def community():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=33507)
+    port = int(os.getenv('PORT'))
+    app.run(debug=True, port=port)
