@@ -1,5 +1,7 @@
 ipipet.teamerlich.org is no longer maintained. Below are instructions to run iPipet locally:
 
+You can run the flask app locally from the 'heroku' branch.
+
 **Local setup:**
 
 Create system user 'ipipet':
@@ -18,3 +20,4 @@ Run the flask app with gunicorn as user ipipet:
 ```
 sudo ./pooling.sh start
 ```
+
