@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5105:5105"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
