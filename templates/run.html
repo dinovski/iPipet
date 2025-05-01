@@ -43,9 +43,9 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	</div>
 	<div id="replace_plate_message">
 		REPLACE
-		<span class="label label-grey" id="replace_plate_message_place">XXXXX</span>
+		<span class="label label-default" id="replace_plate_message_place">XXXXX</span>
 		with
-		<span class="label label-grey" id="replace_plate_message_id">XXXXX</span>
+		<span class="label label-default" id="replace_plate_message_id">XXXXX</span>
 	</div>
 
 
@@ -102,264 +102,184 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 </div> <!-- plates bar -->
 
 <script>
+	
+	// Global state
+	let plating_steps = [];
+	let prev_src_plate_name = "";
+	let prev_dst_plate_name = "";
+	let current_step = 0;
 
-var plating_steps;
-var prev_src_plate_name;
-var prev_dst_plate_name;
-var current_step = 0;
-
-function flash_window()
-{
-    $("body").css("background","white");
-    setTimeout(flash_window_off,750);
-}
-
-function flash_window_off()
-{
-    //Restore normalcy
-    $("body").css("background","black");
-}
-
-function start()
-{
-    $("div#run_start_button").hide();
-    prev_src_plate_name = "";
-    prev_dst_plate_name = "";
-    set_step(1);
-}
-
-function move_step(direction)
-{
-    var new_step = current_step + 
-    {% if info.pipet_type == "single" %}
-    			direction ;
-    {% else %}
-			direction * 8 ;
-    {% endif %}
-    set_step(new_step);
-}
-
-function jump_step()
-{
-    var new_step = $("#current_step").val();
-    {% if info.pipet_type == "single" %}
-    {% else %}
-	new_step=(new_step-1)*8+1;			
-    {% endif %}
-    set_step(new_step);
-}
-
-function set_step(step)
-{
-    if (!isNaN(parseInt(step))) {
-        step = parseInt(step);
-        if (step >= 1 && step <= plating_steps.length) {
-	    current_step = step ;
-    	    $("#last_step_warning").hide();
-        } else {
-	    if (step >= plating_steps.length) {
-		$("#last_step_warning").show();
-	    }
+	function flash_window() {
+		$("body").css("background", "white");
+		setTimeout(() => $("body").css("background", "black"), 750);
 	}
-    }
-{% if info.pipet_type == "single" %}
-    $("#current_step").val(current_step);
- {% else %}
-     $("#current_step").val(Math.floor(current_step/8)+1);
-{% endif %}
 
-    /* NOTE:
-       The order&content of the fields is tightly-coupled
-       to the python function 'load_plating_csv()' */
-       /*
-    var step_details = plating_steps[current_step-1];
+	function start() {
+		$("#run_start_button").hide();
+		prev_src_plate_name = "";
+		prev_dst_plate_name = "";
+		set_step(1);
+	}
 
-    var step_num       = step_details[0];
-    var src_well_num   = step_details[2];
-    var src_well_name  = step_details[3];
-    var dst_plate_name = step_details[4];
-    var dst_well_num   = step_details[5];
-    var dst_well_name  = step_details[6];
-    var volume         = step_details[7];
-    var specimen_name  = step_details[9];
-*/
-    reset_plate_wells("src_plate")
-    reset_plate_wells("dst_plate")
+	function move_step(direction) {
+		const step_size = {% if info.pipet_type == "single" %} 1 {% else %} 8 {% endif %};
+	set_step(current_step + direction * step_size);
+	}
 
-    $("#volume_info").hide();
-    $("div#run_prev_next_buttons").hide();
-    check_replace_source_plate();
-}
+	function jump_step() {
+		let new_step = parseInt($("#current_step").val());
+		if (!isNaN(new_step)) {
+			{% if info.pipet_type != "single" %}
+			new_step = (new_step - 1) * 8 + 1;
+			{% endif %}
+			set_step(new_step);
+		}
+	}
 
-function check_replace_source_plate()
-{
-    var step_details = plating_steps[current_step-1];
-    var src_plate_name = step_details[1];
+	function set_step(step) {
+		if (!isNaN(step) && step >= 1) {
+			if (step <= plating_steps.length) {
+				current_step = step;
+				$("#last_step_warning").hide();
+			} else {
+				$("#last_step_warning").show();
+			}
+		}
+		{% if info.pipet_type == "single" %}
+		$("#current_step").val(current_step);
+		{% else %}
+		$("#current_step").val(Math.floor(current_step / 8) + 1);
+		{% endif %}
 
-    if ( src_plate_name === prev_src_plate_name ) {
-        // Current Source Plate is OK (no need to replace it).
-        $("div#run_replace_src_plate").hide();
-        source_plate_ok();
-    } else {
-        //User need to replace source plate
-        set_plate_alignment_mode("src_plate","{{ well_color }}");
-        $("div#run_replace_src_plate").show();
-        $("#replace_src_plate_label_name").text(src_plate_name);
-	$("#replace_plate_message").show();
-        $("#replace_plate_message_place").text("source");
-        $("#replace_plate_message_id").text(src_plate_name);
+		reset_plate_wells("src_plate");
+		reset_plate_wells("dst_plate");
+		$("#volume_info").hide();
+		$("#run_prev_next_buttons").hide();
+		check_replace_source_plate();
+	}
 
-        if (current_step>1) {
-            //Don't flash the window if this is the first step
-            flash_window();
-        }
-    }
-}
+	function check_replace_source_plate() {
+		const step_details = plating_steps[current_step - 1];
+		const src_plate_name = step_details?.[1];
+		if (src_plate_name === prev_src_plate_name) {
+			$("#run_replace_src_plate").hide();
+			source_plate_ok();
+		} else {
+			set_plate_alignment_mode("src_plate", "{{ well_color }}");
+			$("#run_replace_src_plate").show();
+			$("#replace_src_plate_label_name").text(src_plate_name);
+			$("#replace_plate_message").show();
+			$("#replace_plate_message_place").text("source");
+			$("#replace_plate_message_id").text(src_plate_name);
 
-function source_plate_ok()
-{
-    $("div#run_replace_src_plate").hide();
+			if (current_step > 1) flash_window();
+		}
+	}
 
-    var step_details = plating_steps[current_step-1];
-    var src_plate_name = step_details[1];
+	function source_plate_ok() {
+		$("#run_replace_src_plate").hide();
+		const src_plate_name = plating_steps[current_step - 1]?.[1];
+		prev_src_plate_name = src_plate_name;
+		reset_plate_wells("src_plate");
+		check_replace_destination_plate();
+	}
 
-    prev_src_plate_name = src_plate_name ;
-    reset_plate_wells("src_plate");
+	function check_replace_destination_plate() {
+		const dst_plate_name = plating_steps[current_step - 1]?.[4];
+		if (dst_plate_name === prev_dst_plate_name) {
+			$("#run_replace_dest_plate").hide();
+			destination_plate_ok();
+		} else {
+			set_plate_alignment_mode("dst_plate", "{{ well_color }}");
+			$("#run_replace_dest_plate").show();
+			$("#replace_dest_plate_label_name").text(dst_plate_name);
+			$("#replace_plate_message").show();
+			$("#replace_plate_message_place").text("destination");
+			$("#replace_plate_message_id").text(dst_plate_name);
 
-    // When the source plate is OK, check the destination plate
-    check_replace_destination_plate();
-}
+			if (current_step > 1) flash_window();
+		}
+	}
 
-function check_replace_destination_plate()
-{
-    var step_details = plating_steps[current_step-1];
-    var dst_plate_name = step_details[4];
+	function destination_plate_ok() {
+		$("#run_replace_dest_plate").hide();
+		$("#replace_plate_message").hide();
+		prev_dst_plate_name = plating_steps[current_step - 1]?.[4];
+		reset_plate_wells("dst_plate");
+		show_step_wells();
+	}
 
-    if ( dst_plate_name === prev_dst_plate_name ) {
-        // Current Destination plate is OK (no need to replace it)
-        $("div#run_replace_dest_plate").hide();
-        destination_plate_ok();
-    } else {
-        set_plate_alignment_mode("dst_plate","{{ well_color }}");
-        $("div#run_replace_dest_plate").show();
-        $("#replace_dest_plate_label_name").text(dst_plate_name);
-	$("#replace_plate_message").show();
-        $("#replace_plate_message_place").text("destination");
-        $("#replace_plate_message_id").text(dst_plate_name);
-        if (current_step>1) {
-            //Don't flash the window if this is the first step
-            flash_window();
-        }
-    }
-}
+	function show_step_wells() {
+		$("#run_prev_next_buttons").show();
+		reset_plate_wells("src_plate");
+		reset_plate_wells("dst_plate");
 
-function destination_plate_ok()
-{
-    $("div#run_replace_dest_plate").hide();
-    $("#replace_plate_message").hide();
-    var step_details = plating_steps[current_step-1];
-    var dst_plate_name = step_details[4];
+		{% if info.pipet_type == "single" %}
+		const step_details = plating_steps[current_step - 1];
+		if (step_details) {
+			set_well_color("src_plate", step_details[3], "{{ well_color }}");
+			set_well_color("dst_plate", step_details[6], "{{ well_color }}");
+		}
+		{% else %}
+		for (let i = 0; i < 8; i++) {
+			const step_details = plating_steps[current_step - 1 + i];
+			if (step_details) {
+				set_well_color("src_plate", step_details[3], "{{ well_color }}");
+				set_well_color("dst_plate", step_details[6], "{{ well_color }}");
+			}
+		}
+		{% endif %}
 
-    prev_dst_plate_name = dst_plate_name;
-    reset_plate_wells("dst_plate");
+		const step = plating_steps[current_step - 1];
+		if (step?.length >= 8) {
+			$("#volume_info").show();
+			$("#volume_value").text(step[7]);
+		} else {
+			$("#volume_info").hide();
+		}
+	}
 
-    // When Destination Plate is OK,
-    // show the wells to pipette
+	function load_plate_data(json) {
+		plating_steps = json.data;
+		current_step = 0;
+		$("#run_data_loading").hide();
+		$("#run_start_button").show();
+	}
 
-    show_step_wells();
-}
+	function recalc_sidebar_width() {
+		const plate_width_pixels = d3_plate_width() * {{ dpi / 2.54
+	}};
+	const window_width_pixels = $(window).width();
+	const window_height_pixels = $(window).height();
+	const side_bar_width_pixels = window_width_pixels - plate_width_pixels - 2;
 
-function show_step_wells()
-{
-    // Show the next/prev buttons,
-    // The user can pipette to his/hers heart's content
-    $("div#run_prev_next_buttons").show();
-    
-
-{% if info.pipet_type =="single" %}
-	    var step_details = plating_steps[current_step-1];
-	    var src_well_name  = step_details[3];
-	    var dst_well_name  = step_details[6];
-
-	    reset_plate_wells("src_plate");
-	    set_well_color("src_plate",src_well_name,"{{ well_color }}");
-
-	    reset_plate_wells("dst_plate");
-	    set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
-{% else %}
-	    reset_plate_wells("src_plate");
-	    reset_plate_wells("dst_plate");
-	    for (var i = 0; i < 8; i++) {
-		var step_details = plating_steps[current_step-1+i];
-		var src_well_name  = step_details[3];
-		var dst_well_name  = step_details[6];
-		set_well_color("src_plate",src_well_name,"{{ well_color }}");
-		set_well_color("dst_plate",dst_well_name,"{{ well_color }}");
-	     }
-{% endif %}
-    
-    /* Show the volume, if needed */
-    if (step_details.length >= 8) {
-	/* We have "volume" information, show the volume 'div' */
-	$("#volume_info").show();
-        $("#volume_value").text(step_details[7]);
-    } else {
-	$("#volume_info").hide();
-    }
-}
-
-
-/* This (callback) function is called after
-   the JSON data (with the plating steps) is loaded.
-
-   It hides the "please wait" message,
-   and shows the "Start button" message.
-*/
-function load_plate_data(json)
-{
-    plating_steps = json.data ;
-    current_step = 0 ;
-    $("div#run_data_loading").hide();
-    $("div#run_start_button").show();
-}
-
-function recalc_sidebar_width()
-{
-	/* Calculate the width of the left-side bar (where the buttons are),
-	   so that the plates will have enough space,
-	   and will be aligned to the right side of the window.*/
-	var plate_width_pixels = d3_plate_width() * {{ dpi /2.54 }};
-	var window_width_pixels = $(window).width();
-	var window_height_pixels = $(window).height();
-	var side_bar_border_width = 2 ;
-	var side_bar_width_pixels = window_width_pixels - plate_width_pixels - side_bar_border_width ;
-	var side_bar_height_pixels = window_height_pixels - side_bar_border_width ;
-	$("div#buttons_bar").width(side_bar_width_pixels);
-	$("div#buttons_bar").height(side_bar_height_pixels-10);
+	$("#buttons_bar").width(side_bar_width_pixels);
+	$("#buttons_bar").height(window_height_pixels - 10);
 
 	{% if handedness == 'right' %}
-	$("div#buttons_bar").css('left',0);
-	/*'left' defines the left side of plate_width_pixels, in other words, the left side of the div that contains both plates*/
-	$("div#plates_bar").css('left',side_bar_width_pixels+1);
+	$("#buttons_bar").css('left', 0);
+	$("#plates_bar").css('left', side_bar_width_pixels + 1);
 	{% else %}
-	$("div#plates_bar").css('left',0);
-	$("div#buttons_bar").css('right',0);
-	$("div#buttons_bar").css('padding-left',65);
+	$("#plates_bar").css('left', 0);
+	$("#buttons_bar").css('right', 0);
+	$("#buttons_bar").css('padding-left', 65);
 	{% endif %}
 }
 
-$(function(){
+	// Initialize
+	$(function () {
+		window.onresize = recalc_sidebar_width;
 
-	window.onresize = recalc_sidebar_width;
+		d3_generate_plate_data("src_plate", {{ dpi / 2.54 }});
+	d3_generate_plate_data("dst_plate", {{ dpi / 2.54 }});
 
-	d3_generate_plate_data("src_plate", {{ dpi/2.54 }} );
-	d3_generate_plate_data("dst_plate", {{ dpi/2.54 }} );
-
-    $.getJSON("{{ data_url }}")
-     .done(load_plate_data)
-     .fail(function() {
-            alert("Failed to get plating information (url = {{ data_url }})");
-          });
+	// Updated using modern fetch
+	d3.json("{{ data_url }}")
+		.then(load_plate_data)
+		.catch(error => {
+			console.error("Failed to get plating information:", error);
+			alert("Failed to get plating information (url = {{ data_url }})");
+		});
 
 	recalc_sidebar_width();
 });

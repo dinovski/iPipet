@@ -5,7 +5,8 @@ You can run the flask app locally from the 'heroku' branch:
 ```
 git clone https://github.com/dinovski/iPipet.git
 cd iPipet
-git checkout heroku
+git fetch origin
+git checkout -b heroku origin/heroku
 flask run
 ```
 
