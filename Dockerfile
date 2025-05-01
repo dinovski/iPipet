@@ -53,5 +53,7 @@ EXPOSE 5106
 
 EXPOSE 5105
 
+EXPOSE 5000
+
 # Run the Flask app
 CMD ["bash", "-c", "./pooling.sh start && tail -f /dev/null"]
