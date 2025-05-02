@@ -48,9 +48,9 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 </script>
     <link rel="stylesheet" href="{{ url_for("static", filename="bootstrap.min.css") }}" >
     <link rel="stylesheet" href="{{ url_for("static", filename="pooling.css") }}" >
-    <script src="{{ url_for("static", filename="jquery-2.0.3.min.js") }}"> </script>
+    <script src="{{ url_for("static", filename="jquery-3.7.1.min.js") }}"> </script>
     <script src="{{ url_for("static", filename="bootstrap.min.js") }}"></script>
-    <script src="{{ url_for("static", filename="d3.v3.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="d3.v5.min.js") }}"></script>
     {% if info and info.plate_type == 384 %}
     <script src="{{ url_for("static", filename="d3_plate384.js") }}"></script>
     {% else %}

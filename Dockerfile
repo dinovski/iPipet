@@ -51,9 +51,9 @@ RUN python3.4 -m ensurepip && python3.4 -m pip install -r requirements.txt
 # Expose Flask port
 EXPOSE 5000
 
-EXPOSE 5106
-
 EXPOSE 5105
+
+EXPOSE 5106
 
 # Run the Flask app
 CMD ["bash", "-c", "./pooling.sh start && tail -f /dev/null"]
