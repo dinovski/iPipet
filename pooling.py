@@ -462,8 +462,4 @@ def community():
 
 
 if __name__ == "__main__":
-    ## NOTE: Running "./pooling.py" directly starts the DEVELOPMENT version,
-    ##       Using TCP port 5000,
-    ##       accessible with http://ipipetdev.teamerlich.org/
-    ##       See /etc/lighttpd/conf-enabled/90-5-vhost-ipipet.teamerlich.org.conf
-    app.run(host='0.0.0.0',port=5000)
+    app.run(host='0.0.0.0', port=5106)
