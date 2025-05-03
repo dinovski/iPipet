@@ -3,3 +3,4 @@
 *.pid
 uploads/*.csv
 uploads/*.json
+venv/
