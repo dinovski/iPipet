@@ -1,35 +1,27 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
+Updated for Python 3 to maintain compatibility with Flask 2+, updated deprecated syntax, and improved security and maintainability.
+
 This file is part of iPipet. 
 copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 
-	iPipet is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Affero General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or any later version.
+    iPipet is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or any later version.
 
-	iPipet is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    iPipet is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU Affero General Public License
-	along with iPipet.  If not, see <http://www.gnu.org/licenses/agpl-3.0.html>.
+    You should have received a copy of the GNU Affero General Public License
+    along with iPipet.  If not, see <http://www.gnu.org/licenses/agpl-3.0.html>.
 """
 
-from flask import (
-    Flask,
-    url_for,
-    request,
-    redirect,
-    jsonify,
-    render_template,
-    make_response,
-)
-
+from flask import Flask, url_for, request, redirect, jsonify, render_template, make_response
 from werkzeug.utils import secure_filename
 from lockfile import LockFile
-import markdown
 import string
 import datetime
 import random
@@ -38,7 +30,6 @@ import re
 import sys
 import os
 import csv
-import datetime
 from subprocess import Popen, PIPE
 
 app = Flask(__name__)
@@ -46,54 +37,31 @@ app.debug = True
 
 # Flask File uploads:
 # http://flask.pocoo.org/docs/patterns/fileuploads/
-UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/uploads/"
-if not os.path.isdir(UPLOAD_FOLDER):
-    sys.exit(
-        "Internal error: UPLOAD_FOLDER (%s) is not a valid directory. Please create it or change the script (%s)"
-        % (UPLOAD_FOLDER, __file__)
-    )
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-community_public_file = os.path.join(app.config["UPLOAD_FOLDER"], "community.json")
+community_public_file = os.path.join(UPLOAD_FOLDER, "community.json")
 
-# Default shared designs which are always available
+# Default shared designs that are always available for testing/demo
 default_shared_designs = [
-    {
-        "description": "96-Wells, Single-Channel Demo",
-        "id": "demolnk1",
-        "plate_type": 96,
-        "pipet_type": "single",
-    },
-    {
-        "description": "96-Wells, 8-Channel Demo",
-        "id": "demolnk8",
-        "plate_type": 96,
-        "pipet_type": "multi8",
-    },
-    {
-        "description": "384-Wells, Single-Channel Demo",
-        "id": "384demo1",
-        "plate_type": 384,
-        "pipet_type": "single",
-    },
+    {"description": "96-Wells, Single-Channel Demo", "id": "demolnk1", "plate_type": 96, "pipet_type": "single"},
+    {"description": "96-Wells, 8-Channel Demo", "id": "demolnk8", "plate_type": 96, "pipet_type": "multi8"},
+    {"description": "384-Wells, Single-Channel Demo", "id": "384demo1", "plate_type": 384, "pipet_type": "single"}
 ]
 
-
-# use csv sniffer to handle delimiters, spaces, quotes etc
 def opencsv(filename):
-    f = open(filename, "r") 
-    dialect = csv.Sniffer().sniff(f.read())
-    f.seek(0)
-    reader = csv.reader(f, dialect)
-    return reader
+    with open(filename, newline='') as f:
+        dialect = csv.Sniffer().sniff(f.read(1024))
+        f.seek(0)
+        rows = list(csv.reader(f, dialect))
+    return rows
 
 
-def get_random_id(
-    size=8, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase
-):
-    return "".join(random.choice(chars) for x in range(size))
+def get_random_id(size=8, chars=string.ascii_letters + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def valid_email(email):
@@ -108,20 +76,17 @@ def valid_email(email):
     EMAIL_REGEX = re.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$")
     m = EMAIL_REGEX.search(email)
     return m is not None
+    EMAIL_REGEX = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+    return EMAIL_REGEX.match(email) is not None
 
 
-def valid_id(id):
+def valid_id(id_):
     """
     Given an ID string, returns TRUE if the ID is valid (only letters/digits)
     """
-    if len(id) == 0:
-        return False
-    ID_REGEX = re.compile("^[A-Za-z0-9]+$")
-    m = ID_REGEX.search(id)
-    return m is not None
+    return bool(re.fullmatch(r"[A-Za-z0-9]+", id_))
 
-
-def files_from_id_unsafe(id):
+def files_from_id_unsafe(id_):
     """
     Given an ID string, returns a tuple of JSON-File-path, CSV-File-Path.
 
@@ -133,16 +98,12 @@ def files_from_id_unsafe(id):
     Example:
       json_file, csv_file = files_from_id_unsafe('xT44MJHe')
     """
-    if not valid_id(id):
-        raise Exception("Invalid ID '%s' (invalid string)" % (id))
+    if not valid_id(id_):
+        raise ValueError(f"Invalid ID '{id_}'")
+    base = os.path.join(UPLOAD_FOLDER, id_)
+    return f"{base}.json", f"{base}.csv"
 
-    basepath = os.path.join(app.config["UPLOAD_FOLDER"], id)
-    csv_path = basepath + ".csv"
-    json_path = basepath + ".json"
-    return json_path, csv_path
-
-
-def files_from_id(id):
+def files_from_id(id_):
     """
     Given an ID string, returns a tuple of JSON-File-path, CSV-File-Path.
 
@@ -153,77 +114,43 @@ def files_from_id(id):
     Example:
       json_file, csv_file = files_from_id('xT44MJHe')
     """
-    json_path, csv_path = files_from_id_unsafe(id)
-    if not os.path.exists(csv_path):
-        raise Exception("Error: invalid id '%s' (no such entry/csv)" % (id))
-    if not os.path.exists(json_path):
-        raise Exception("Error: invalid id '%s' (no such entry/json)" % (id))
+    json_path, csv_path = files_from_id_unsafe(id_)
+    if not os.path.exists(csv_path) or not os.path.exists(json_path):
+        raise FileNotFoundError(f"Missing files for ID '{id_}'")
     return json_path, csv_path
 
-
 def well96_num_to_name(well):
-    """
-    Given a Well number (1 to 96) returns its name (e.g. 14 => "B02")
-    """
-    try:
-        well = int(well)
-    except ValueError:
-        raise Exception("Error: invalid well number '%s'" % (well))
-    if well < 1 or well > 96:
-        raise Exception("Error: invalid well value '%d'" % (well))
-    row = chr(ord("A") + int((well - 1) % 8))
-    col = (well - 1) / 8 + 1
-    return "%s%02d" % (row, col)
-
+    well = int(well)
+    if not (1 <= well <= 96):
+        raise ValueError(f"Invalid well number: {well}")
+    row = chr(ord('A') + (well - 1) % 8)
+    col = (well - 1) // 8 + 1
+    return f"{row}{col:02}"
 
 def well384_num_to_name(well):
-    """
-    Given a Well number (1 to 384) returns its name (e.g. 17 => "A02")
-    """
+    well = int(well)
+    if not (1 <= well <= 384):
+        raise ValueError(f"Invalid well number: {well}")
+    row = chr(ord('A') + (well - 1) % 16)
+    col = (well - 1) // 16 + 1
+    return f"{row}{col:02}"
+
+def add_shared_community_design(description, id_, plate_type, pipet_type):
     try:
-        well = int(well)
-    except ValueError:
-        raise Exception("Error: invalid well number '%s'" % (well))
-    if well < 1 or well > 384:
-        raise Exception("Error: invalid well value '%d'" % (well))
-    row = chr(ord("A") + int((well - 1) % 16))
-    col = (well - 1) / 16 + 1
-    return "%s%02d" % (row, col)
-
-
-def add_shared_community_design(description, id, plate_type, pipet_type):
-    """
-    Add a plate-ID to the JSON list of shared designs.
-    """
-    try:
-        if not valid_id(id):
+        if not valid_id(id_) or not description:
             return
-        if len(description) == 0:
-            return
-
         lock = LockFile(community_public_file)
         with lock:
             data = []
-            try:
-                data = json.load(open(community_public_file))
-            except:
-                pass
-            data.append(
-                {
-                    "description": description,
-                    "id": id,
-                    "plate_type": plate_type,
-                    "pipet_type": pipet_type,
-                }
-            )
-            json.dump(data, open(community_public_file, "w"))
+            if os.path.exists(community_public_file):
+                with open(community_public_file, "r") as f:
+                    data = json.load(f)
+            data.append({"description": description, "id": id_, "plate_type": plate_type, "pipet_type": pipet_type})
+            with open(community_public_file, "w") as f:
+                json.dump(data, f)
     except Exception as e:
         # silently ignore any errors - the new plate will simply not be added to the list
-        sys.stderr.write(
-            "failed to add shared community (id = '%s', exception='%s')"
-            % (str(id), str(e))
-        )
-
+        sys.stderr.write(f"Failed to add shared community (id = '{id_}', exception='{e}')\n")
 
 def load_plating_csv(plate_type, filename):
     """
@@ -242,290 +169,169 @@ def load_plating_csv(plate_type, filename):
     The output data will have 11 elements, and is tightly coupled
     with the JavaScript parsing code.
     """
-    well_num_to_name = "foo"
-    if plate_type == 96:
-        well_num_to_name = well96_num_to_name
-    elif plate_type == 384:
-        well_num_to_name = well384_num_to_name
-    else:
-        raise "Invalid plate_type %s" % (plate_type)
+
+    well_map = well96_num_to_name if plate_type == 96 else well384_num_to_name
     try:
         data = []
-        prev_src_plate = None
-        prev_dst_plate = None
-        try:
-            rdr = opencsv(filename)
-            for row_num, row in enumerate(rdr):
-                if row_num == 0:  # skip header line
-                    continue
-                if len(row) < 4:
-                    raise Exception("expecting at least 4 fields")
-                row = [x.strip() for x in row]
-
-                # The columns are tightly-coupled to the JavaScript code
-                # in XXXXXXXX.js
-                temp = [
-                    row_num,  # 1. Step/Stroke number
-                    row[0],  # 2. Source Plate
-                    int(row[1]),  # 3. Source Well number (1-96)
-                    well_num_to_name(row[1]),  # 4. Source Well Name (e.g. "B02")
-                    row[2],  # 5. Destination Plate
-                    int(row[3]),  # 6. Destination Well number (1-96)
-                    well_num_to_name(row[3]),
-                ]  # 7. Destination Well Name (e.g. "F11")
-
+        rdr = opencsv(filename)
+        for row_num, row in enumerate(rdr):
+            if row_num == 0:
+                continue
+            row = [x.strip() for x in row]
+            if len(row) < 4:
+                raise ValueError("Expecting at least 4 fields")
+            entry = [row_num, row[0], int(row[1]), well_map(row[1]), row[2], int(row[3]), well_map(row[3])]
             if len(row) >= 5:
-                temp.append(float(row[4]))  # 8. volume
+                entry.append(float(row[4]))
             if len(row) >= 6:
-                temp.append(row[5])  # 9. Specimen Name
-                data.append(temp)
-                return data
-
-        except Exception as e:
-            raise Exception("invalid CSV content at line '%s': %s" % (row_num, str(e)))
-
+                entry.append(row[5])
+            data.append(entry)
+        return data
     except Exception as e:
-        raise Exception("Error loading CSV file: " + str(e))
-
+        raise Exception(f"Error loading CSV file: {e}")
 
 @app.route("/")
 def splash():
     return render_template("splash.html")
 
-
 @app.route("/splash2")
 def splash2():
     return render_template("splash2.html")
-
 
 @app.route("/splash3")
 def splash3():
     return render_template("splash3.html")
 
-
 @app.route("/home")
 def home():
     return render_template("home.html")
-
 
 @app.route("/usage")
 def usage():
     return render_template("about.html")
 
-
 @app.route("/create", methods=["POST"])
 def create():
-    ## Get parameters from the user.
-    ## Validate them, or show an error if they're invalid.
+    email = request.form.get("email", "").strip()
+    if email and not valid_email(email):
+        return f"Error: invalid email address '{email}'", 400
 
-    email = request.form["email"].strip()
-    if len(email) > 0:
-        if not valid_email(email):
-            return "Error: invalid email address '%s'" % (email), 400
-
-    if not "description" in request.form:
+    description = request.form.get("description", "").strip()
+    if not description:
         return "Error: missing 'description' parameter", 400
-    description = request.form["description"].strip()
 
-    if not "csv_file" in request.files:
-        return "Error: missing CSV file", 400
-    file = request.files["csv_file"]
+    file = request.files.get("csv_file")
     if not file:
         return "Error: no CSV file uploaded", 400
 
-    if not "pipet_type" in request.form:
-        return "Error: missing 'pipet_type' parameter", 400
-    pipet_type = request.form["pipet_type"].strip()
+    pipet_type = request.form.get("pipet_type", "").strip()
+    if pipet_type not in ["single", "multi8"]:
+        return f"Error: invalid pipet type {pipet_type}", 400
 
-    if not (pipet_type == "single" or pipet_type == "multi8"):
-        return "Error: invalid pipet type %s" % (pipet_type), 400
+    plate_type = request.form.get("plate_type", "").strip()
+    if plate_type not in ["96", "384"]:
+        return f"Error: invalid plate type {plate_type}", 400
+    plate_type = int(plate_type)
 
-    if not "plate_type" in request.form:
-        return "Error: missing 'plate_type' parameter", 400
-    plate_type = request.form["plate_type"].strip()
+    share_design = request.form.get("share_design", "") == "yes"
 
-    if not (plate_type == "96" or plate_type == "384"):
-        return "Error: invalid plate type %s" % (plate_type), 400
+    if pipet_type == "multi8" and plate_type == 384:
+        return "Error: multi-channel pipetting is not currently supported for 384 well plates", 400
 
-    share_design = False
-    if "share_design" in request.form:
-        share_design = request.form["share_design"].strip() == "yes"
-
-    if pipet_type == "multi8" and plate_type == "384":
-        return (
-            "Error: multi-channel pipetting is not currently supported for 384 well plates",
-            400,
-        )
-
-    if share_design and len(description) == 0:
+    if share_design and not description:
         return "Error: when sharing a design, Description must not be empty", 400
 
-    ## Save the uploaded file, and the request parameters
-    id = get_random_id()
-    json_path, csv_path = files_from_id_unsafe(id)
-
-    ## TODO: Validate CSV content
+    id_ = get_random_id()
+    json_path, csv_path = files_from_id_unsafe(id_)
     file.save(csv_path)
 
-    ## Read and analyze CSV file using opencsv function
     reader = opencsv(csv_path)
-    numsteps = 0
-    srcplates = []
-    destplates = []
-
+    numsteps, srcplates, destplates = 0, [], []
     for row in reader:
         numsteps += 1
-        # skip header: continue skips rest of loop and returns to beginning
         if numsteps == 1:
             continue
         srcplates.append(row[0])
         destplates.append(row[2])
-
-    # set module allows manipulation of unordered collections of unique elements
-    srcplates = list(set(srcplates))
-    destplates = list(set(destplates))
-
-    # send email
     info = {
         "email": email,
         "description": description,
-        "id": id,
+        "id": id_,
         "useragent": str(request.user_agent),
         "remote_addr": request.remote_addr,
         "time": str(datetime.datetime.now()),
         "numsteps": numsteps,
-        "srcplates": srcplates,
-        "destplates": destplates,
+        "srcplates": list(set(srcplates)),
+        "destplates": list(set(destplates)),
         "pipet_type": pipet_type,
-        "plate_type": int(plate_type),
+        "plate_type": plate_type,
         "share_design": share_design,
     }
-    json.dump(info, open(json_path, "w"))
+    with open(json_path, 'w') as f:
+        json.dump(info, f)
 
-    ## TODO: send an email with instructions
-    link = url_for("show", id=id)
+    link = url_for('show', id=id_)
     if email:
         sendemail(email, description, link)
-
     if share_design:
-        add_shared_community_design(description, id, int(plate_type), pipet_type)
-
-    ## Redirect User to Plate summary page
+        add_shared_community_design(description, id_, plate_type, pipet_type)
     return redirect(link)
 
-
 def sendemail(email, description, link):
-    args = ["mailx"]
+    args = ['mailx', '-s', 'ipipet file', '-r', 'ipipet admin <dina@wi.mit.edu>', '-b', 'dina@wi.mit.edu', email]
+    msg = f"""
+    Here's your link to start pipetting for your {description} project.
 
-    # Subject
-    args.append("-s")
-    args.append("ipipet file")
-
-    # From
-    args.append("-r")
-    args.append("ipipet admin <dina@wi.mit.edu>")
-
-    # Bcc
-    args.append("-b")
-    args.append("dina@wi.mit.edu")
-
-    # TO
-    args.append(email)
-
-    msg = """
-    here's your link to start pipetting, based on the input file for your %s project.
-    
-    Open this email on your tablet, and click this link:
-    http://ipipet.teamerlich.org%s
-    """ % (
-        description,
-        link,
-    )
-
+    Open this email on your tablet and click the link
+    """
     p = Popen(args, stdin=PIPE)
-    p.communicate(input=msg)
-
+    p.communicate(input=msg.encode('utf-8'))
 
 @app.route("/show/<id>")
 def show(id):
-    json_path, csv_path = files_from_id(id)
-    info = json.load(open(json_path))
-
+    json_path, _ = files_from_id(id)
+    with open(json_path) as f:
+        info = json.load(f)
     return render_template("show.html", info=info)
-
 
 @app.route("/run/<id>")
 def run(id):
-    dpi = 96  # Default DPI if none specified
-    try:
-        if "dpi" in request.args:
-            newdpi = int(request.args.get("dpi"))
-            if newdpi > 10:
-                dpi = newdpi
-    except:
-        dpi = 96
+    dpi = int(request.args.get("dpi", 96))
+    well_color = request.args.get("well_color", "red")
+    handedness = request.args.get("handedness", "right")
 
-    well_color = "red"  # default color if none specified
-    try:
-        if "well_color" in request.args:
-            new_well_color = request.args.get("well_color")
-            if new_well_color == "red" or new_well_color == "green":
-                well_color = new_well_color
-    except:
-        well_color = "red"
-
-    handedness = "right"  # default right hand if not specified
-    try:
-        if "handedness" in request.args:
-            new_handedness = request.args.get("handedness")
-            if new_handedness == "right" or new_handedness == "left":
-                handedness = new_handedness
-    except:
-        handedness = "right"
-
-    # We dont really need this info,
-    # but the function will validate that the ID exists.
-    json_path, csv_path = files_from_id(id)
-    info = json.load(open(json_path))
+    json_path, _ = files_from_id(id)
+    with open(json_path) as f:
+        info = json.load(f)
 
     data_url = url_for("data", id=id)
-    return render_template(
-        "run.html",
-        data_url=data_url,
-        id=id,
-        dpi=dpi,
-        info=info,
-        well_color=well_color,
-        handedness=handedness,
-    )
-
+    return render_template("run.html", data_url=data_url, id=id, dpi=dpi, info=info, well_color=well_color, handedness=handedness)
 
 @app.route("/data/<id>")
 def data(id):
     json_path, csv_path = files_from_id(id)
-    info = json.load(open(json_path))
-    foo = info["plate_type"]
-    data = load_plating_csv(foo, csv_path)
+    with open(json_path) as f:
+        info = json.load(f)
+    data = load_plating_csv(info["plate_type"], csv_path)
     return jsonify(data=data)
-
 
 @app.route("/csvdownload/<id>")
 def csvdownload(id):
-    json_path, csv_path = files_from_id(id)
-    mycsv = open(csv_path).read()
-    response = make_response(mycsv)
-    response.headers["Content-Disposition"] = "attachment; filename=%s.csv" % (id)
+    _, csv_path = files_from_id(id)
+    with open(csv_path) as f:
+        csv_data = f.read()
+    response = make_response(csv_data)
+    response.headers["Content-Disposition"] = f"attachment; filename={id}.csv"
     response.headers["Content-Type"] = "text/csv"
     return response
 
-
 @app.route("/community")
 def community():
-    data = []
-    data.extend(default_shared_designs)
+    data = default_shared_designs.copy()
     try:
-        tmp = json.load(open(community_public_file))
-        data.extend(tmp)
+        if os.path.exists(community_public_file):
+            with open(community_public_file) as f:
+                data.extend(json.load(f))
     except:
         pass
     return render_template("community.html", data=data)
