@@ -9,5 +9,3 @@ git fetch origin
 git checkout -b heroku origin/heroku
 flask run
 ```
-
-NOTE: some of the files are missing for the demos/examples.

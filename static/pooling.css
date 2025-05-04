@@ -72,12 +72,12 @@ a.btn-splash{
 	width: 167px;
 	height: 39px;
 	display: block;
-	background-image: url('/static/learn_more_button_up.png');
+	background-image: url('/static/img/learn_more_button_up.png');
 }
 
 a.btn-splash:hover {
 	/* Stuff in here, applies when the mouse cursor is over the button */
-	background-image: url('/static/learn_more_button_down.png');
+	background-image: url('/static/img/learn_more_button_down.png');
 
 }
 
