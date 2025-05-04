@@ -32,12 +32,6 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     {% endif %}
 
-<!--
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
--->
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YQ1JPRYRC"></script>
 <script>
@@ -57,6 +51,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
     {% else %}
     <script src="{{ url_for("static", filename="JS/d3_plate96.js") }}"></script>
     {% endif %}
+    
 </head>
 <body {% if body_tag_id %}id="{{ body_tag_id}}"{% endif %} >
 {% block body %}{% endblock %}
