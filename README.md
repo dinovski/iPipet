@@ -1,6 +1,6 @@
 ipipet.teamerlich.org is no longer maintained.
 
-Run the flask app locally from the 'heroku' branch:
+Run the flask app locally:
 
 ```
 git clone https://github.com/dinovski/iPipet.git
