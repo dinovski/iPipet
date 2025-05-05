@@ -1,23 +1,11 @@
-ipipet.teamerlich.org is no longer maintained. Below are instructions to run iPipet locally:
+ipipet.teamerlich.org is no longer maintained.
 
-You can run the flask app locally from the 'heroku' branch.
+Run the flask app locally:
 
-**Local setup:**
-
-Create system user 'ipipet':
 ```
-sudo adduser --system --group --no-create-home ipipet
+git clone https://github.com/dinovski/iPipet.git
+cd iPipet
+git fetch origin
+git checkout -b heroku origin/heroku
+flask run
 ```
-
-Create directories for ipipet:
-```
-sudo mkdir /var/{run,log}/ipipet
-sudo chown ipipet:ipipet /var/{run,log}/ipipet
-sudo chmod 0755 /var/{run,log}/ipipet
-```
-
-Run the flask app with gunicorn as user ipipet:
-```
-sudo ./pooling.sh start
-```
-

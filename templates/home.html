@@ -33,7 +33,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 </div>
 	<div class="col-xs-3">
 		<div class="pull-right">
-			<a href="http://www.teamerlich.org/"><img src="{{ url_for("static", filename="logo_wibr.png") }}" /></a>
+			<a href="https://wi.mit.edu/"><img src="{{ url_for("static", filename="img/logo_wibr.png") }}" /></a>
 		</div>
 	</div>
 </div>
@@ -59,10 +59,11 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 			<div class="btn-group">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="font-size:18px; color:white; background-color:#653A71">FILES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
 				<ul class="dropdown-menu" role="menu">
-					<li><a style="font-size:20px" href="{{url_for("community",_external=True)}}"target="_blank">shared designs</a></li>
+					<li><a style="font-size:20px" href="{{url_for("community",_external=True)}}"target="_blank">Shared designs</a></li>
 					<li><a style="font-size:20px" href="http://www.thingiverse.com/thing:339588" target="_blank">3D printing</a></li>
-					<li><a style="font-size:20px" href="https://github.com/dinovski/ipipet" target="_blank">source code</a></li>
-					<li><a style="font-size:20px" href="{{ url_for("static", filename="manuscript.pdf") }}" target="_blank">manuscript</a></li>
+					<li><a style="font-size:20px" href="https://github.com/dinovski/ipipet" target="_blank">Source code</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("static", filename="files/manuscript.pdf") }}" target="_blank">Manuscript</a></li>
+					<li><a style="font-size:20px" href="{{ url_for("static", filename="files/nature_outlook2024.pdf") }}" target="_blank">Nature Outlook</a></li>
 				</ul>
 				
 			</div>
@@ -71,22 +72,28 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 	<div><br/></div>
 <div class="row">
 	<div class="col-sm-7">
-		
-		<p style="font-size:24px; background-color:#F0F0F0; color:#653A71; text-align:center"><strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 and 384 well plates on a tablet computer.</strong>
-			<br/>
-			<br/>
-			<span id="twitter_button">
-				<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://ipipet.teamerlich.org/" data-text="iPipet">Tweet</a>
-				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-			</span>
-			<span id="twitter_text"></span>
-		</p>
+
+	<p style="font-size:20px; background-color:#F0F0F0; color:#653A71; text-align:center">
+  		<br/>
+  		<strong>iPipet is a benchtop tool to track the transfer of samples and reagents by illuminating 96 and 384 well plates on a tablet computer.</strong>
+  		<br/><br/>
+  		<a href="https://bsky.app/intent/compose?text=Check%20out%20iPipet%20%E2%80%93%20a%20handy%20tool%20for%20lab%20pipetting%20workflows!&url=http://ipipet.com/" 
+     	target="_blank" 
+     	rel="noopener noreferrer" 
+     	style="text-decoration: none;">
+    	<!-- Bluesky PNG Icon (from static folder) -->
+    	<img src="/static/img/bluesky_logo.png" alt="Bluesky" width="28" height="28" style="vertical-align: middle; margin-right: 5px;">
+    	Share on Bluesky
+    	<br/><br />
+  		</a>
+	</p>
 			
 	</div>
 	
 		<div class="col-sm-5">
-		<img class="pull-right" src="./static/IMG_2511_resize.jpg" height="200" width="300">
+		<img class="pull-right" src="./static/img/IMG_2511_resize.jpg" height="200" width="300">
 		</div>
+
 	</div>
 </div>
 	
@@ -111,7 +118,7 @@ copyright (c) 2014 Dina Zielinski (dina@wi.mit.edu)
 <form class="form-horizontal" role="form" method="post" action="{{ url_for("create") }}" enctype="multipart/form-data" >
 <!-- description -->
   <div class="form-group">
-    <label for="input_description" class="col-sm-3 control-label">Description:</label>
+    <label for="input_description" class="col-sm-3 control-label">Description:*</label>
     <div class="col-sm-6">
       <input type="text" class="form-control" id="input_description" name="description" placeholder="project description">
        
