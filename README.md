@@ -1,7 +1,8 @@
-ipipet.teamerlich.org is no longer maintained.
+ipipet.teamerlich.org is no longer maintained
 
-Run the flask app locally:
+The app is currently available at ipipet.com
 
+The flask app can be run locally:
 ```
 git clone https://github.com/dinovski/iPipet.git
 cd iPipet
