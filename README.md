@@ -7,6 +7,6 @@ The flask app can be run locally:
 git clone https://github.com/dinovski/iPipet.git
 cd iPipet
 git fetch origin
-git checkout -b heroku origin/fly
+git checkout -b fly origin/fly
 flask run
 ```
