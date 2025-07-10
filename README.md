@@ -1,6 +1,6 @@
 ipipet.teamerlich.org is no longer maintained
 
-The app is currently available at ipipet.com
+The app is currently available at ipipet.com (or https://ipipet.fly.dev/)
 
 The flask app can be run locally:
 ```
